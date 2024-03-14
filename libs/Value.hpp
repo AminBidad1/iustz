@@ -11,6 +11,7 @@ public:
     Value(int val) : value(val) {}
     void setValue(int val) { value = val; }
     int getValue() const { return value; }
+
 };
 
 // Derived class for experience points
