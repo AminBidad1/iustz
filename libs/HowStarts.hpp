@@ -1,5 +1,7 @@
 #include <chrono>
 #include <random>
+#include <iostream>
+using namespace std;
 void HowItStarts() {
     unsigned seed = chrono::system_clock::now().time_since_epoch().count();
     default_random_engine rng(seed);
