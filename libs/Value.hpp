@@ -8,34 +8,34 @@ protected:
   int value;
 
 public:
-  Value(int val) : value(val) {}
-  void setValue(int val) { value = val; }
-  int getValue() const { return value; }
+  Value(int value);
+  void setValue(int val);
+  int getValue() const;
 };
 
 // Derived class for experience points
 class XP : public Value
 {
 public:
-  XP(int val) : Value(val) {}
-  void gainXP(int amount) { value += amount; }
-  void loseXP(int amount) { value -= amount; }
+  XP(int val);
+  void gainXP(int amount);
+  void loseXP(int amount);
 };
 
 // Derived class for hit points
 class HP : public Value
 {
 public:
-  HP(int val) : Value(val) {}
-  void takeDamage(int damage) { value -= damage; }
-  void heal(int amount) { value += amount; }
+  HP(int val);
+  void takeDamage(int damage);
+  void heal(int amount);
 };
 
 // Derived class for mana points
 class Mana : public Value
 {
 public:
-  Mana(int val) : Value(val) {}
-  void spendMana(int amount) { value -= amount; }
-  void restoreMana(int amount) { value += amount; }
+  Mana(int val);
+  void spendMana(int amount);
+  void restoreMana(int amount);
 };

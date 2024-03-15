@@ -14,4 +14,3 @@ int ThrowableItem::getNameDamage() const { return damage; }
 
 void ThrowableItem::setPrice(int price) { this->price = price; }
 int ThrowableItem::getPrice() const { return price; }
-
