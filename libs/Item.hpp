@@ -1,27 +1,98 @@
 #include "Value.hpp"
 #include <vector>
+
+//Item
 class Item {
 private:
-    HP hp;
-    Mana mana;
-
+    string name;
+    int price;
 public:
-    Item(int initial_HP , int initial_mana) : hp(initial_HP ) ,mana(initial_mana) {}
-    void set_hp(int amount) {
-        if (amount>=0) {
-            hp.heal(amount);
-        }
-        else
-            hp.takeDamage(amount);
-    }
-    void set_mana(int amount) {
-        if (amount>=0) {
-            mana.restoreMana(amount);
-        }
-        else
-            mana.spendMana(amount);
-    }
-    virtual void display_message(){
-        cout<<"test for message in Item";
-    }
+    Item();
+    Item(string name , int price);
+
+    void setName(string name);
+    string getName() const;
+
+    void setPrice(int price);
+    int getPrice() const;
+
+    virtual void display_message();
+};
+
+//ThrowableItem
+class ThrowableItem :public Item {
+private:
+    int damage;
+public:
+    ThrowableItem();
+    ThrowableItem(string name, int damage, int price);
+
+    void setName(string name);
+    string getName() const;
+
+    void setDamage(int damage);
+    int getDamage() const;
+
+    void setPrice(int price);
+    int getPrice() const;
+
+    ~ThrowableItem();
+};
+
+class KitchenKnife : public ThrowableItem
+{
+
+};
+
+class Grande : public ThrowableItem
+{
+
+};
+
+class Molotov : public ThrowableItem
+{
+
+};
+
+class Bristle : public ThrowableItem
+{
+
+};
+
+//PassiveItem
+class PassiveItem :public Item
+{
+private:
+    bool Upgradeable;
+public:
+    void setUpgradeable(bool Upgradable);
+    bool getUpgradeable() const ;
+
+};
+
+//Firearms
+class Firearms :public PassiveItem
+{
+private:
+    int damage_per_ammo;
+    int ammo;
+    int magazine;
+    int fire_rate;
+    int miss_percent;
+public:
+    void setDamage(int damage_per_ammo);
+    int getDamage();
+
+    void setAmmo(int ammo);
+    int getAmmo();
+
+    void setMagazine(int magazine);
+    int getMagazine();
+
+    void setFirerate(int fire_rate);
+    int getFirerate();
+
+    void setMisspercent(int miss_percent);
+    int getMisspercent();
+
 };
