@@ -1,5 +1,6 @@
-#include <iostream>
+#include "bits/stdc++.h"
 #include "Value.hpp"
+#include "Skill.hpp"
 
 using namespace std;
 
@@ -24,10 +25,11 @@ class Human : public Character
 private:
     Mana* mana;
     XP* xp;
+    vector<Skill*> skills;
 public:
     Human() = default;
-    Human(string name, int age, string gender, HP* hp, Money* money, Mana* mana, XP* xp);
-
+    Human(string name, int age, string gender, HP* hp, Money* money, Mana* mana, XP* xp, vector<Skill*> skills);
+    void addSkill(Skill* skill);
 };
 
 class Zombie : public Character

@@ -29,11 +29,17 @@ bool Character::take_damage(int damage)
     return false;
 }
 
-Human::Human(string name, int age, string gender, HP* hp, Money* money, Mana* mana, XP* xp) :
+Human::Human(string name, int age, string gender, HP* hp, Money* money, Mana* mana, XP* xp, vector<Skill*> skills) :
     Character(name, age, gender, hp, money)
 {
     this->mana = mana;
     this->xp = xp;
+    this->skills = skills;
+}
+
+void Human::addSkill(Skill* skill)
+{
+    this->skills.push_back(skill);
 }
 
 Zombie::Zombie(string name, int age, string gender, HP* hp, Money* money, int damage) :
