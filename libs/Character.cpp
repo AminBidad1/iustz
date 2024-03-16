@@ -29,17 +29,24 @@ bool Character::take_damage(int damage)
     return false;
 }
 
-Human::Human(string name, int age, string gender, HP* hp, Money* money, Mana* mana, XP* xp, vector<Skill*> skills) :
+Human::Human(string name, int age, string gender, HP* hp, Money* money,
+             Mana* mana, XP* xp, vector<Skill*> skills, vector<Item*> items) :
     Character(name, age, gender, hp, money)
 {
     this->mana = mana;
     this->xp = xp;
     this->skills = skills;
+    this->items = items;
 }
 
 void Human::addSkill(Skill* skill)
 {
     this->skills.push_back(skill);
+}
+
+void Human::AddItem(Item* item)
+{
+    this->items.push_back(item);
 }
 
 Zombie::Zombie(string name, int age, string gender, HP* hp, Money* money, int damage) :
@@ -71,4 +78,22 @@ State EnemyHuman::getNextState(State currentState)
     {
         return State::Attack;
     }
+}
+
+bool EnemyHuman::checkState(State currentState)
+{
+    switch (currentState)
+    {
+    case State::LowHP:
+        // TODO: Use HP booster
+        break;
+    case State::LowMana:
+        // TODO: USe Mana booster
+        break;
+    case State::Attack:
+        return true;
+    default:
+        break;
+    }
+    return false;
 }

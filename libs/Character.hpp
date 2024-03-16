@@ -1,6 +1,7 @@
 #include "bits/stdc++.h"
 #include "Value.hpp"
 #include "Skill.hpp"
+#include "Item.hpp"
 
 using namespace std;
 
@@ -26,10 +27,13 @@ protected:
     Mana* mana;
     XP* xp;
     vector<Skill*> skills;
+    vector<Item*> items;
 public:
     Human() = default;
-    Human(string name, int age, string gender, HP* hp, Money* money, Mana* mana, XP* xp, vector<Skill*> skills);
+    Human(string name, int age, string gender, HP* hp, Money* money,
+          Mana* mana, XP* xp, vector<Skill*> skills, vector<Item*> items);
     void addSkill(Skill* skill);
+    void AddItem(Item* item);
 };
 
 class Zombie : public Character
@@ -51,5 +55,5 @@ class EnemyHuman : public Human
 {
 public:
     State getNextState(State currentState);
-    
+    bool checkState(State currentState);
 };
