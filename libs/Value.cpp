@@ -15,6 +15,9 @@ HP::HP(int val) : Value(val) {}
 void HP::takeDamage(int damage) { value -= damage; }
 void HP::heal(int amount) { value += amount; }
 
+const int HP::MAX_VALUE;
+const int HP::MIN_VALUE;
+
 Mana::Mana(int val) : Value(val) {}
 
 void Mana::spendMana(int amount) { value -= amount; }

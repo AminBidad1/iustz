@@ -25,12 +25,15 @@ public:
 // Derived class for hit points
 class HP : public Value
 {
+private:
+  static const int MAX_VALUE = 100;
+  static const int MIN_VALUE = 0;
+
 public:
   HP(int val);
   void takeDamage(int damage);
   void heal(int amount);
 };
-
 // Derived class for mana points
 class Mana : public Value
 {
