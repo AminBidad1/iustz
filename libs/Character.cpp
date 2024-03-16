@@ -56,3 +56,19 @@ bool Zombie::attack(Character* character)
     }
     return false;
 }
+
+State EnemyHuman::getNextState(State currentState)
+{
+    if (this->hp->getValue() < 50)
+    {
+        return State::LowHP;
+    }
+    else if (this->mana->getValue() < 50)
+    {
+        return State::LowMana;
+    }
+    else
+    {
+        return State::Attack;
+    }
+}

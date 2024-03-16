@@ -22,7 +22,7 @@ public:
 
 class Human : public Character
 {
-private:
+protected:
     Mana* mana;
     XP* xp;
     vector<Skill*> skills;
@@ -40,4 +40,16 @@ public:
     Zombie() = default;
     Zombie(string name, int age, string gender, HP* hp, Money* money, int damage);
     bool attack(Character* character);
+};
+
+enum class State
+{
+    Start, LowHP, LowMana, Attack
+};
+
+class EnemyHuman : public Human
+{
+public:
+    State getNextState(State currentState);
+    
 };
