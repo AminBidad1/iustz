@@ -69,11 +69,13 @@ void ManaBooster::consume(Human* target)
 //Food
 void Food::consume(Character* target)
 {
+    // increasing the target's hp by the value of item
     target->hp->heal(this->getValue());
 }
 
 //Beverage
 void Beverage::consume(Character* target)
 {
+    // increasing the target's damage by the value of item
     target->target->setDamage(target->getDamage() + this->getValue());
 }
