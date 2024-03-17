@@ -17,6 +17,7 @@ public:
 class XP : public Value
 {
 public:
+  XP() = default;
   XP(int val);
   void gainXP(int amount);
   void loseXP(int amount);
@@ -30,6 +31,7 @@ private:
   static const int MIN_VALUE = 0;
 
 public:
+  HP() = default;
   HP(int val);
   void takeDamage(int damage);
   void heal(int amount);
@@ -38,7 +40,29 @@ public:
 class Mana : public Value
 {
 public:
+  Mana() = default;
   Mana(int val);
   void spendMana(int amount);
   void restoreMana(int amount);
+};
+
+// Derived class for monies
+class Money : public Value
+{
+public:
+  Money() = default;
+  Money(int val) : Value(val) {}
+  bool spend(int cost)
+  {
+    if (this->getValue() - cost < 0)
+    {
+      return false;
+    }
+    this->setValue(this->getValue() - cost);
+    return true;
+  }
+  void append(int amount)
+  {
+    this->setValue(this->getValue() + amount);
+  }
 };
