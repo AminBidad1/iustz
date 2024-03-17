@@ -29,6 +29,36 @@ bool Character::take_damage(int damage)
     return false;
 }
 
+int Character::getAge() {
+	return this->age;
+}
+void Character::setAge(int age) {
+	this->age = age;
+}
+
+string Character::getGender() {
+	return this->gender;
+}
+void Character::setGender(string gender) {
+	this->gender = gender;
+}
+
+int Character::getDefault_damage() {
+	return this->default_damage;
+}
+void Character::setDefault_damage(int default_damage) {
+	this->default_damage = default_damage;
+}
+
+bool Character::attack(Character* character, int damage)
+{
+    if (character->take_damage(damage))
+    {
+        return true;
+    }
+    return false;
+}
+
 Human::Human(string name, int age, string gender, HP* hp, Money* money,
              Mana* mana, XP* xp, vector<Skill*> skills, vector<Item*> items) :
     Character(name, age, gender, hp, money)
@@ -52,16 +82,7 @@ void Human::AddItem(Item* item)
 Zombie::Zombie(string name, int age, string gender, HP* hp, Money* money, int damage) :
     Character(name, age, gender, hp, money)
 {
-    this->damage = damage;
-}
-
-bool Zombie::attack(Character* character)
-{
-    if (character->take_damage(this->damage))
-    {
-        return true;
-    }
-    return false;
+    this->setDefault_damage(damage);
 }
 
 State EnemyHuman::getNextState(State currentState)
