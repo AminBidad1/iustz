@@ -46,23 +46,25 @@ public:
   void restoreMana(int amount);
 };
 
+// Derived class for stamina points
+class Stamina : public Value
+{
+private:
+  static const int MAX_VALUE = 100;
+  static const int MIN_VALUE = 0;
+
+public:
+  Stamina(int val);
+  void useStamina(int amount);
+  void regenerateStamina(int amount);
+};
+
 // Derived class for monies
 class Money : public Value
 {
 public:
   Money() = default;
-  Money(int val) : Value(val) {}
-  bool spend(int cost)
-  {
-    if (this->getValue() - cost < 0)
-    {
-      return false;
-    }
-    this->setValue(this->getValue() - cost);
-    return true;
-  }
-  void append(int amount)
-  {
-    this->setValue(this->getValue() + amount);
-  }
+  Money(int val);
+  bool spend(int cost);
+  void append(int amount);
 };
