@@ -12,11 +12,19 @@ void XP::loseXP(int amount) { value -= amount; }
 
 HP::HP(int val) : Value(val) {}
 
-void HP::takeDamage(int damage) { value -= damage; }
-void HP::heal(int amount) { value += amount; }
-
 const int HP::MAX_VALUE;
 const int HP::MIN_VALUE;
+
+void HP::takeDamage(int damage)
+{
+  value -= damage;
+  value = std::max(value, MIN_VALUE);
+}
+void HP::heal(int amount)
+{
+  value += amount;
+  value = std::min(value, MAX_VALUE);
+}
 
 Mana::Mana(int val) : Value(val) {}
 
