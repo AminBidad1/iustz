@@ -26,5 +26,5 @@ void Food::consume(Character* target)
 void Beverage::consume(Character* target)
 {
     // increasing the target's damage by the value of item
-    target->setDamage(target->getDamage() + this->getValue());
+    target->setDefault_damage(target->getDefault_damage() + this->getValue());
 }
