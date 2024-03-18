@@ -1,4 +1,5 @@
 #include "Item.hpp"
+#include "Character.hpp"
 
 //Item
 Item::Item(string name , int price)
