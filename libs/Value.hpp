@@ -5,63 +5,66 @@ using namespace std;
 class Value
 {
 protected:
-    int value;
+  int value;
 
 public:
-    Value(int val) : value(val) {}
-    void setValue(int val) { value = val; }
-    int getValue() const { return value; }
-
+  Value(int value);
+  void setValue(int val);
+  int getValue() const;
 };
 
 // Derived class for experience points
 class XP : public Value
 {
 public:
-    XP() = default;
-    XP(int val) : Value(val) {}
-    void gainXP(int amount) { value += amount; }
-    void loseXP(int amount) { value -= amount; }
+  XP() = default;
+  XP(int val);
+  void gainXP(int amount);
+  void loseXP(int amount);
 };
 
 // Derived class for hit points
 class HP : public Value
 {
-public:
-    HP() = default;
-    HP(int val) : Value(val) {}
-    void takeDamage(int damage) { value -= damage; }
-    void heal(int amount) { value += amount; }
-};
+private:
+  static const int MAX_VALUE = 100;
+  static const int MIN_VALUE = 0;
 
+public:
+  HP() = default;
+  HP(int val);
+  void takeDamage(int damage);
+  void heal(int amount);
+};
 // Derived class for mana points
 class Mana : public Value
 {
 public:
-    Mana() = default;
-    Mana(int val) : Value(val) {}
-    void spendMana(int amount) { value -= amount; }
-    void restoreMana(int amount) { value += amount; }
+  Mana() = default;
+  Mana(int val);
+  void spendMana(int amount);
+  void restoreMana(int amount);
 };
 
+// Derived class for stamina points
+class Stamina : public Value
+{
+private:
+  static const int MAX_VALUE = 100;
+  static const int MIN_VALUE = 0;
+
+public:
+  Stamina(int val);
+  void useStamina(int amount);
+  void regenerateStamina(int amount);
+};
 
 // Derived class for monies
 class Money : public Value
 {
 public:
-    Money() = default;
-    Money(int val) : Value(val) {}
-    bool spend(int cost) 
-    { 
-        if (this->getValue() - cost < 0)
-        {
-            return false;
-        }
-        this->setValue(this->getValue() - cost);
-        return true;
-    }
-    void append(int amount)
-    {
-        this->setValue(this->getValue() + amount);
-    }
+  Money() = default;
+  Money(int val);
+  bool spend(int cost);
+  void append(int amount);
 };
