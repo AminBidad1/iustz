@@ -1,5 +1,10 @@
 #include <iostream>
-#include <windows.h>
+#ifdef __MINGW32__
+    #include <windows.h>
+#elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+    #include<unistd.h>
+    #define Sleep sleep
+#endif 
 #include <ctime>
 using namespace std;
 void StartProgram()
