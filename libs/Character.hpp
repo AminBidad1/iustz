@@ -2,9 +2,20 @@
 #include "Value.hpp"
 #include "Skill.hpp"
 #include "Item.hpp"
+#include "ConsumableItem.hpp"
 #include "utils.hpp"
 
 using namespace std;
+
+struct InventoryItem 
+{
+    Item* item;
+    string type;
+    int count = 0;
+
+    void add(int count);
+    bool remove(int count);
+};
 
 class Character
 {
@@ -33,17 +44,18 @@ public:
 class Human : public Character
 {
 protected:
-    Mana* mana;
     XP* xp;
     vector<Skill*> skills;
-    vector<Item*> items;
+    vector<InventoryItem> items;
 public:
+    Stamina* stamina;
     Human() = default;
     Human(string name, int age, string gender, HP* hp, Money* money,
-          Mana* mana, XP* xp, vector<Skill*> skills, vector<Item*> items);
+          Stamina* stamina, XP* xp, vector<Skill*> skills, vector<InventoryItem> items);
     void addSkill(Skill* skill);
-    void AddItem(Item* item);
+    void addItem(Item* item, string type, int count);
     // TODO: functions to use items
+    bool buyItem(Item* item, string type, int count, int price);
 };
 
 class Zombie : public Character
@@ -58,5 +70,5 @@ class EnemyHuman : public Human
 {
 public:
     State getNextState(State currentState);
-    bool checkState(State currentState);
+    bool checkState(State currentState, Character* character);
 };

@@ -1,13 +1,13 @@
-#include "Item.hpp"
+#pragma once
+#include "Character.hpp"
 
 class Skill
 {
 private:
     int level = 0;
-    AttackingItem* item;
+    InventoryItem* inventoryItem;
 public:
     Skill() = default;
-    Skill(AttackingItem* item, int level);
+    Skill(InventoryItem* inventoryItem, int level);
     void levelup(int count);
 };
-
