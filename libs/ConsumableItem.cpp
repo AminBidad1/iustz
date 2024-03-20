@@ -8,11 +8,11 @@ int ConsumableItem::getValue() const { return value->getValue(); }
 
 void ConsumableItem::consume() {}
 
-//ManaBooster
-void ManaBooster::consume(Human* target)
+//StaminaBooster
+void StaminaBooster::consume(Human* target)
 {
-    // increasing the target's mana by the value of item
-    target->mana->restoreMana(this->getValue());
+    // increasing the target's stamina by the value of item
+    target->stamina->regenerateStamina(this->getValue());
 }
 
 //Food
