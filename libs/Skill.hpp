@@ -1,5 +1,5 @@
 #pragma once
-#include "Character.hpp"
+#include "Item.hpp"
 
 class Skill
 {
