@@ -1,3 +1,4 @@
+#pragma once
 #include "Value.hpp"
 #include <vector>
 
@@ -95,4 +96,15 @@ public:
     void setMisspercent(int miss_percent);
     int getMisspercent();
 
+};
+
+class InventoryItem 
+{
+public:
+    InventoryItem() = default;
+    Item* item;
+    string type;
+    int count = 0;
+    void add(int count);
+    bool remove(int count);
 };

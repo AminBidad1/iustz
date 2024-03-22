@@ -49,3 +49,18 @@ int Firearms::getFirerate(){return fire_rate;}
 
 void Firearms::setMisspercent(int miss_percet){this->miss_percent=miss_percent;}
 int Firearms::getMisspercent(){return miss_percent;}
+
+void InventoryItem::add(int count)
+{
+    this->count += count;
+}
+
+bool InventoryItem::remove(int count)
+{
+    if (count > this->count)
+    {
+        return false;
+    }
+    this->count -= count;
+    return true;
+}
