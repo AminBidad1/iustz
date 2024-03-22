@@ -125,6 +125,23 @@ State EnemyHuman::getNextState(State currentState)
     }
 }
 
+
+int ConsumableItem::getValue() const { return value->getValue(); }
+
+//Food
+void Food::consume(Character* target)
+{
+    // increasing the target's hp by the value of item
+    target->hp->heal(this->getValue());
+}
+
+//StaminaBooster
+void StaminaBooster::consume(Human* target)
+{
+    // increasing the target's stamina by the value of item
+    target->stamina->regenerateStamina(this->getValue());
+}
+
 bool EnemyHuman::checkState(State currentState, Character* character)
 {
     switch (currentState)

@@ -3,7 +3,6 @@
 #include "Value.hpp"
 #include "Skill.hpp"
 #include "Item.hpp"
-// #include "ConsumableItem.hpp"
 #include "utils.hpp"
 
 using namespace std;
