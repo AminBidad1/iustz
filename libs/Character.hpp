@@ -1,21 +1,13 @@
+#pragma once
 #include "bits/stdc++.h"
 #include "Value.hpp"
 #include "Skill.hpp"
 #include "Item.hpp"
-#include "ConsumableItem.hpp"
+// #include "ConsumableItem.hpp"
 #include "utils.hpp"
 
 using namespace std;
 
-struct InventoryItem 
-{
-    Item* item;
-    string type;
-    int count = 0;
-
-    void add(int count);
-    bool remove(int count);
-};
 
 class Character
 {

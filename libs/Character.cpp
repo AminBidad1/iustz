@@ -1,19 +1,6 @@
 #include "Character.hpp"
-
-void InventoryItem::add(int count)
-{
-    this->count += count;
-}
-
-bool InventoryItem::remove(int count)
-{
-    if (count > this->count)
-    {
-        return false;
-    }
-    this->count -= count;
-    return true;
-}
+#include "Item.hpp"
+#include "ConsumableItem.hpp"
 
 Character::Character(string name, int age, string gender, HP* hp, Money* money)
 {
