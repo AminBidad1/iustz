@@ -1,39 +1,48 @@
+#pragma once
 #include <iostream>
 #ifdef __MINGW32__
     #include <windows.h>
+    int get_sleep(int number)
+    {
+        return number;
+    }
 #elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
     #include<unistd.h>
     #define Sleep sleep
+    double get_sleep(int number)
+    {
+        return number/1000;
+    }
 #endif 
 #include <ctime>
 using namespace std;
 void StartProgram()
 {
     cout << "Hello ";
-    Sleep(600);
+    Sleep(get_sleep(600));
     cout << "Stranger";
-    Sleep(600);
+    Sleep(get_sleep(600));
     cout << " By Pressing 'Y' ";
-    Sleep(600);
+    Sleep(get_sleep(600));
     cout << "you will be part of the mystery.\n";
-    Sleep(5000);
+    Sleep(get_sleep(5000));
     cout << "Just kidding, don't f... the keyboard bruh.\n";
-    Sleep(3000);
+    Sleep(get_sleep(3000));
     cout << "Ok let's just be serious .\n";
-    Sleep(1500);
+    Sleep(get_sleep(1500));
     cout << "Who are you ?\n";
-    Sleep(1500);
+    Sleep(get_sleep(1500));
     cout << "Oh my bad. i forgot to clean the board.\n";
-    Sleep(1000);
+    Sleep(get_sleep(1000));
     system("cls");
-    Sleep(800);
+    Sleep(get_sleep(800));
     cout << "There you go!\n\n";
-    Sleep(600);
+    Sleep(get_sleep(600));
     cout << "Ok i was asking.Who are you?\n";
-    Sleep(600);
+    Sleep(get_sleep(600));
     Jump:
     cout << "1.Human\n";
-    Sleep(600);
+    Sleep(get_sleep(600));
     cout << "2.Not Human\n";
     char input;
     cin>>input;
@@ -50,11 +59,11 @@ void StartProgram()
         cerr << e.what() << '\n';
         goto Jump;
     }
-    Sleep(600);
+    Sleep(get_sleep(600));
     if (input=='2')
     {
         cout<<"Funny...\n";
-        Sleep(600);
+        Sleep(get_sleep(600));
         cout<<"what is your name \" NOT HUMAN \"? \n";
     }
     else
@@ -64,11 +73,11 @@ void StartProgram()
     string name;
     cin>>name;
     cout<<"Okay "<<name<<" .";
-    Sleep(600);
+    Sleep(get_sleep(600));
     cout<<"What is your sexuality?\n";
     string sexuality;
     cin>>sexuality;
-    Sleep(600);
+    Sleep(get_sleep(600));
     cout<<"How old are you?";
     string Age;
     cin>>Age;
