@@ -11,7 +11,7 @@
     #define Sleep sleep
     double get_sleep(int number)
     {
-        return number/1000;
+        return number/600;
     }
 #endif 
 #include <ctime>

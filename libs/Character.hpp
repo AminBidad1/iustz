@@ -43,6 +43,8 @@ public:
     Human() = default;
     Human(string name, int age, string gender, HP* hp, Money* money,
           Stamina* stamina, XP* xp, vector<Skill*> skills, vector<InventoryItem> items);
+    XP* getXp();
+    void setXp(XP* xp);
     void addSkill(Skill* skill);
     void addItem(Item* item, string type, int count);
     // TODO: functions to use items

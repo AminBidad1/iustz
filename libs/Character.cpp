@@ -71,6 +71,16 @@ Human::Human(string name, int age, string gender, HP* hp, Money* money,
     this->items = items;
 }
 
+XP* Human::getXp() 
+{
+	return this->xp;
+}
+
+void Human::setXp(XP* xp) 
+{
+	this->xp = xp;
+}
+
 void Human::addSkill(Skill* skill)
 {
     this->skills.push_back(skill);
