@@ -30,6 +30,8 @@ class ConsumableItemController : public ItemController
 
 class CharacterController
 {
+private:
+    static const int DEFAULT_DAMAGE = 5; 
 public:
     static Character* createCharacter(CharacterType type);
     static Human* createCustomHuman(string name, int age, string gender,
