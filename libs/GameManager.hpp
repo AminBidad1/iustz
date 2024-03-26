@@ -17,6 +17,7 @@ class ValueController
 {
 public:
     static Value* createValue(ValueType type);
+    static Value* createCustomValue(ValueType type, int valueAmount);
 };
 
 class ItemController
@@ -35,6 +36,6 @@ private:
 public:
     static Character* createCharacter(CharacterType type);
     static Human* createCustomHuman(string name, int age, string gender,
-                                    vector<Skill*> skills, Money* money);
+                                    vector<Skill*> skills, Money* money, int damage);
     static Zombie* createZombie(int level);
 };

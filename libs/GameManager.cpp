@@ -5,22 +5,44 @@ Value* ValueController::createValue(ValueType type)
     Value* value;
     if (type == ValueType::HP)
     {
-        HP* hp = new HP(100);
+        value = ValueController::createCustomValue(type, 100);
+    }
+    else if (type == ValueType::Stamina)
+    {
+        value = ValueController::createCustomValue(type, 100);
+    }
+    else if (type == ValueType::XP)
+    {
+        value = ValueController::createCustomValue(type, 1);
+    }
+    else if (type == ValueType::Money)
+    {
+        value = ValueController::createCustomValue(type, 100);
+    }
+    return value;
+}
+
+Value* ValueController::createCustomValue(ValueType type, int valueAmount)
+{
+    Value* value;
+    if (type == ValueType::HP)
+    {
+        HP* hp = new HP(valueAmount);
         value = hp;
     }
     else if (type == ValueType::Stamina)
     {
-        Stamina* stamina = new Stamina(100);
+        Stamina* stamina = new Stamina(valueAmount);
         value = stamina;
     }
     else if (type == ValueType::XP)
     {
-        XP* xp = new XP(1);
+        XP* xp = new XP(valueAmount);
         value = xp;
     }
     else if (type == ValueType::Money)
     {
-        Money* money = new Money(100);
+        Money* money = new Money(valueAmount);
         value = money;
     }
     return value;
@@ -115,6 +137,20 @@ Character* CharacterController::createCharacter(CharacterType type)
         character = human;
     }
     return character;
+}
+
+Human* CharacterController::createCustomHuman(string name, int age, string gender,
+                                              vector<Skill*> skills, Money* money, int damage)
+{
+    vector<InventoryItem> items;
+    Human* human = new Human(
+        name, age, gender, 
+        (HP*)ValueController::createValue(ValueType::HP), money, 
+        (Stamina*)ValueController::createValue(ValueType::Stamina),
+        (XP*)ValueController::createValue(ValueType::XP), skills, items
+    );
+    human->setDefault_damage(damage);
+    return human;
 }
 
 Zombie* CharacterController::createZombie(int level)

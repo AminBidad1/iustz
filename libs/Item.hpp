@@ -30,14 +30,8 @@ public:
     ThrowableItem() = default;
     ThrowableItem(string name, int damage, int price);
 
-    void setName(string name);
-    string getName() const;
-
     void setDamage(int damage);
     int getDamage() const;
-
-    void setPrice(int price);
-    int getPrice() const;
 };
 
 class KitchenKnife : public ThrowableItem
