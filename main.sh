@@ -1,4 +1,9 @@
-# for file in libs/*.cpp 
-#     do filename=$(basename -- "$file"); filename="${filename%.*}"; make $filename.o; 
-# done
-make main -e objects="Value.o Item.o ConsumableItem.o Character.o views.o GameManager.o"
+unset _objects
+unset objects
+$_objects=""
+for file in libs/*.cpp 
+    do filename=$(basename -- "$file")
+    filename="${filename%.*}"
+    _objects="${_objects}${filename}.o "
+done
+make main -e objects="${_objects}"

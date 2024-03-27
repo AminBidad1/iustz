@@ -5,30 +5,23 @@
 
 class CharacterView
 {
-protected:
-    Character* model;
 public:
-    static void showAttack(Character* enemy , CharacterView* characterView);
-    static void showTakeDamage(CharacterView* characterView);
+    static void showAttack(Character* character, Character* enemy);
+    static void showTakeDamage(Character* character);
 };
 
 class HumanView : public CharacterView
 {
-protected:
-    Human* model;
 public:
-   static void showUseItem(Item* item , HumanView* humanView);
-   static void showAppendHP(int value ,HumanView* humanView);
-   static void showAppendStamina(int value , HumanView* humanView);
-    
+   static void showUseItem(Human* human, Item* item);
+   static void showAppendHP(int value ,Human* human);
+   static void showAppendStamina(int value, Human* human);
 };
 
 class ZombieView : public CharacterView
 {
-protected:
-    Zombie* model;
 public:
-   static void showAttack(Character* character , ZombieView* zombieView);
+   static void showAttack(Character* character , Zombie* zombie);
 };
 
 class EnemyHumanView : public CharacterView {};

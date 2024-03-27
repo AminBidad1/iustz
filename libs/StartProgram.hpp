@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "GameLoop.hpp"
+#include <ctime>
 #ifdef __MINGW32__
     #include <windows.h>
     int get_sleep(int number)
@@ -15,8 +16,25 @@
         return number/600;
     }
 #endif 
-#include <ctime>
+
 using namespace std;
+
+
+/* Clear terminal */
+void reset_terminal()
+{
+#if defined _WIN32
+    system("cls");
+    // clrscr(); // including header file : conio.h
+#elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+    system("clear");
+    // std::cout<< u8"\033[2J\033[1;1H"; //Using ANSI Escape Sequences
+#elif defined(__APPLE__)
+    system("clear");
+#endif
+}
+
+
 void StartProgram()
 {
     cout << "Hello ";
@@ -35,13 +53,13 @@ void StartProgram()
     Sleep(get_sleep(1500));
     cout << "Oh my bad. i forgot to clean the board.\n";
     Sleep(get_sleep(1000));
-    system("cls");
+    reset_terminal();
     Sleep(get_sleep(800));
     cout << "There you go!\n\n";
     Sleep(get_sleep(600));
     cout << "Ok i was asking.Who are you?\n";
     Sleep(get_sleep(600));
-    Jump:
+    Jump: // TODO: Use While loop
     cout << "1.Human\n";
     Sleep(get_sleep(600));
     cout << "2.Not Human\n";

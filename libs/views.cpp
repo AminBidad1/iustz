@@ -1,32 +1,32 @@
 #include "views.hpp"
 
-void CharacterView::showAttack(Character* enemy , CharacterView* characterView)
+void CharacterView::showAttack(Character* character , Character* enemy)
 {
-    cout << characterView->model->get_name() << " : I damaged to " << enemy->get_name() << endl;
+    cout << character->get_name() << " : I damaged to " << enemy->get_name() << endl;
 }
 
-void CharacterView::showTakeDamage(CharacterView* characterView)
+void CharacterView::showTakeDamage(Character* character)
 {
-    cout << characterView->model->get_name() << " : AAKH! ُThis hurts me" << endl;
+    cout << character->get_name() << " : AAKH! This hurts me" << endl;
 }
 
-void HumanView::showUseItem(Item* item , HumanView* humanView)
+void HumanView::showUseItem(Human* human, Item* item)
 {
-    cout << humanView->model->get_name() << " : I used " << item->getName() << " item" << endl;
+    cout << human->get_name() << " : I used " << item->getName() << " item" << endl;
 }
 
-void HumanView::showAppendHP(int value , HumanView* humanView)
+void HumanView::showAppendHP(int value , Human* human)
 {
-    cout << humanView->model->get_name() << " : YOOHO! I got " << value << " HP" << endl;
+    cout << human->get_name() << " : YOOHO! I got " << value << " HP" << endl;
 }
 
-void HumanView::showAppendStamina(int value , HumanView* humanView)
+void HumanView::showAppendStamina(int value , Human* human)
 {
-    cout << humanView->model->get_name() << " : Eyval! I got " << value << " Stamina" << endl;
+    cout << human->get_name() << " : Eyval! I got " << value << " Stamina" << endl;
 }
 
- void ZombieView::showAttack(Character* character , ZombieView* zombieView)
+ void ZombieView::showAttack(Character* character , Zombie* zombie)
 {
-    cout <<zombieView->model->get_name() << " : HaHa! I damaged to you! you can't beat me " <<
+    cout <<zombie->get_name() << " : HaHa! I damaged to you! you can't beat me " <<
     character->get_name() << "!" << endl;
 }
