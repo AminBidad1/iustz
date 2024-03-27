@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "GameLoop.hpp"
 #ifdef __MINGW32__
     #include <windows.h>
     int get_sleep(int number)
@@ -81,7 +82,7 @@ void StartProgram()
     cout<<"How old are you?";
     string Age;
     cin>>Age;
-
+    HowItStarts();
 }
 
 #ifndef IUSTZ_STARTPROGRAM_H

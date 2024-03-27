@@ -8,8 +8,8 @@ class CharacterView
 protected:
     Character* model;
 public:
-    virtual void showAttack(Character* enemy);
-    virtual void showTakeDamage();
+    static void showAttack(Character* enemy , CharacterView* characterView);
+    static void showTakeDamage(CharacterView* characterView);
 };
 
 class HumanView : public CharacterView
@@ -17,9 +17,9 @@ class HumanView : public CharacterView
 protected:
     Human* model;
 public:
-    void showUseItem(Item* item);
-    void showAppendHP(int value);
-    void showAppendStamina(int value);
+   static void showUseItem(Item* item , HumanView* humanView);
+   static void showAppendHP(int value ,HumanView* humanView);
+   static void showAppendStamina(int value , HumanView* humanView);
     
 };
 
@@ -28,7 +28,7 @@ class ZombieView : public CharacterView
 protected:
     Zombie* model;
 public:
-    void showAttack(Character* character) override;
+   static void showAttack(Character* character , ZombieView* zombieView);
 };
 
 class EnemyHumanView : public CharacterView {};
