@@ -1,4 +1,5 @@
+#pragma once
 enum class State
 {
-    Start, LowHP, LowMana, Attack
+    Start, LowHP, LowStamina, Attack
 };

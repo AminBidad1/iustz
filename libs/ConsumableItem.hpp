@@ -1,3 +1,4 @@
+#pragma once
 #include "Item.hpp"
 #include "Value.hpp"
 #include "Character.hpp"
@@ -17,7 +18,7 @@ public:
     virtual void consume();
 };
 
-class ManaBooster : public ConsumableItem
+class StaminaBooster : public ConsumableItem
 {
 public:
     void consume(Human* target);

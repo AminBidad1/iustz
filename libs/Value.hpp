@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 using namespace std;
 
@@ -50,8 +51,8 @@ public:
 class Stamina : public Value
 {
 private:
-  static const int MAX_VALUE = 100;
-  static const int MIN_VALUE = 0;
+  static int MAX_VALUE;
+  static int MIN_VALUE;
 
 public:
   Stamina(int val);

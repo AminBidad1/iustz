@@ -1,8 +1,8 @@
 #include "Skill.hpp"
 
-Skill::Skill(AttackingItem* item, int level)
+Skill::Skill(InventoryItem* inventoryItem, int level)
 {
-    this->item = item;
+    this->inventoryItem = inventoryItem;
     this->level = level;
 }
 
