@@ -43,10 +43,12 @@ public:
     Human() = default;
     Human(string name, int age, string gender, HP* hp, Money* money,
           Stamina* stamina, XP* xp, vector<Skill*> skills, vector<InventoryItem> items);
+    XP* getXp();
+    void setXp(XP* xp);
     void addSkill(Skill* skill);
-    void addItem(Item* item, string type, int count);
+    void addItem(Item* item, ItemType type, int count);
     // TODO: functions to use items
-    bool buyItem(Item* item, string type, int count, int price);
+    bool buyItem(Item* item, ItemType type, int count, int price);
 };
 
 class Zombie : public Character

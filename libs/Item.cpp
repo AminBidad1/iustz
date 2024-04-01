@@ -21,12 +21,6 @@ void Item::display_message(){
 //ThrowableItem
 ThrowableItem::ThrowableItem(string name, int damage, int price) :Item(name , price) {this->damage=damage;}
 
-void ThrowableItem::setName(string name) {Item::setName(name);}
-string ThrowableItem::getName() const {Item::getName();}
-
-void ThrowableItem::setPrice(int price){Item::setPrice(price);}
-int ThrowableItem::getPrice() const {Item::getPrice();}
-
 void ThrowableItem::setDamage(int damage){this->damage=damage;}
 int ThrowableItem::getDamage() const {return damage;}
 

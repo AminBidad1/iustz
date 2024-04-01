@@ -1,13 +1,12 @@
 CC = g++
 CFLAGS  = -g -Wall
-export dependencies
 export objects
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) -c main.cpp
 
-%.o: libs/%.hpp libs/%.cpp %.gch $(dependencies)
-	$(CC) -fPIC -c $(CFLAGS) $(CPPFLAGS) libs/$*.cpp -o $*.o $(dependencies)
+%.o: libs/%.hpp libs/%.cpp %.gch
+	$(CC) -fPIC -c $(CFLAGS) $(CPPFLAGS) libs/$*.cpp -o $*.o
 
 %.gch: libs/%.hpp
 	$(CC) -fPIC -c $(CFLAGS) $(CPPFLAGS) libs/$*.hpp -o $*.gch 

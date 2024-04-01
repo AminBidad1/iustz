@@ -2,13 +2,15 @@
 #include "Value.hpp"
 #include <vector>
 
+enum class ItemType;
+
 //Item
 class Item {
 private:
     string name;
     int price;
 public:
-    Item();
+    Item() = default;
     Item(string name , int price);
 
     void setName(string name);
@@ -25,19 +27,11 @@ class ThrowableItem :public Item {
 private:
     int damage;
 public:
-    ThrowableItem();
+    ThrowableItem() = default;
     ThrowableItem(string name, int damage, int price);
-
-    void setName(string name);
-    string getName() const;
 
     void setDamage(int damage);
     int getDamage() const;
-
-    void setPrice(int price);
-    int getPrice() const;
-
-    ~ThrowableItem();
 };
 
 class KitchenKnife : public ThrowableItem
@@ -103,7 +97,7 @@ class InventoryItem
 public:
     InventoryItem() = default;
     Item* item;
-    string type;
+    ItemType type;
     int count = 0;
     void add(int count);
     bool remove(int count);
