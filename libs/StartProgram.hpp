@@ -100,7 +100,7 @@ void StartProgram()
     cout<<"How old are you?";
     string Age;
     cin>>Age;
-    HowItStarts();
+    start();
 }
 
 #ifndef IUSTZ_STARTPROGRAM_H
