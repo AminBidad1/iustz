@@ -21,3 +21,8 @@ enum class CharacterType
 {
     Zombie, Human, EnemyHuman
 };
+
+enum class PlayerState
+{
+    Shop, Attack
+};

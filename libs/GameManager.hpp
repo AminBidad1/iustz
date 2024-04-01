@@ -39,3 +39,20 @@ public:
                                     vector<Skill*> skills, Money* money, int damage);
     static Zombie* createZombie(int level);
 };
+
+class GameManager
+{
+private:
+    vector<Human*> players;
+    Character* enemy;
+    int round_index = 0;
+    int level = 0;
+    PlayerState state = PlayerState::Shop;
+public:
+    GameManager() = default;
+    GameManager(vector<Human*> players, Character* enemy, int round_index, int level, PlayerState state);
+    void attack();
+    void goShop();
+    PlayerState getNextState();
+    void startRound();
+};

@@ -6,30 +6,25 @@
 #include "GameManager.hpp"
 #include "utils.hpp"
 
-#ifdef __MINGW32__
-#include <conio.h>
-const int UP_KEY = 72;
-const int DOWN_KEY = 80;
-const int ENTER_KEY = 13;
-const int RIGHT_KEY = 77;
-const int LEFT_KEY = 75;
-const int ESCAPE_KEY = 27;
-#elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
-#include <termios.h>
-const int UP_KEY = 65;
-const int DOWN_KEY = 66;
-const int RIGHT_KEY = 67;
-const int LEFT_KEY = 68;
-const int ENTER_KEY = int('\n');
-const int ESCAPE_KEY = 27;
-int getch(void);
-#endif
-
 using namespace std;
 
 void shop(Character* player);
 void attack(Character * player);
 static int i=0;
+
+
+void start()
+{
+    srand(time(0));
+    Human* player1 = (Human*)CharacterController::createCharacter(CharacterType::Human);
+    Human* player2 = (Human*)CharacterController::createCharacter(CharacterType::Human);
+    vector<Human*> players;
+    players.push_back(player1);
+    players.push_back(player2);
+    Zombie* enemy = CharacterController::createZombie(0);
+    GameManager manager = GameManager(players, enemy, 0, 0, PlayerState::Shop);
+    manager.startRound();
+}
 
 void HowItStarts() 
 {
@@ -81,20 +76,3 @@ void shop(Character* player)
     i++;
     attack(player);
 }
-
-
-#if defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
-/* reads from keypress, doesn't echo */
-int getch(void)
-{
-    struct termios oldattr, newattr;
-    int ch;
-    tcgetattr(STDIN_FILENO, &oldattr);
-    newattr = oldattr;
-    newattr.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newattr);
-    ch = getchar();
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldattr);
-    return ch;
-}
-#endif

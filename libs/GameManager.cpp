@@ -163,3 +163,98 @@ Zombie* CharacterController::createZombie(int level)
     );
     return zombie;
 }
+
+
+GameManager::GameManager(vector<Human*> players, Character* enemy, int round_index, int level, PlayerState state)
+{
+    this->players = players;
+    this->enemy = enemy;
+    this->round_index = round_index;
+    this->level = level;
+    this->state = state;
+}
+
+PlayerState GameManager::getNextState()
+{
+    int random_number = rand() % 100;
+    if (random_number >= 70)
+    {
+        return PlayerState::Attack;
+    }
+    return PlayerState::Shop;
+}
+
+void GameManager::attack()
+{
+    // TODO: Handle Enemy Human
+    Zombie* zombie = (Zombie*)enemy;
+    while (zombie->hp->getValue() !=0 || players[round_index % players.size()]->hp->getValue()!=0)
+    {
+        if (zombie->attack(players[round_index % players.size()], zombie->getDefault_damage()))
+        {
+            ZombieView::showAttack(players[round_index % players.size()], zombie);
+            CharacterView::showWasKilled(players[round_index % players.size()]);
+            players.erase(next(players.begin(), (round_index + 1) % players.size()));
+            if (players.size() == 0)
+            {
+                cout << "YOU LOST!" << endl;
+                exit(0);
+            }
+        }
+        else 
+        {
+            ZombieView::showAttack(players[round_index % players.size()] , zombie);
+            HumanView::showTakeDamage(players[round_index % players.size()]);
+        }
+
+        // TODO: use items to attack
+
+        if (players[round_index % players.size()]->attack(zombie, players[round_index % players.size()]->getDefault_damage()))
+        {
+            ZombieView::showWasKilled(zombie);
+            level++;
+            return;
+        }
+        round_index++;
+    }
+}
+
+void GameManager::goShop()
+{
+    Human* player = players[round_index % players.size()];
+    HumanView::showStatus(player);
+    InventoryItem inventoryItem;
+    Item* item;
+    do {
+        inventoryItem = HumanView::selecetItem();
+        item = ItemController::createItem(inventoryItem.type);
+        // TODO: Handle price
+        if (player->buyItem(item, inventoryItem.type, inventoryItem.count, 10))
+        {
+            HumanView::successBuy();
+        }
+        else 
+        {
+            HumanView::failedBuy();
+        }
+        if (!ShopView::stay())
+            break;
+    } while (true);
+}
+
+void GameManager::startRound()
+{
+    while (true)
+    {
+        if (state == PlayerState::Shop)
+        {
+            goShop();
+        }
+        else if (state == PlayerState::Attack)
+        {
+            attack();
+        }
+        state = getNextState();
+        enemy = CharacterController::createZombie(level);
+    }
+}
