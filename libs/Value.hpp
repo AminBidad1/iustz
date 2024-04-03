@@ -55,6 +55,7 @@ private:
   static int MIN_VALUE;
 
 public:
+  Stamina() = default;
   Stamina(int val);
   void useStamina(int amount);
   void regenerateStamina(int amount);

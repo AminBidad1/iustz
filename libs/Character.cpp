@@ -71,12 +71,22 @@ Human::Human(string name, int age, string gender, HP* hp, Money* money,
     this->items = items;
 }
 
+XP* Human::getXp() 
+{
+	return this->xp;
+}
+
+void Human::setXp(XP* xp) 
+{
+	this->xp = xp;
+}
+
 void Human::addSkill(Skill* skill)
 {
     this->skills.push_back(skill);
 }
 
-void Human::addItem(Item* item, string type, int count)
+void Human::addItem(Item* item, ItemType type, int count)
 {
     for (int i=0; i < this->items.size(); i++)
     {
@@ -93,7 +103,7 @@ void Human::addItem(Item* item, string type, int count)
     this->items.push_back(inventoryItem);
 }
 
-bool Human::buyItem(Item* item, string type, int count, int price)
+bool Human::buyItem(Item* item, ItemType type, int count, int price)
 {
     if (this->money->spend(count * price))
     {
@@ -125,7 +135,7 @@ State EnemyHuman::getNextState(State currentState)
     }
 }
 
-
+/*
 int ConsumableItem::getValue() const { return value->getValue(); }
 
 //Food
@@ -141,6 +151,7 @@ void StaminaBooster::consume(Human* target)
     // increasing the target's stamina by the value of item
     target->stamina->regenerateStamina(this->getValue());
 }
+*/
 
 bool EnemyHuman::checkState(State currentState, Character* character)
 {
@@ -151,7 +162,7 @@ bool EnemyHuman::checkState(State currentState, Character* character)
         Food* food;
         for (int i=0; i < this->items.size(); i++)
         {
-            if (this->items[i].type == "Food")
+            if (this->items[i].type == ItemType::Food)
             {
                 food = (Food*)this->items[i].item;
             }
@@ -166,7 +177,7 @@ bool EnemyHuman::checkState(State currentState, Character* character)
         StaminaBooster* staminaBooster;
         for (int i=0; i < this->items.size(); i++)
         {
-            if (this->items[i].type == "StaminaBooster")
+            if (this->items[i].type == ItemType::StaminaBooster)
             {
                 staminaBooster = (StaminaBooster*)this->items[i].item;
             }
