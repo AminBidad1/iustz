@@ -32,8 +32,9 @@ class ConsumableItemController : public ItemController
 class CharacterController
 {
 private:
-    static const int DEFAULT_DAMAGE = 5; 
+    static int player_index;
 public:
+    static const int DEFAULT_DAMAGE = 10;
     static Character* createCharacter(CharacterType type);
     static Human* createCustomHuman(string name, int age, string gender,
                                     vector<Skill*> skills, Money* money, int damage);

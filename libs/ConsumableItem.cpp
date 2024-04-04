@@ -1,18 +1,20 @@
 #include "ConsumableItem.hpp"
 
-ConsumableItem::ConsumableItem() = default;
+ConsumableItem::ConsumableItem()
+{
+    value = new Value();
+}
 ConsumableItem::ConsumableItem(string name, int price) : Item(name, price) {};
 
 void ConsumableItem::setValue(int value) { this->value->setValue(value); }
 int ConsumableItem::getValue() const { return value->getValue(); }
 
-void ConsumableItem::consume() {}
-
 //StaminaBooster
-void StaminaBooster::consume(Human* target)
+void StaminaBooster::consume(Character* target)
 {
     // increasing the target's stamina by the value of item
-    target->stamina->regenerateStamina(this->getValue());
+    Human* human = (Human*)target;
+    human->stamina->regenerateStamina(this->getValue());
 }
 
 //Food
@@ -26,5 +28,5 @@ void Food::consume(Character* target)
 void Beverage::consume(Character* target)
 {
     // increasing the target's damage by the value of item
-    target->setDefault_damage(target->getDefault_damage() + this->getValue());
+    target->setDamage(target->getDamage() + this->getValue());
 }

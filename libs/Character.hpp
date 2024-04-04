@@ -14,20 +14,20 @@ private:
     string name;
     int age;
     string gender;
-    int default_damage;
+    int damage;
 public:
     HP* hp;
     Money* money;
     Character() = default;
-    Character(string name, int age, string gender, HP* hp, Money* money);
+    Character(string name, int age, string gender, HP* hp, Money* money, int damage);
     string get_name();
     void set_name(string name);
     int getAge();
     void setAge(int age);
     string getGender();
     void setGender(string gender);
-    int getDefault_damage();
-    void setDefault_damage(int default_damage);
+    int getDamage();
+    void setDamage(int damage);
     bool take_damage(int damage);
     bool attack(Character* character, int damage);
 };
@@ -37,18 +37,23 @@ class Human : public Character
 protected:
     XP* xp;
     vector<Skill*> skills;
-    vector<InventoryItem> items;
 public:
+    vector<InventoryItem> items;
     Stamina* stamina;
     Human() = default;
     Human(string name, int age, string gender, HP* hp, Money* money,
-          Stamina* stamina, XP* xp, vector<Skill*> skills, vector<InventoryItem> items);
+          Stamina* stamina, XP* xp, vector<Skill*> skills,
+          vector<InventoryItem> items, int damage);
     XP* getXp();
     void setXp(XP* xp);
     void addSkill(Skill* skill);
-    void addItem(Item* item, ItemType type, int count);
+    void addItem(InventoryItem& inventoryItem);
     // TODO: functions to use items
-    bool buyItem(Item* item, ItemType type, int count, int price);
+    void useItem(int item_index);
+    // void ConsumeItem(ItemType type);
+    // void useAttackItem();
+    // void throwItem();
+    bool buyItem(InventoryItem& inventoryItem, int price);
 };
 
 class Zombie : public Character

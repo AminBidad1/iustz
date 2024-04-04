@@ -9,6 +9,7 @@ protected:
   int value;
 
 public:
+  Value() = default;
   Value(int value);
   void setValue(int val);
   int getValue() const;

@@ -47,7 +47,7 @@ void attack(Character* player)
     Zombie* zombie = CharacterController::createZombie(i);
     while (zombie->hp->getValue() !=0 || player->hp->getValue()!=0)
     {
-        if (zombie->attack(player, zombie->getDefault_damage()))
+        if (zombie->attack(player, zombie->getDamage()))
         {
             ZombieView::showAttack(player , zombie);
             cout<<"you died...\n";
@@ -58,7 +58,7 @@ void attack(Character* player)
 
         // TODO: use items to attack
 
-        if (player->attack(zombie, player->getDefault_damage()))
+        if (player->attack(zombie, player->getDamage()))
         {
             cout << "you killed the zombie\n";
         }

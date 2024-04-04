@@ -12,7 +12,7 @@ enum class ValueType
 
 enum class ItemType
 {
-    ThrowableItem, KitchenKnife, Grande, Molotov,
+    ThrowableItem, KitchenKnife, Bomb, Molotov,
     Bristle, PassiveItem, Firearms, ConsumableItem,
     StaminaBooster, Food, Beverage
 };

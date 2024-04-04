@@ -24,34 +24,46 @@ public:
 
 //ThrowableItem
 class ThrowableItem :public Item {
-private:
+protected:
     int damage;
+    int miss_percent;
 public:
     ThrowableItem() = default;
     ThrowableItem(string name, int damage, int price);
 
     void setDamage(int damage);
     int getDamage() const;
+    int getMiss_percent();
+    void setMiss_percent(int miss_percent);
+    virtual int attack() = 0;
 };
 
 class KitchenKnife : public ThrowableItem
 {
-
+public:
+    KitchenKnife() = default;
+    virtual int attack() override; 
 };
 
-class Grande : public ThrowableItem
+class Bomb : public ThrowableItem
 {
-
+public:
+    Bomb() = default;
+    virtual int attack() override; 
 };
 
 class Molotov : public ThrowableItem
 {
-
+public:
+    Molotov() = default;
+    virtual int attack() override; 
 };
 
 class Bristle : public ThrowableItem
 {
-
+public:
+    Bristle() = default;
+    virtual int attack() override; 
 };
 
 //PassiveItem
@@ -98,6 +110,7 @@ public:
     InventoryItem() = default;
     Item* item;
     ItemType type;
+    ItemType fatherType;
     int count = 0;
     void add(int count);
     bool remove(int count);

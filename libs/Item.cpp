@@ -24,6 +24,55 @@ ThrowableItem::ThrowableItem(string name, int damage, int price) :Item(name , pr
 void ThrowableItem::setDamage(int damage){this->damage=damage;}
 int ThrowableItem::getDamage() const {return damage;}
 
+int ThrowableItem::getMiss_percent() 
+{
+	return this->miss_percent;
+}
+
+void ThrowableItem::setMiss_percent(int miss_percent) 
+{
+	this->miss_percent = miss_percent;
+}
+
+int KitchenKnife::attack()
+{
+    int random_number = rand() % 100;
+    if (random_number >= miss_percent)
+    {
+        return damage;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int Bomb::attack()
+{
+    int random_number = rand() % 100;
+    return damage * random_number / (miss_percent * 100);
+}
+
+int Molotov::attack()
+{
+    int random_number = rand() % 100;
+    return damage * random_number / (miss_percent * 50);
+}
+
+int Bristle::attack()
+{
+    int random_number = rand() % 100;
+    if (random_number >= miss_percent)
+    {
+        return damage;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
 //PassiveItem
 void PassiveItem::setUpgradeable(bool Upgradeable){this->Upgradeable=Upgradeable;}
 bool PassiveItem::getUpgradeable() const {return Upgradeable;}
