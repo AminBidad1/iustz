@@ -48,11 +48,7 @@ public:
     void setXp(XP* xp);
     void addSkill(Skill* skill);
     void addItem(InventoryItem& inventoryItem);
-    // TODO: functions to use items
     void useItem(int item_index);
-    // void ConsumeItem(ItemType type);
-    // void useAttackItem();
-    // void throwItem();
     bool buyItem(InventoryItem& inventoryItem, int price);
 };
 

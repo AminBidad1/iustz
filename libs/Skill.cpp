@@ -9,5 +9,5 @@ Skill::Skill(InventoryItem* inventoryItem, int level)
 void Skill::levelup(int count)
 {
     this->level += count;
-    // TODO: change the percentage error
+    // TODO: change the miss error
 }

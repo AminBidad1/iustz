@@ -29,7 +29,6 @@ class Food : public ConsumableItem
 {
 public:
     Food() = default;
-    // void set_value(int val);
     virtual void consume(Character* target) override;
 };
 

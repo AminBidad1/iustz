@@ -235,7 +235,6 @@ void GameManager::attack()
             // Attack from player
             if (player->attack(zombie, player->getDamage())) // kill zombie
             {
-                // TODO: use items to attack
                 HumanView::showAttack(player, zombie);
                 ZombieView::showWasKilled(zombie);
                 level++;

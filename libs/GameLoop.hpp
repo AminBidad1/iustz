@@ -56,7 +56,6 @@ void attack(Character* player)
         ZombieView::showAttack(player , zombie);
         HumanView::showTakeDamage(player);
 
-        // TODO: use items to attack
 
         if (player->attack(zombie, player->getDamage()))
         {
