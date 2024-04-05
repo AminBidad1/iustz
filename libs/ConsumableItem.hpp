@@ -5,7 +5,7 @@
 
 class ConsumableItem : public Item
 {
-private:
+protected:
     Value* value;
 
 public:
@@ -15,23 +15,26 @@ public:
     void setValue(int value);
     int getValue() const;
 
-    virtual void consume();
+    virtual void consume(Character* target) = 0;
 };
 
 class StaminaBooster : public ConsumableItem
 {
 public:
-    void consume(Human* target);
+    StaminaBooster() = default;
+    virtual void consume(Character* target) override;
 };
 
 class Food : public ConsumableItem
 {
 public:
-    void consume(Character* target);
+    Food() = default;
+    virtual void consume(Character* target) override;
 };
 
 class Beverage : public ConsumableItem
 {
 public:
-    void consume(Character* target);
+    Beverage() = default;
+    virtual void consume(Character* target) override;
 };
