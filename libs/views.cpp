@@ -199,7 +199,7 @@ void ShopView::sellItems(Human* player)
     if (input == player->items.size()) return;
     else
     {
-        //selling will reduce 10% of price
+        //selling price is 10% less than real price
         player->money = player->money + (player->items[input]->item->getPrice()) - (player->items[input]->item->getPrice())/10;
         player->removeItem(input, 1);
     }
