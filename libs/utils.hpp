@@ -1,4 +1,5 @@
 #pragma once
+#include "string"
 
 enum class State
 {
@@ -12,10 +13,19 @@ enum class ValueType
 
 enum class ItemType
 {
-    ThrowableItem, KitchenKnife, Grande, Molotov,
-    Bristle, PassiveItem, Firearms, ConsumableItem,
-    StaminaBooster, Food, Beverage
+    ConsumableItem, ThrowableItem, PassiveItem, // Father types
+    KitchenKnife, Bomb, Molotov, Bristle, // Throwable Items
+    StaminaBooster, Food, Beverage, // Consumable Items
+    Firearms
 };
+
+const int MIN_ITEM_INDEX = 3;
+const int MAX_ITEM_INDEX = 9;
+const int MIN_THROWABLE_ITEM_INDEX = 3;
+const int MAX_THROWABLE_ITEM_INDEX = 6;
+const int MIN_CONSUMABLE_ITEM_INDEX = 7;
+const int MAX_CONSUMABLE_ITEM_INDEX = 9;
+
 
 enum class CharacterType
 {
@@ -26,3 +36,5 @@ enum class PlayerState
 {
     Shop, Attack
 };
+
+std::string itemTypeMap(ItemType type);

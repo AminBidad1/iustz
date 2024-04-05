@@ -20,17 +20,70 @@ void Item::display_message()
 }
 
 // ThrowableItem
-ThrowableItem::ThrowableItem(string name, int damage, int price) : Item(name, price) { this->damage = damage; }
+ThrowableItem::ThrowableItem(string name, int price, double damage)
+{
+    setName(name);
+    setPrice(price);
+    this->damage = damage;
+}
 
-void ThrowableItem::setDamage(int damage) { this->damage = damage; }
-int ThrowableItem::getDamage() const { return damage; }
+void AttackingItem::setDamage(double damage) { this->damage = damage; }
+int AttackingItem::getDamage() const { return damage; }
+
+int AttackingItem::getMiss_percent()
+{
+    return this->miss_percent;
+}
+
+void AttackingItem::setMiss_percent(double miss_percent)
+{
+    this->miss_percent = miss_percent;
+}
+
+int KitchenKnife::attack()
+{
+    int random_number = rand() % 100;
+    if (random_number >= miss_percent)
+    {
+        return damage;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int Bomb::attack()
+{
+    int random_number = rand() % 100;
+    return damage * random_number / (miss_percent * 100);
+}
+
+int Molotov::attack()
+{
+    int random_number = rand() % 100;
+    return damage * random_number / (miss_percent * 50);
+}
+
+int Bristle::attack()
+{
+    int random_number = rand() % 100;
+    if (random_number >= miss_percent)
+    {
+        return damage;
+    }
+    else
+    {
+        return 0;
+    }
+}
 
 // PassiveItem
 void PassiveItem::setUpgradeable(bool Upgradeable) { this->Upgradeable = Upgradeable; }
 bool PassiveItem::getUpgradeable() const { return Upgradeable; }
 
 // Firearms
-void Firearms::setDamage(int damage_per_ammo) { this->damage_per_ammo = damage_per_ammo; }
+void Firearms::setDamage(double damage_per_ammo) { this->damage_per_ammo = damage_per_ammo; }
 int Firearms::getDamage() { return damage_per_ammo; }
 
 void Firearms::setAmmo(int ammo) { this->ammo = ammo; }
@@ -42,8 +95,8 @@ int Firearms::getMagazine() { return magazine; }
 void Firearms::setFirerate(int fire_rate) { this->fire_rate = fire_rate; }
 int Firearms::getFirerate() { return fire_rate; }
 
-void Firearms::setMisspercent(int miss_percet) { this->miss_percent = miss_percent; }
-int Firearms::getMisspercent() { return miss_percent; }
+void Firearms::setMisspercent(double miss_percent) { this->miss_percent = miss_percent; }
+double Firearms::getMisspercent() { return miss_percent; }
 
 // ColdWeapon
 void ColdWeapon::setDamage(int damage) { this->damage = damage; }

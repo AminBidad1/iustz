@@ -33,19 +33,26 @@ public:
 class HumanView : public CharacterView
 {
 public:
-    static void showUseItem(Human* human, Item* item);
+    static void showUseItem(Item* item);
+    static void failedUseItem(Item* item);
     static void showAppendHP(int value ,Human* human);
     static void showAppendStamina(int value, Human* human);
     static void showStatus(Human* human);
-    static InventoryItem selecetItem();
+    static InventoryItem* selecetItem();
     static void successBuy();
     static void failedBuy();
+    static void showInventory(vector<InventoryItem*> items);
+    static int selectInventoryItem(vector<InventoryItem*> items);
+    static void showLowStamina(string name);
+    static void congratulations(string enemy_name);
+    static void levelupSkill(InventoryItem* inventoryItem);
 };
 
 class ZombieView : public CharacterView
 {
 public:
     static void showAttack(Character* character , Zombie* zombie);
+    static void showStatus(Zombie* zombie);
 };
 
 class EnemyHumanView : public HumanView {};

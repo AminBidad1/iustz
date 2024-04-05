@@ -9,6 +9,7 @@ protected:
   int value;
 
 public:
+  Value() = default;
   Value(int value);
   void setValue(int val);
   int getValue() const;
@@ -34,7 +35,7 @@ private:
 public:
   HP() = default;
   HP(int val);
-  void takeDamage(int damage);
+  void takeDamage(double damage);
   void heal(int amount);
 };
 // Derived class for mana points
