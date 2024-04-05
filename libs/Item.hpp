@@ -4,14 +4,16 @@
 
 enum class ItemType;
 
-//Item
-class Item {
+// Item
+class Item
+{
 private:
     string name;
     int price;
+
 public:
     Item() = default;
-    Item(string name , int price);
+    Item(string name, int price);
 
     void setName(string name);
     string getName() const;
@@ -22,10 +24,12 @@ public:
     virtual void display_message();
 };
 
-//ThrowableItem
-class ThrowableItem :public Item {
+// ThrowableItem
+class ThrowableItem : public Item
+{
 private:
     int damage;
+
 public:
     ThrowableItem() = default;
     ThrowableItem(string name, int damage, int price);
@@ -36,37 +40,33 @@ public:
 
 class KitchenKnife : public ThrowableItem
 {
-
 };
 
 class Grande : public ThrowableItem
 {
-
 };
 
 class Molotov : public ThrowableItem
 {
-
 };
 
 class Bristle : public ThrowableItem
 {
-
 };
 
-//PassiveItem
-class PassiveItem :public Item
+// PassiveItem
+class PassiveItem : public Item
 {
 private:
     bool Upgradeable;
+
 public:
     void setUpgradeable(bool Upgradable);
-    bool getUpgradeable() const ;
-
+    bool getUpgradeable() const;
 };
 
-//Firearms
-class Firearms :public PassiveItem
+// Firearms
+class Firearms : public PassiveItem
 {
 private:
     int damage_per_ammo;
@@ -74,6 +74,7 @@ private:
     int magazine;
     int fire_rate;
     int miss_percent;
+
 public:
     void setDamage(int damage_per_ammo);
     int getDamage();
@@ -89,14 +90,38 @@ public:
 
     void setMisspercent(int miss_percent);
     int getMisspercent();
-
 };
 
-class InventoryItem 
+// ColdWeapon
+class ColdWeapon : public PassiveItem
+{
+private:
+    int damage;
+
+public:
+    ColdWeapon() = default;
+
+    void setDamage(int damage);
+    int getDamage() const;
+};
+
+class Sword : public PassiveItem
+{
+};
+
+class Stick : public PassiveItem
+{
+};
+
+class Knuckles : public PassiveItem
+{
+};
+
+class InventoryItem
 {
 public:
     InventoryItem() = default;
-    Item* item;
+    Item *item;
     ItemType type;
     int count = 0;
     void add(int count);
