@@ -291,7 +291,7 @@ void GameManager::goShop()
         item = ItemController::createItem(inventoryItem->type);
         inventoryItem->item = item;
         // TODO: Handle price
-        if (player->buyItem(inventoryItem, 10))
+        if (player->buyItem(inventoryItem, item->getPrice()))
         {
             HumanView::successBuy();
         }
