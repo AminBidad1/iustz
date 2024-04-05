@@ -113,16 +113,6 @@ Item* ItemController::createItem(ItemType type)
         bristle->setMiss_percent(60);
         item = bristle;
     }
-    else if (type == ItemType::Firearms)
-    {
-        Firearms* firearms = new Firearms();
-        firearms->setName("firearm");
-        firearms->setPrice(10);
-        firearms->setDamage(15);
-        firearms->setAmmo(100);
-        firearms->setFirerate(5);
-        item = firearms;
-    }
     return item;
 }
 
@@ -131,7 +121,7 @@ Character* CharacterController::createCharacter(CharacterType type)
     Character* character;
     if (type == CharacterType::Human)
     {
-        vector<InventoryItem> items;
+        vector<InventoryItem*> items;
         vector<Skill*> skills;
         string name = "Player" + to_string(player_index);
         Human* human = new Human(
@@ -147,9 +137,9 @@ Character* CharacterController::createCharacter(CharacterType type)
 }
 
 Human* CharacterController::createCustomHuman(string name, int age, string gender,
-                                              vector<Skill*> skills, Money* money, int damage)
+                                              vector<Skill*> skills, Money* money, double damage)
 {
-    vector<InventoryItem> items;
+    vector<InventoryItem*> items;
     Human* human = new Human(
         name, age, gender, 
         (HP*)ValueController::createValue(ValueType::HP), money, 
@@ -161,11 +151,11 @@ Human* CharacterController::createCustomHuman(string name, int age, string gende
 
 Zombie* CharacterController::createZombie(int level)
 {
-    int damage = pow(1.2, level) * DEFAULT_DAMAGE;
+    double damage = pow(1.2, level) * DEFAULT_DAMAGE;
     string name = "zombie" + to_string(level+1);
     Zombie* zombie = new Zombie(
         name, 150, "man", 
-        (HP*)ValueController::createValue(ValueType::HP),
+        (HP*)ValueController::createCustomValue(ValueType::HP, (level + 1) * 50),
         (Money*)ValueController::createCustomValue(ValueType::Money, level*50),
         damage
     );
@@ -198,6 +188,7 @@ void GameManager::attack()
     Zombie* zombie = (Zombie*)enemy;
     Human* player = players[round_index % players.size()];
     int choice;
+    int selected_index = -1;
     while (true)
     {
         HumanView::showStatus(player);
@@ -220,15 +211,15 @@ void GameManager::attack()
                 }
                 else
                 {
-                    if (player->items[choice].count > 0)
+                    if (player->items[choice]->count > 0)
                     {
                         player->useItem(choice);
-                        player->items[choice].count -= 1;
-                        HumanView::showUseItem(player->items[choice].item);
+                        HumanView::showUseItem(player->getItem(choice)->item);
+                        selected_index = choice;
                     }
                     else
                     {
-                        HumanView::failedUseItem(player->items[choice].item);
+                        HumanView::failedUseItem(player->getItem(choice)->item);
                     }
                 }
             }
@@ -237,10 +228,20 @@ void GameManager::attack()
             {
                 HumanView::showAttack(player, zombie);
                 ZombieView::showWasKilled(zombie);
+                HumanView::congratulations(zombie->get_name());
                 level++;
                 player->getXp()->gainXP(level);
                 player->money->append(zombie->money->getValue());
-                // TODO: Levelup Skill
+                // Levelup Skill
+                if (selected_index != -1)
+                {
+                    player->skills[selected_index]->levelup(1);
+                    HumanView::levelupSkill(player->items[selected_index]);
+                }
+                else
+                {
+                    cout << selected_index << endl;
+                }
                 return;
             }
             else
@@ -255,7 +256,7 @@ void GameManager::attack()
         {
             ZombieView::showAttack(player, zombie);
             CharacterView::showWasKilled(player);
-            players.erase(next(players.begin(), (round_index + 1) % players.size()));
+            players.erase(players.begin() + ((round_index - 1) % players.size()));
             if (players.size() == 0)
             {
                 cout << "YOU LOST!" << endl;
@@ -269,9 +270,12 @@ void GameManager::attack()
             HumanView::showTakeDamage(player);
         }
 
+        // Restore
+        player->setDamage(CharacterController::DEFAULT_DAMAGE);
+        selected_index = -1;
+
         // Turn round
         round_index++;
-        player->setDamage(CharacterController::DEFAULT_DAMAGE);
         player = players[round_index % players.size()];
     }
 }
@@ -280,12 +284,12 @@ void GameManager::goShop()
 {
     Human* player = players[round_index % players.size()];
     HumanView::showStatus(player);
-    InventoryItem inventoryItem;
+    InventoryItem* inventoryItem;
     Item* item;
     do {
         inventoryItem = HumanView::selecetItem();
-        item = ItemController::createItem(inventoryItem.type);
-        inventoryItem.item = item;
+        item = ItemController::createItem(inventoryItem->type);
+        inventoryItem->item = item;
         // TODO: Handle price
         if (player->buyItem(inventoryItem, 10))
         {

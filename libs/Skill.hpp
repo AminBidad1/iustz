@@ -1,5 +1,6 @@
 #pragma once
 #include "Item.hpp"
+#include "math.h"
 
 class Skill
 {

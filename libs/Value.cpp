@@ -15,7 +15,7 @@ HP::HP(int val) : Value(val) {}
 const int HP::MAX_VALUE;
 const int HP::MIN_VALUE;
 
-void HP::takeDamage(int damage)
+void HP::takeDamage(double damage)
 {
   value -= damage;
   value = std::max(value, MIN_VALUE);

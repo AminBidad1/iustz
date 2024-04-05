@@ -5,7 +5,8 @@
 enum class ItemType;
 
 //Item
-class Item {
+class Item 
+{
 private:
     string name;
     int price;
@@ -22,20 +23,26 @@ public:
     virtual void display_message();
 };
 
-//ThrowableItem
-class ThrowableItem :public Item {
+class AttackingItem : public Item
+{
 protected:
-    int damage;
-    int miss_percent;
+    double damage;
+    double miss_percent;
 public:
-    ThrowableItem() = default;
-    ThrowableItem(string name, int damage, int price);
-
-    void setDamage(int damage);
+    AttackingItem() = default;
+    void setDamage(double damage);
     int getDamage() const;
     int getMiss_percent();
-    void setMiss_percent(int miss_percent);
+    void setMiss_percent(double miss_percent);
     virtual int attack() = 0;
+};
+
+//ThrowableItem
+class ThrowableItem :public AttackingItem
+{
+public:
+    ThrowableItem() = default;
+    ThrowableItem(string name, int price, double damage);
 };
 
 class KitchenKnife : public ThrowableItem
@@ -67,7 +74,7 @@ public:
 };
 
 //PassiveItem
-class PassiveItem :public Item
+class PassiveItem :public AttackingItem
 {
 private:
     bool Upgradeable;
@@ -81,13 +88,13 @@ public:
 class Firearms :public PassiveItem
 {
 private:
-    int damage_per_ammo;
+    double damage_per_ammo;
     int ammo;
     int magazine;
     int fire_rate;
-    int miss_percent;
+    double miss_percent;
 public:
-    void setDamage(int damage_per_ammo);
+    void setDamage(double damage_per_ammo);
     int getDamage();
 
     void setAmmo(int ammo);
@@ -99,8 +106,8 @@ public:
     void setFirerate(int fire_rate);
     int getFirerate();
 
-    void setMisspercent(int miss_percent);
-    int getMisspercent();
+    void setMisspercent(double miss_percent);
+    double getMisspercent();
 
 };
 

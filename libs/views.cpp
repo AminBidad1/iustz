@@ -62,61 +62,33 @@ void HumanView::showStatus(Human* human)
     << "    Your XP: " << human->getXp()->getValue() << endl;
 }
 
-InventoryItem HumanView::selecetItem()
+InventoryItem* HumanView::selecetItem()
 {
-    cout << "Items: " << endl
-    << "    1. Kitchen Knife" << endl
-    << "    2. Bomb" << endl
-    << "    3. Molotove" << endl
-    << "    4. Bristle" << endl
-    << "    5. Firearms" << endl
-    << "    6. StaminaBooster" << endl
-    << "    7. Food" << endl
-    << "    8. Beverage" << endl;
+    cout << "Items: " << endl;
+    for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
+    {
+        cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " <<
+        itemTypeMap(ItemType(i)) << endl;
+    }
     cout << "Please choose a item: ";
-    int index;
-    cin >> index;
+    int choice;
+    cin >> choice;
     int count;
     cout << "How many? ";
     cin >> count;
-    InventoryItem inventoryItem;
-    inventoryItem.count = count;
-    switch (index)
+    InventoryItem* inventoryItem = new InventoryItem();
+    inventoryItem->count = count;
+    int index = choice + MIN_ITEM_INDEX - 1;
+    inventoryItem->type = ItemType(index);
+    if (MIN_THROWABLE_ITEM_INDEX <= index && index <= MAX_THROWABLE_ITEM_INDEX)
     {
-    case 1:
-        inventoryItem.type = ItemType::KitchenKnife;
-        inventoryItem.fatherType = ItemType::ThrowableItem;
-        break;
-    case 2:
-        inventoryItem.type = ItemType::Bomb;
-        inventoryItem.fatherType = ItemType::ThrowableItem;
-        break;
-    case 3:
-        inventoryItem.type = ItemType::Molotov;
-        inventoryItem.fatherType = ItemType::ThrowableItem;
-        break;
-    case 4:
-        inventoryItem.type = ItemType::Bristle;
-        inventoryItem.fatherType = ItemType::ThrowableItem;
-        break;
-    case 5:
-        inventoryItem.type = ItemType::Firearms;
-        break;
-    case 6:
-        inventoryItem.type = ItemType::StaminaBooster;
-        inventoryItem.fatherType = ItemType::ConsumableItem;
-        break;
-    case 7:
-        inventoryItem.type = ItemType::Food;
-        inventoryItem.fatherType = ItemType::ConsumableItem;
-        break;
-    case 8:
-        inventoryItem.type = ItemType::Beverage;
-        inventoryItem.fatherType = ItemType::ConsumableItem;
-        break;
-    default:
-        break;
+        inventoryItem->fatherType = ItemType::ThrowableItem;
     }
+    else if (MIN_CONSUMABLE_ITEM_INDEX <= index && index <= MAX_CONSUMABLE_ITEM_INDEX)
+    {
+        inventoryItem->fatherType = ItemType::ConsumableItem;
+    }
+
     return inventoryItem;
 }
 
@@ -130,18 +102,18 @@ void HumanView::failedBuy()
     cout << "Unsuccessful transaction. You can't buy this item." << endl;
 }
 
-void HumanView::showInventory(vector<InventoryItem> items)
+void HumanView::showInventory(vector<InventoryItem*> items)
 {
     cout << "Inventory items: " << endl;
     for (int i=0; i < items.size(); i++)
     {
-        if (items[i].count > 0)
-            cout << i + 1 << " - " << items[i].item->getName()  << " : " << items[i].count << endl;
+        if (items[i]->count > 0)
+            cout << i + 1 << " - " << items[i]->item->getName()  << " : " << items[i]->count << endl;
     }
     cout << items.size() + 1 << " - " << "I don't want to use item" << endl;
 }
 
-int HumanView::selectInventoryItem(vector<InventoryItem> items)
+int HumanView::selectInventoryItem(vector<InventoryItem*> items)
 {
     cout << "Please Choose a item to use or select last option to leave" << endl;
     showInventory(items);
@@ -155,6 +127,18 @@ int HumanView::selectInventoryItem(vector<InventoryItem> items)
 void HumanView::showLowStamina(string name)
 {
     cout << name << "! Your Stamina is very low and you can't damage to your enemy" << endl;
+}
+
+void HumanView::congratulations(string enemy_name)
+{
+    cout << "Congratulations! you Kill " << enemy_name << ". A stronger enemy is coming" << endl;
+}
+
+void HumanView::levelupSkill(InventoryItem* inventoryItem)
+{
+    AttackingItem* item = (AttackingItem*)inventoryItem->item;
+    cout << "Your  " << item->getName() << " skill has improved. " <<
+    "miss percent of " << item->getName() << " : " << item->getMiss_percent() << endl;
 }
 
 void ZombieView::showAttack(Character* character , Zombie* zombie)

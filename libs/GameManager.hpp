@@ -37,7 +37,7 @@ public:
     static const int DEFAULT_DAMAGE = 10;
     static Character* createCharacter(CharacterType type);
     static Human* createCustomHuman(string name, int age, string gender,
-                                    vector<Skill*> skills, Money* money, int damage);
+                                    vector<Skill*> skills, Money* money, double damage);
     static Zombie* createZombie(int level);
 };
 
