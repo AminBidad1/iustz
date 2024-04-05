@@ -116,26 +116,26 @@ public:
 // ColdWeapon
 class ColdWeapon : public PassiveItem
 {
-private:
-    int damage;
-
 public:
     ColdWeapon() = default;
-
-    void setDamage(int damage);
-    int getDamage() const;
 };
 
-class Sword : public PassiveItem
+class Sword : public ColdWeapon
 {
+    Sword() = default;
+    virtual int attack() override;
 };
 
-class Stick : public PassiveItem
+class Stick : public ColdWeapon
 {
+    Stick() = default;
+    virtual int attack() override;
 };
 
-class Knuckles : public PassiveItem
+class Knuckles : public ColdWeapon
 {
+    Knuckles() = default;
+    virtual int attack() override;
 };
 
 class InventoryItem

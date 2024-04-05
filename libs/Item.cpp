@@ -99,8 +99,18 @@ void Firearms::setMisspercent(double miss_percent) { this->miss_percent = miss_p
 double Firearms::getMisspercent() { return miss_percent; }
 
 // ColdWeapon
-void ColdWeapon::setDamage(int damage) { this->damage = damage; }
-int ColdWeapon::getDamage() const { return damage; }
+int Sword::attack()
+{
+    return damage;
+}
+int Stick::attack()
+{
+    return damage;
+}
+int Knuckles::attack()
+{
+    return damage;
+}
 
 // InventoryItem
 void InventoryItem::add(int count)
