@@ -61,4 +61,6 @@ class ShopView
 {
 public:
     static bool stay();
+    static bool buySection();
+    static void sellItems(Human* player);
 };
