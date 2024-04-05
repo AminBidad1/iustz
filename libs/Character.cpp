@@ -2,13 +2,14 @@
 #include "Item.hpp"
 #include "ConsumableItem.hpp"
 
-Character::Character(string name, int age, string gender, HP* hp, Money* money)
+Character::Character(string name, int age, string gender, HP* hp, Money* money, double damage)
 {
     this->name = name;
     this->age = age;
     this->gender = gender;
     this->hp = hp;
     this->money = money;
+    this->damage = damage;
 }
 
 string Character::get_name()
@@ -21,7 +22,7 @@ void Character::set_name(string name)
     this->name = name;
 }
 
-bool Character::take_damage(int damage)
+bool Character::take_damage(double damage)
 {
     if (this->hp->getValue() - damage <= 0)
     {
@@ -45,14 +46,14 @@ void Character::setGender(string gender) {
 	this->gender = gender;
 }
 
-int Character::getDefault_damage() {
-	return this->default_damage;
+double Character::getDamage() {
+	return this->damage;
 }
-void Character::setDefault_damage(int default_damage) {
-	this->default_damage = default_damage;
+void Character::setDamage(double damage) {
+	this->damage = damage;
 }
 
-bool Character::attack(Character* character, int damage)
+bool Character::attack(Character* character, double damage)
 {
     if (character->take_damage(damage))
     {
@@ -62,8 +63,9 @@ bool Character::attack(Character* character, int damage)
 }
 
 Human::Human(string name, int age, string gender, HP* hp, Money* money,
-             Stamina* stamina, XP* xp, vector<Skill*> skills, vector<InventoryItem> items) :
-    Character(name, age, gender, hp, money)
+             Stamina* stamina, XP* xp,
+             vector<Skill*> skills, vector<InventoryItem*> items, double damage) :
+    Character(name, age, gender, hp, money, damage)
 {
     this->stamina = stamina;
     this->xp = xp;
@@ -86,38 +88,63 @@ void Human::addSkill(Skill* skill)
     this->skills.push_back(skill);
 }
 
-void Human::addItem(Item* item, ItemType type, int count)
+void Human::addItem(InventoryItem* inventoryItem)
 {
     for (int i=0; i < this->items.size(); i++)
     {
-        if (this->items[i].type == type)
+        if (this->items[i]->type == inventoryItem->type)
         {
-            this->items[i].count += count;
+            this->items[i]->count += inventoryItem->count;
             return;
         }
     }
-    InventoryItem inventoryItem;
-    inventoryItem.item = item;
-    inventoryItem.type = type;
-    inventoryItem.count = count;
     this->items.push_back(inventoryItem);
+    Skill* skill = new Skill(inventoryItem, 0);
+    addSkill(skill);
 }
 
-bool Human::buyItem(Item* item, ItemType type, int count, int price)
+void Human::useItem(int item_index)
 {
-    if (this->money->spend(count * price))
+    InventoryItem* inventoryItem = items[item_index];
+    if (inventoryItem->fatherType == ItemType::ConsumableItem)
     {
-        this->addItem(item, type, count);
+        ConsumableItem* consumableItem = (ConsumableItem*)inventoryItem->item;
+        consumableItem->consume(this);
+        removeItem(item_index, 1);
+    }
+    else if (inventoryItem->fatherType == ItemType::ThrowableItem)
+    {
+        ThrowableItem* throwableItem = (ThrowableItem*)inventoryItem->item;
+        int attackingDamage = throwableItem->attack();
+        this->setDamage(attackingDamage);
+        removeItem(item_index, 1);
+    }
+}
+
+bool Human::buyItem(InventoryItem* inventoryItem, int price)
+{
+    if (this->money->spend(inventoryItem->count * price))
+    {
+        this->addItem(inventoryItem);
         return true;
     }
     return false;
 }
 
-Zombie::Zombie(string name, int age, string gender, HP* hp, Money* money, int damage) :
-    Character(name, age, gender, hp, money)
+void Human::removeItem(int item_index, int count)
 {
-    this->setDefault_damage(damage);
+    this->items[item_index]->count -= 1;
 }
+
+InventoryItem* Human::getItem(int item_index)
+{
+    InventoryItem* inventoryItem = this->items[item_index];
+    return inventoryItem;
+}
+
+Zombie::Zombie(string name, int age, string gender, HP* hp, Money* money, double damage) :
+    Character(name, age, gender, hp, money, damage)
+{}
 
 State EnemyHuman::getNextState(State currentState)
 {
@@ -162,9 +189,9 @@ bool EnemyHuman::checkState(State currentState, Character* character)
         Food* food;
         for (int i=0; i < this->items.size(); i++)
         {
-            if (this->items[i].type == ItemType::Food)
+            if (this->items[i]->type == ItemType::Food)
             {
-                food = (Food*)this->items[i].item;
+                food = (Food*)this->items[i]->item;
             }
         }
         if (food != nullptr)
@@ -177,19 +204,19 @@ bool EnemyHuman::checkState(State currentState, Character* character)
         StaminaBooster* staminaBooster;
         for (int i=0; i < this->items.size(); i++)
         {
-            if (this->items[i].type == ItemType::StaminaBooster)
+            if (this->items[i]->type == ItemType::StaminaBooster)
             {
-                staminaBooster = (StaminaBooster*)this->items[i].item;
+                staminaBooster = (StaminaBooster*)this->items[i]->item;
             }
         }
         if (staminaBooster != nullptr)
-            staminaBooster->consume(this);
+            staminaBooster->consume((Character*)this);
         else
             return false;
         break;
     case State::Attack:
         // TODO: Use attacking items to attack
-        this->attack(character, this->getDefault_damage());
+        this->attack(character, this->getDamage());
     default:
         break;
     }

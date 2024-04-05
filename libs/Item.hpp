@@ -5,7 +5,8 @@
 enum class ItemType;
 
 //Item
-class Item {
+class Item 
+{
 private:
     string name;
     int price;
@@ -22,40 +23,58 @@ public:
     virtual void display_message();
 };
 
+class AttackingItem : public Item
+{
+protected:
+    double damage;
+    double miss_percent;
+public:
+    AttackingItem() = default;
+    void setDamage(double damage);
+    int getDamage() const;
+    int getMiss_percent();
+    void setMiss_percent(double miss_percent);
+    virtual int attack() = 0;
+};
+
 //ThrowableItem
-class ThrowableItem :public Item {
-private:
-    int damage;
+class ThrowableItem :public AttackingItem
+{
 public:
     ThrowableItem() = default;
-    ThrowableItem(string name, int damage, int price);
-
-    void setDamage(int damage);
-    int getDamage() const;
+    ThrowableItem(string name, int price, double damage);
 };
 
 class KitchenKnife : public ThrowableItem
 {
-
+public:
+    KitchenKnife() = default;
+    virtual int attack() override; 
 };
 
-class Grande : public ThrowableItem
+class Bomb : public ThrowableItem
 {
-
+public:
+    Bomb() = default;
+    virtual int attack() override; 
 };
 
 class Molotov : public ThrowableItem
 {
-
+public:
+    Molotov() = default;
+    virtual int attack() override; 
 };
 
 class Bristle : public ThrowableItem
 {
-
+public:
+    Bristle() = default;
+    virtual int attack() override; 
 };
 
 //PassiveItem
-class PassiveItem :public Item
+class PassiveItem :public AttackingItem
 {
 private:
     bool Upgradeable;
@@ -69,13 +88,13 @@ public:
 class Firearms :public PassiveItem
 {
 private:
-    int damage_per_ammo;
+    double damage_per_ammo;
     int ammo;
     int magazine;
     int fire_rate;
-    int miss_percent;
+    double miss_percent;
 public:
-    void setDamage(int damage_per_ammo);
+    void setDamage(double damage_per_ammo);
     int getDamage();
 
     void setAmmo(int ammo);
@@ -87,8 +106,8 @@ public:
     void setFirerate(int fire_rate);
     int getFirerate();
 
-    void setMisspercent(int miss_percent);
-    int getMisspercent();
+    void setMisspercent(double miss_percent);
+    double getMisspercent();
 
 };
 
@@ -98,6 +117,7 @@ public:
     InventoryItem() = default;
     Item* item;
     ItemType type;
+    ItemType fatherType;
     int count = 0;
     void add(int count);
     bool remove(int count);
