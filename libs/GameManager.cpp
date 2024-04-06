@@ -286,22 +286,32 @@ void GameManager::goShop()
     HumanView::showStatus(player);
     InventoryItem* inventoryItem;
     Item* item;
-    do {
-        inventoryItem = HumanView::selecetItem();
-        item = ItemController::createItem(inventoryItem->type);
-        inventoryItem->item = item;
-        // TODO: Handle price
-        if (player->buyItem(inventoryItem, 10))
+    while(true)
+    {
+        if(ShopView::buySection())
         {
-            HumanView::successBuy();
+            inventoryItem = HumanView::selecetItem();
+            item = ItemController::createItem(inventoryItem->type);
+            inventoryItem->item = item;
+            // TODO: Handle price
+            if (player->buyItem(inventoryItem, item->getPrice()))
+            {
+                HumanView::successBuy();
+            }
+            else 
+            {
+                HumanView::failedBuy();
+            }
         }
-        else 
-        {
-            HumanView::failedBuy();
+        else
+        {  
+            ShopView::sellItems(player);
+            
+
         }
         if (!ShopView::stay())
             break;
-    } while (true);
+    }
 }
 
 void GameManager::startRound()

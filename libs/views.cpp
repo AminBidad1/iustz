@@ -110,7 +110,7 @@ void HumanView::showInventory(vector<InventoryItem*> items)
         if (items[i]->count > 0)
             cout << i + 1 << " - " << items[i]->item->getName()  << " : " << items[i]->count << endl;
     }
-    cout << items.size() + 1 << " - " << "I don't want to use item" << endl;
+    cout << items.size() + 1 << " - " << "leave" << endl;
 }
 
 int HumanView::selectInventoryItem(vector<InventoryItem*> items)
@@ -163,4 +163,44 @@ bool ShopView::stay()
     else if (input == ENTER_KEY)
         return true;
     return false;
+}
+
+bool ShopView::buySection()
+{
+    while(true)
+    {
+        cout << "Shop sections:" << endl
+         << "1. Buy new items" << endl
+         << "2. Sell your stuff" << endl
+         << "Choose a section: ";
+        int input;
+        cin >> input;
+        if (input == 1) return true;
+        if (input == 2) return false;
+        cout << endl << "Enter a valid input!" << endl;
+    }
+}
+
+void ShopView::sellItems(Human* player)
+{
+    int input;
+    while (true)
+    {
+        HumanView::showInventory(player->items);
+        cout << "Choose items to sell or enter (" << player->items.size()+1 << ") to leave: ";
+        cin >> input;
+        if (input > 0 && input <= player->items.size()+1)
+        {
+            break;
+        }
+        cout << endl << "Enter a valid input!" << endl;
+    }
+    input--;
+    if (input == player->items.size()) return;
+    else
+    {
+        //selling price is 10% less than real price
+        player->money = player->money + (player->items[input]->item->getPrice()) - (player->items[input]->item->getPrice())/10;
+        player->removeItem(input, 1);
+    }
 }
