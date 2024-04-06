@@ -181,7 +181,7 @@ bool ShopView::buySection()
     }
 }
 
-void ShopView::sellItems(Human* player)
+int ShopView::sellItems(Human* player)
 {
     int input;
     while (true)
@@ -196,11 +196,9 @@ void ShopView::sellItems(Human* player)
         cout << endl << "Enter a valid input!" << endl;
     }
     input--;
-    if (input == player->items.size()) return;
+    if (input == player->items.size()) return -1;
     else
     {
-        //selling price is 10% less than real price
-        player->money = player->money + (player->items[input]->item->getPrice()) - (player->items[input]->item->getPrice())/10;
-        player->removeItem(input, 1);
+        return input;
     }
 }

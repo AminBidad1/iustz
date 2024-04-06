@@ -57,7 +57,7 @@ Item* ItemController::createItem(ItemType type)
     {
         Food* food = new Food();
         food->setName("Pizza");
-        food->setPrice(10); // TODO: Move it to shop class
+        food->setPrice(FoodPrice); // TODO: Move it to shop class
         food->setValue(15);
         item = food;
     }
@@ -65,7 +65,7 @@ Item* ItemController::createItem(ItemType type)
     {
         StaminaBooster* staminaBooster = new StaminaBooster();
         staminaBooster->setName("Stamina Booster");
-        staminaBooster->setPrice(10);
+        staminaBooster->setPrice(StaminaBoosterPrice);
         staminaBooster->setValue(15);
         item = staminaBooster;
     }
@@ -73,7 +73,7 @@ Item* ItemController::createItem(ItemType type)
     {
         Beverage* beverage = new Beverage();
         beverage->setName("PEPSI");
-        beverage->setPrice(10);
+        beverage->setPrice(BeveragePrice);
         beverage->setValue(15);
         item = beverage;
     }
@@ -81,7 +81,7 @@ Item* ItemController::createItem(ItemType type)
     {
         KitchenKnife* kitchenKnife = new KitchenKnife();
         kitchenKnife->setName("Kitchen Knife");
-        kitchenKnife->setPrice(10);
+        kitchenKnife->setPrice(KitchenKnifePrice);
         kitchenKnife->setDamage(50);
         kitchenKnife->setMiss_percent(50);
         item = kitchenKnife;
@@ -90,7 +90,7 @@ Item* ItemController::createItem(ItemType type)
     {
         Bomb* bomb = new Bomb();
         bomb->setName("Bomb");
-        bomb->setPrice(10);
+        bomb->setPrice(BombPrice);
         bomb->setDamage(300);
         bomb->setMiss_percent(30);
         item = bomb;
@@ -99,7 +99,7 @@ Item* ItemController::createItem(ItemType type)
     {
         Molotov* molotov = new Molotov();
         molotov->setName("molotov");
-        molotov->setPrice(10);
+        molotov->setPrice(MolotovPrice);
         molotov->setDamage(100);
         molotov->setMiss_percent(10);
         item = molotov;
@@ -108,7 +108,7 @@ Item* ItemController::createItem(ItemType type)
     {
         Bristle* bristle = new Bristle();
         bristle->setName("Bristle");
-        bristle->setPrice(10);
+        bristle->setPrice(BristlePrice);
         bristle->setDamage(70);
         bristle->setMiss_percent(60);
         item = bristle;
@@ -283,11 +283,11 @@ void GameManager::attack()
 void GameManager::goShop()
 {
     Human* player = players[round_index % players.size()];
-    HumanView::showStatus(player);
     InventoryItem* inventoryItem;
     Item* item;
     while(true)
     {
+        HumanView::showStatus(player);
         if(ShopView::buySection())
         {
             inventoryItem = HumanView::selecetItem();
@@ -297,6 +297,7 @@ void GameManager::goShop()
             if (player->buyItem(inventoryItem, item->getPrice()))
             {
                 HumanView::successBuy();
+                GameManager::increasePrice(inventoryItem->type, inventoryItem->count);
             }
             else 
             {
@@ -304,10 +305,14 @@ void GameManager::goShop()
             }
         }
         else
-        {  
-            ShopView::sellItems(player);
-            
-
+        {
+            int index = ShopView::sellItems(player);
+            if (index != -1)
+            {
+                //selling price is 10% less than real price
+                player->money->setValue(player->money->getValue() + (player->items[index]->item->getPrice()) - (player->items[index]->item->getPrice())/10);
+                player->removeItem(index, 1);
+            }
         }
         if (!ShopView::stay())
             break;
@@ -334,5 +339,58 @@ void GameManager::startRound()
         state = getNextState();
         delete enemy;
         enemy = CharacterController::createZombie(level);
+    }
+}
+
+void GameManager::increasePrice(ItemType type, int count)
+{
+    if (type == ItemType::Food)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            FoodPrice += FoodPrice/10;
+        }
+    }
+    else if (type == ItemType::StaminaBooster)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            StaminaBoosterPrice += StaminaBoosterPrice/10;
+        }
+    }
+    else if (type == ItemType::Beverage)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            BeveragePrice += BeveragePrice/10;
+        }
+    }
+    else if (type == ItemType::KitchenKnife)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            KitchenKnifePrice += KitchenKnifePrice/10;
+        }
+    }
+    else if (type == ItemType::Bomb)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            BombPrice += BombPrice/10;
+        }
+    }
+    else if (type == ItemType::Molotov)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            MolotovPrice += MolotovPrice/10;
+        }
+    }
+    else if (type == ItemType::Bristle)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            BristlePrice += BristlePrice/10;
+        }
     }
 }

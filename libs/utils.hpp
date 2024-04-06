@@ -26,6 +26,13 @@ const int MAX_THROWABLE_ITEM_INDEX = 6;
 const int MIN_CONSUMABLE_ITEM_INDEX = 7;
 const int MAX_CONSUMABLE_ITEM_INDEX = 9;
 
+static int KitchenKnifePrice = 10;
+static int BombPrice = 10;
+static int MolotovPrice = 10;
+static int BristlePrice = 10;
+static int StaminaBoosterPrice = 10;
+static int FoodPrice = 10;
+static int BeveragePrice = 10; 
 
 enum class CharacterType
 {
