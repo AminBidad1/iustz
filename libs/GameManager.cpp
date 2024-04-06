@@ -283,11 +283,11 @@ void GameManager::attack()
 void GameManager::goShop()
 {
     Human* player = players[round_index % players.size()];
-    HumanView::showStatus(player);
     InventoryItem* inventoryItem;
     Item* item;
     while(true)
     {
+        HumanView::showStatus(player);
         if(ShopView::buySection())
         {
             inventoryItem = HumanView::selecetItem();
@@ -304,10 +304,14 @@ void GameManager::goShop()
             }
         }
         else
-        {  
-            ShopView::sellItems(player);
-            
-
+        {
+            int index = ShopView::sellItems(player);
+            if (index != -1)
+            {
+                //selling price is 10% less than real price
+                player->money->setValue(player->money->getValue() + (player->items[index]->item->getPrice()) - (player->items[index]->item->getPrice())/10);
+                player->removeItem(index, 1);
+            }
         }
         if (!ShopView::stay())
             break;
