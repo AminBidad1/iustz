@@ -297,6 +297,7 @@ void GameManager::goShop()
             if (player->buyItem(inventoryItem, item->getPrice()))
             {
                 HumanView::successBuy();
+                GameManager::increasePrice(inventoryItem->type, inventoryItem->count);
             }
             else 
             {
@@ -338,5 +339,58 @@ void GameManager::startRound()
         state = getNextState();
         delete enemy;
         enemy = CharacterController::createZombie(level);
+    }
+}
+
+void GameManager::increasePrice(ItemType type, int count)
+{
+    if (type == ItemType::Food)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            FoodPrice += FoodPrice/10;
+        }
+    }
+    else if (type == ItemType::StaminaBooster)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            StaminaBoosterPrice += StaminaBoosterPrice/10;
+        }
+    }
+    else if (type == ItemType::Beverage)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            BeveragePrice += BeveragePrice/10;
+        }
+    }
+    else if (type == ItemType::KitchenKnife)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            KitchenKnifePrice += KitchenKnifePrice/10;
+        }
+    }
+    else if (type == ItemType::Bomb)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            BombPrice += BombPrice/10;
+        }
+    }
+    else if (type == ItemType::Molotov)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            MolotovPrice += MolotovPrice/10;
+        }
+    }
+    else if (type == ItemType::Bristle)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            BristlePrice += BristlePrice/10;
+        }
     }
 }

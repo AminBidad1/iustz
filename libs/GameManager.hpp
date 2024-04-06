@@ -56,4 +56,5 @@ public:
     void goShop();
     PlayerState getNextState();
     void startRound();
+    void increasePrice(ItemType type, int count);
 };
