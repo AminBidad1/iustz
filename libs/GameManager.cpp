@@ -223,11 +223,7 @@ PlayerState GameManager::getNextState()
 
 void GameManager::attack()
 {
-    // TODO: Handle Enemy Human
-
     Character* enemy = enemyController->getModel();
-
-
     Human* player = players[round_index % players.size()];
     int choice;
     int selected_index = -1;
