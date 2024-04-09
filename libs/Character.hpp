@@ -61,10 +61,16 @@ public:
     Zombie(string name, int age, string gender, HP* hp, Money* money, double damage);
 };
 
-
-class EnemyHuman : public Human
+class HumanEnemy : public Human
 {
 public:
-    State getNextState(State currentState);
-    bool checkState(State currentState, Character* character);
+    int defaultHp;
+    int defaultStamina;
+    HumanEnemy(string name, int age, string gender, HP* hp, Money* money,
+               Stamina* stamina, XP* xp, vector<Skill*> skills,
+               vector<InventoryItem*> items, double damage);
+    HumanEnemy(string name, int age, string gender, HP* hp, Money* money,
+               Stamina* stamina, XP* xp, double damage);
+    bool haveItem(ItemType type);
+    void addItem(InventoryItem* inventoryItem, int level);
 };

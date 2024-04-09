@@ -24,7 +24,7 @@ void Character::set_name(string name)
 
 bool Character::take_damage(double damage)
 {
-    if (this->hp->getValue() - damage <= 0)
+    if (this->hp->getValue() - (int)damage <= 0)
     {
         return true;
     }
@@ -146,79 +146,51 @@ Zombie::Zombie(string name, int age, string gender, HP* hp, Money* money, double
     Character(name, age, gender, hp, money, damage)
 {}
 
-State EnemyHuman::getNextState(State currentState)
+HumanEnemy::HumanEnemy(string name, int age, string gender, HP* hp, Money* money,
+                        Stamina* stamina, XP* xp, vector<Skill*> skills,
+                        vector<InventoryItem*> items, double damage) : 
+            Human(name, age, gender, hp, money, stamina, xp, skills, items, damage)
+{}
+
+HumanEnemy::HumanEnemy(string name, int age, string gender, HP* hp, Money* money,
+               Stamina* stamina, XP* xp, double damage)
 {
-    if (this->hp->getValue() < 50)
-    {
-        return State::LowHP;
-    }
-    else if (this->stamina->getValue() < 50)
-    {
-        return State::LowStamina;
-    }
-    else
-    {
-        return State::Attack;
-    }
+    set_name(name);
+    setAge(age);
+    setGender(gender);
+    this->hp = hp;
+    this->money = money;
+    this->stamina = stamina;
+    setXp(xp);
+    setDamage(damage);
 }
 
-/*
-int ConsumableItem::getValue() const { return value->getValue(); }
-
-//Food
-void Food::consume(Character* target)
+bool HumanEnemy::haveItem(ItemType type)
 {
-    // increasing the target's hp by the value of item
-    target->hp->heal(this->getValue());
-}
-
-//StaminaBooster
-void StaminaBooster::consume(Human* target)
-{
-    // increasing the target's stamina by the value of item
-    target->stamina->regenerateStamina(this->getValue());
-}
-*/
-
-bool EnemyHuman::checkState(State currentState, Character* character)
-{
-    switch (currentState)
+    for (int i=0; i < items.size(); i++)
     {
-    case State::LowHP:
-        // TODO: Use HP booster
-        Food* food;
-        for (int i=0; i < this->items.size(); i++)
+        if (items[i]->type == type)
         {
-            if (this->items[i]->type == ItemType::Food)
-            {
-                food = (Food*)this->items[i]->item;
-            }
+            if (items[i]->count > 0)
+                return true;
+            else
+                return false;
         }
-        if (food != nullptr)
-            food->consume(this);
-        else 
-            return false;
-        break;
-    case State::LowStamina:
-        // TODO: Use Stamina booster
-        StaminaBooster* staminaBooster;
-        for (int i=0; i < this->items.size(); i++)
-        {
-            if (this->items[i]->type == ItemType::StaminaBooster)
-            {
-                staminaBooster = (StaminaBooster*)this->items[i]->item;
-            }
-        }
-        if (staminaBooster != nullptr)
-            staminaBooster->consume((Character*)this);
-        else
-            return false;
-        break;
-    case State::Attack:
-        // TODO: Use attacking items to attack
-        this->attack(character, this->getDamage());
-    default:
-        break;
     }
-    return true;
+    return false;
+}
+
+void HumanEnemy::addItem(InventoryItem* inventoryItem, int level)
+{
+    for (int i=0; i < this->items.size(); i++)
+    {
+        if (this->items[i]->type == inventoryItem->type)
+        {
+            this->items[i]->count += inventoryItem->count;
+            return;
+        }
+    }
+    this->items.push_back(inventoryItem);
+    Skill* skill = new Skill(inventoryItem, level);
+    addSkill(skill);
 }

@@ -33,6 +33,22 @@ void CharacterView::showWasKilled(Character* character)
     cout << character->get_name() << " Was Killed" << endl;
 }
 
+void CharacterView::showStatus(Character* character, EnemyType type)
+{
+    cout << character->get_name() << " ::  " << character->hp->getValue() << "hp  " 
+    << character->getDamage() << "dg" << endl;
+    if (type == EnemyType::HumanEnemy)
+    {
+        HumanEnemy* human = (HumanEnemy*)character;
+        cout << "Enemy Inventory :  ";
+        for (int i=0; i < human->items.size(); i++)
+        {
+            cout << human->items[i]->count << " * " << human->items[i]->item->getName() << ",  ";
+        }
+        cout << endl;
+    }
+}
+
 void HumanView::showUseItem(Item* item)
 {
     cout << "You successfully used " << item->getName() << " item" << endl;

@@ -36,8 +36,15 @@ static int BeveragePrice = 10;
 
 enum class CharacterType
 {
-    Zombie, Human, EnemyHuman
+    Zombie, Human, HumanEnemy
 };
+
+enum class EnemyType
+{
+    Zombie, HumanEnemy
+};
+
+const int ENEMY_COUNT = 2;
 
 enum class PlayerState
 {

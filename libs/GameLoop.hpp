@@ -16,13 +16,15 @@ static int i=0;
 void start()
 {
     srand(time(0));
-    Human* player1 = (Human*)CharacterController::createCharacter(CharacterType::Human);
-    Human* player2 = (Human*)CharacterController::createCharacter(CharacterType::Human);
+    Human* player1 = (Human*)CharacterFactory::createCharacter(CharacterType::Human);
+    Human* player2 = (Human*)CharacterFactory::createCharacter(CharacterType::Human);
     vector<Human*> players;
     players.push_back(player1);
     players.push_back(player2);
-    Zombie* enemy = CharacterController::createZombie(0);
-    GameManager manager = GameManager(players, enemy, 0, 0, PlayerState::Shop);
+    Zombie* enemy = CharacterFactory::createZombie(0);
+    EnemyController* enemyController = new ZombieController();
+    enemyController->setModel(enemy);
+    GameManager manager = GameManager(players, enemyController, 0, 0, PlayerState::Shop);
     manager.startRound();
 }
 
@@ -33,7 +35,7 @@ void HowItStarts()
     uniform_int_distribution<int> distribution(1, 100);
     int random_number = distribution(rng);
     cout<<random_number<<endl;
-    Human* player= (Human*)CharacterController::createCharacter(CharacterType::Human);
+    Human* player= (Human*)CharacterFactory::createCharacter(CharacterType::Human);
      while(random_number>70)
      {
          i++;
@@ -44,7 +46,7 @@ void HowItStarts()
 
 void attack(Character* player)
 {
-    Zombie* zombie = CharacterController::createZombie(i);
+    Zombie* zombie = CharacterFactory::createZombie(i);
     while (zombie->hp->getValue() !=0 || player->hp->getValue()!=0)
     {
         if (zombie->attack(player, zombie->getDamage()))
