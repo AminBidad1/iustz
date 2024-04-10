@@ -28,6 +28,7 @@ public:
     static void showAttack(Character* character, Character* enemy);
     static void showTakeDamage(Character* character);
     static void showWasKilled(Character* character);
+    static void showStatus(Character* character, EnemyType type);
 };
 
 class HumanView : public CharacterView
@@ -61,4 +62,6 @@ class ShopView
 {
 public:
     static bool stay();
+    static bool buySection();
+    static int sellItems(Human* player);
 };
