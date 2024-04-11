@@ -66,3 +66,7 @@ enum class PlayerState
 };
 
 std::string itemTypeMap(ItemType type);
+enum class ShopSection
+{
+    Buy , Sell , Leave
+};

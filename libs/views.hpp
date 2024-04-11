@@ -20,8 +20,8 @@ const int ENTER_KEY = int('\n');
 const int ESCAPE_KEY = 27;
 int getch(void);
 #endif
-
-
+string operator_space(string str , int count);
+void TableSection();
 class CharacterView
 {
 public:
@@ -62,6 +62,6 @@ class ShopView
 {
 public:
     static bool stay();
-    static bool buySection();
+    static ShopSection buySection();
     static int sellItems(Human* player);
 };

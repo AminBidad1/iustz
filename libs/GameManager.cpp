@@ -100,10 +100,12 @@ void GameManager::goShop()
     Human* player = players[round_index % players.size()]->getModel();
     InventoryItem* inventoryItem;
     Item* item;
+    ShopSection shopSection;
     while(true)
     {
         HumanView::showStatus(player);
-        if(ShopView::buySection())
+        shopSection=ShopView::buySection();
+        if(shopSection==ShopSection::Buy)
         {
             inventoryItem = HumanView::selecetItem();
             item = ItemFactory::createItem(inventoryItem->type);
@@ -118,7 +120,7 @@ void GameManager::goShop()
                 HumanView::failedBuy();
             }
         }
-        else
+        else if(shopSection==ShopSection::Sell)
         {
             int index = ShopView::sellItems(player);
             if (index != -1)
@@ -129,8 +131,13 @@ void GameManager::goShop()
                 player->removeItem(index, 1);
             }
         }
+        else
+        {
+            break;
+        }
         if (!ShopView::stay())
             break;
+        
     }
 }
 
