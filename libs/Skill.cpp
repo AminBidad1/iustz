@@ -11,6 +11,6 @@ void Skill::levelup(int count)
     level += count;
     AttackingItem* attackingItem = (AttackingItem*)inventoryItem->item;
     double miss_percent = attackingItem->getMiss_percent();
-    double new_miss_percent = pow(0.8, level) * miss_percent;
+    double new_miss_percent = pow(0.96, level) * miss_percent;
     attackingItem->setMiss_percent(new_miss_percent);
 }

@@ -16,6 +16,8 @@ private:
     string gender;
     double damage;
 public:
+    static constexpr double DEFAULT_DAMAGE = 10;
+    static const int DEFAULT_HP = 100;
     HP* hp;
     Money* money;
     Character() = default;
@@ -37,6 +39,8 @@ class Human : public Character
 protected:
     XP* xp;
 public:
+    static constexpr double DEFAULT_DAMAGE = 10.0;
+    static const int DEFAULT_HP = 100;
     vector<Skill*> skills;
     vector<InventoryItem*> items;
     Stamina* stamina;
@@ -54,11 +58,64 @@ public:
     InventoryItem* getItem(int item_index);
 };
 
+class Hero : public Human
+{
+public:
+    Hero() = default;
+};
+
+class Attacker : public Hero
+{
+public:
+    static constexpr double DEFAULT_DAMAGE = 20.0;
+    static const int DEFAULT_HP = 80;
+    Attacker() = default;
+    Attacker(string name, int age, string gender, HP* hp, Money* money,
+            Stamina* stamina, XP* xp, vector<Skill*> skills,
+            vector<InventoryItem*> items, double damage);
+};
+
+class Tank : public Hero
+{
+public:
+    static constexpr double DEFAULT_DAMAGE = 10.0;
+    static const int DEFAULT_HP = 250;
+    Tank() = default;
+    Tank(string name, int age, string gender, HP* hp, Money* money,
+         Stamina* stamina, XP* xp, vector<Skill*> skills,
+         vector<InventoryItem*> items, double damage);
+};
+
+class Healer : public Hero
+{
+public:
+    static constexpr double DEFAULT_DAMAGE = 5.0;
+    static const int DEFAULT_HP = 100;
+    Healer() = default;
+    Healer(string name, int age, string gender, HP* hp, Money* money,
+           Stamina* stamina, XP* xp, vector<Skill*> skills,
+           vector<InventoryItem*> items, double damage);
+};
+
 class Zombie : public Character
 {
 public:
     Zombie() = default;
     Zombie(string name, int age, string gender, HP* hp, Money* money, double damage);
+};
+
+class VampireZombie : public Zombie
+{
+public:
+    VampireZombie() = default;
+    VampireZombie(string name, int age, string gender, HP* hp, Money* money, double damage);
+};
+
+class UltraZombie : public Zombie
+{
+public:
+    UltraZombie() = default;
+    UltraZombie(string name, int age, string gender, HP* hp, Money* money, double damage);
 };
 
 class HumanEnemy : public Human
@@ -73,4 +130,12 @@ public:
                Stamina* stamina, XP* xp, double damage);
     bool haveItem(ItemType type);
     void addItem(InventoryItem* inventoryItem, int level);
+};
+
+class UltraVampireZombie : public HumanEnemy
+{
+public:
+    UltraVampireZombie() = default;
+    UltraVampireZombie(string name, int age, string gender, HP* hp, Money* money,
+                       Stamina* stamina, XP* xp, double damage);
 };

@@ -142,6 +142,48 @@ InventoryItem* Human::getItem(int item_index)
     return inventoryItem;
 }
 
+Attacker::Attacker(string name, int age, string gender, HP* hp, Money* money,
+            Stamina* stamina, XP* xp, vector<Skill*> skills,
+            vector<InventoryItem*> items, double damage)
+{
+    set_name(name);
+    setAge(age);
+    setGender(gender);
+    this->hp = hp;
+    this->money = money;
+    this->stamina = stamina;
+    setXp(xp);
+    setDamage(damage);
+}
+
+Tank::Tank(string name, int age, string gender, HP* hp, Money* money,
+            Stamina* stamina, XP* xp, vector<Skill*> skills,
+            vector<InventoryItem*> items, double damage)
+{
+    set_name(name);
+    setAge(age);
+    setGender(gender);
+    this->hp = hp;
+    this->money = money;
+    this->stamina = stamina;
+    setXp(xp);
+    setDamage(damage);
+}
+
+Healer::Healer(string name, int age, string gender, HP* hp, Money* money,
+            Stamina* stamina, XP* xp, vector<Skill*> skills,
+            vector<InventoryItem*> items, double damage)
+{
+    set_name(name);
+    setAge(age);
+    setGender(gender);
+    this->hp = hp;
+    this->money = money;
+    this->stamina = stamina;
+    setXp(xp);
+    setDamage(damage);
+}
+
 Zombie::Zombie(string name, int age, string gender, HP* hp, Money* money, double damage) :
     Character(name, age, gender, hp, money, damage)
 {}
@@ -194,3 +236,19 @@ void HumanEnemy::addItem(InventoryItem* inventoryItem, int level)
     Skill* skill = new Skill(inventoryItem, level);
     addSkill(skill);
 }
+
+VampireZombie::VampireZombie(string name, int age, string gender,
+                             HP* hp, Money* money, double damage) :
+                Zombie(name, age, gender, hp, money, damage)
+{}
+
+UltraZombie::UltraZombie(string name, int age, string gender,
+                             HP* hp, Money* money, double damage) :
+                Zombie(name, age, gender, hp, money, damage)
+{}
+
+UltraVampireZombie::UltraVampireZombie(string name, int age, string gender,
+                    HP* hp, Money* money,
+                    Stamina* stamina, XP* xp, double damage)
+        : HumanEnemy(name, age, gender, hp, money, stamina, xp, damage)
+{}

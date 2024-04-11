@@ -12,8 +12,6 @@ void XP::loseXP(int amount) { value -= amount; }
 
 HP::HP(int val) : Value(val) {}
 
-const int HP::MAX_VALUE;
-const int HP::MIN_VALUE;
 
 void HP::takeDamage(double damage)
 {
@@ -33,8 +31,6 @@ void Mana::restoreMana(int amount) { value += amount; }
 
 Stamina::Stamina(int val) : Value(val) {}
 
-int Stamina::MAX_VALUE = 100;
-int Stamina::MIN_VALUE = 0;
 
 void Stamina::useStamina(int amount)
 {
