@@ -34,17 +34,17 @@ static int StaminaBoosterPrice = 10;
 static int FoodPrice = 10;
 static int BeveragePrice = 10; 
 
-enum class CharacterType
+enum class PlayerType
 {
-    Zombie, Human, HumanEnemy
+    Human, Attacker, Tank, Healer
 };
 
 enum class EnemyType
 {
-    Zombie, HumanEnemy
+    Zombie, HumanEnemy, UltraZombie, VampireZombie, UltraVampireZombie
 };
 
-const int ENEMY_COUNT = 2;
+const int ENEMY_COUNT = 4;
 
 enum class PlayerState
 {

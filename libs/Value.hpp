@@ -28,11 +28,9 @@ public:
 // Derived class for hit points
 class HP : public Value
 {
-private:
-  static const int MAX_VALUE = 100;
-  static const int MIN_VALUE = 0;
-
 public:
+  int MAX_VALUE;
+  int MIN_VALUE;
   HP() = default;
   HP(int val);
   void takeDamage(double damage);
@@ -51,11 +49,9 @@ public:
 // Derived class for stamina points
 class Stamina : public Value
 {
-private:
-  static int MAX_VALUE;
-  static int MIN_VALUE;
-
 public:
+  int MAX_VALUE;
+  int MIN_VALUE;
   Stamina() = default;
   Stamina(int val);
   void useStamina(int amount);
