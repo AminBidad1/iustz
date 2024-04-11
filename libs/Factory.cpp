@@ -61,7 +61,7 @@ Item* ItemFactory::createItem(ItemType type)
     {
         Food* food = new Food();
         food->setName("Pizza");
-        food->setPrice(FoodPrice); // TODO: Move it to shop class
+        food->setPrice(FoodPrice);
         food->setValue(15);
         item = food;
     }

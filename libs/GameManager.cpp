@@ -124,6 +124,7 @@ void GameManager::goShop()
             if (index != -1)
             {
                 // Selling price is 10% less than real price
+                // TODO: increase price with count
                 player->money->setValue(player->money->getValue() + (player->items[index]->item->getPrice()) - (player->items[index]->item->getPrice())/10);
                 player->removeItem(index, 1);
             }
