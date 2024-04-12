@@ -8,7 +8,7 @@ void ClearTerminal()
     for (int j = 20; j < 50; j++)
     {
         gotoxy(0, j);
-        cout << operator_space(" ", 87);
+        cout << operator_space(" ", 80);
     }
 
     gotoxy(0, 20);
@@ -39,6 +39,38 @@ void ClearEnemyStatus()
         cout << operator_space(" ", 49);
     }
 }
+void WeaponTableStatus()
+{
+    for (int i = 90; i <= 140; i++)
+    {
+        gotoxy(i, 20);
+        cout << "-";
+        gotoxy(i, 40);
+        cout << "-";
+        gotoxy(i, 22);
+        cout << "-";
+    }
+    for (int j = 20; j <= 40; j++)
+    {
+        gotoxy(90, j);
+        cout << "|";
+        gotoxy(140, j);
+        cout << "|";
+    }
+}
+// void ClearWeaponTableStatus()
+// {
+//     for (int i = 20; i < 22; i++)
+//     {
+//         gotoxy(90, i);
+//         cout << operator_space(" ", 48);
+//     }
+//     for (int i = 23; i < 40; i++)
+//     {
+//         gotoxy(90,i);
+//         cout<<operator_space(" ",48);
+//     }
+// }
 void TableSection()
 {
     gotoxy(2, 7);
@@ -46,11 +78,11 @@ void TableSection()
     gotoxy(2, 8);
     cout << "Att Dmg";
     gotoxy(2, 5);
-    cout << "Stamina";
+    cout << color::rize("Stamina", "Blue", "");
     gotoxy(2, 6);
     cout << "Money";
     gotoxy(2, 4);
-    cout << "HP";
+    cout << color::rize("HP", "Green", "");
     gotoxy(2, 10);
     cout << "List of";
     gotoxy(2, 11);
@@ -157,6 +189,57 @@ void ClearPlayerItems()
     {
         gotoxy(12, i);
         cout << operator_space(" ", 57);
+    }
+}
+void ShowWeaponStatus(vector<InventoryItem *> items, int index)
+{
+    int start = (28 - items[index]->item->getName().size()) / 2;
+    gotoxy(91, 21);
+    for (int i = 91; i <= 91 + start; i++)
+    {
+        cout << ' ';
+    }
+    cout << items[index]->item->getName();
+    for (int i = 91 + start + items[index]->item->getName().size(); i < 118; i++)
+    {
+        cout << ' ';
+    }
+    if (items[index]->fatherType == ItemType::ConsumableItem)
+    {
+        ConsumableItem *consumableItem = (ConsumableItem *)items[index]->item;
+        gotoxy(91, 23);
+        cout << "Booster: " << consumableItem->getValue() << "       ";
+        gotoxy(91, 24);
+        cout<<"                   ";
+    }
+    if (items[index]->fatherType == ItemType::ThrowableItem)
+    {
+        ThrowableItem *throwableItem = (ThrowableItem *)items[index]->item;
+        gotoxy(91, 23);
+        cout << "Damage: " << throwableItem->getDamage() << "       ";
+        gotoxy(91, 24);
+        cout << "Miss Percent : " <<throwableItem->getMiss_percent()<<"%      ";
+    }
+    gotoxy(0,22+index);
+    // if(items[index]->fatherType==ItemType::ThrowableItem)
+}
+void PrintByColorItem(int target, vector<InventoryItem *> items)
+{
+    for (int i = 0; i < items.size(); i++)
+    {
+        gotoxy(0, 21 + i);
+        if (items[i]->count != 0)
+        {
+            if (i == target)
+            {
+                cout << color::rize(items[i]->item->getName(), "", "Red") << endl;
+                ShowWeaponStatus(items, i);
+            }
+            else
+            {
+                cout << color::rize(items[i]->item->getName(), "", "Default") << endl;
+            }
+        }
     }
 }
 #if defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
@@ -267,11 +350,8 @@ void HumanView::showAppendStamina(int value, Human *human)
 
 void HumanView::showStatus(Human *human)
 {
+    WeaponTableStatus();
     HumanView::showInventory(human->items);
-    // gotoxy(12,10);
-    // cout<<"h";
-    // gotoxy(68,10);
-    // cout<<"h";
     gotoxy(32, 2);
     cout << operator_space(" ", 20);
     gotoxy(32, 2);
@@ -336,7 +416,7 @@ void HumanView::failedBuy()
 void HumanView::showInventory(vector<InventoryItem *> items)
 {
     ClearPlayerItems();
-    ClearTerminal();
+    // ClearTerminal();
     // cout << "Inventory items: " << endl;
     string str = "";
     int counter = 0;
@@ -366,20 +446,89 @@ void HumanView::showInventory(vector<InventoryItem *> items)
         }
     }
     increase = 0;
-    gotoxy(0, 20);
-    cout << items.size() + 1 << " - "
-         << "Punch" << endl;
 }
 
 int HumanView::selectInventoryItem(vector<InventoryItem *> items)
 {
     ClearTerminal();
-    cout << "Please Choose a item to use or select last option to leave" << endl;
+    int input = 0;
+    // if (items[0]->count != 0)
+    //     input = 0;
+    // else
+    //     input = 1;
+    while (items.size() != 0 && items[input]->count == 0 && input != items.size() - 1)
+    {
+        input++;
+    }
+    PrintByColorItem(input, items);
+    bool shouldEXIT = false;
+    while (!shouldEXIT)
+    {
+        char choice = _getch();
+        switch (choice)
+        {
+        case UP_KEY:
+            if (input == 0)
+            {
+                input = items.size() - 1;
+                while (items[input]->count == 0 && input != 0)
+                {
+                    input--;
+                }
+            }
+            else
+            {
+                int FirstInput = input;
+                input--;
+                while (items[input]->count == 0 && input != FirstInput)
+                {
+                    if (input != 0)
+                        input--;
+                    else
+                        input = items.size() - 1;
+                }
+            }
+            PrintByColorItem(input, items);
+            break;
+
+        case DOWN_KEY:
+            if (input == items.size() - 1)
+            {
+                input = 0;
+                while (items[input]->count == 0 && input != items.size() - 1)
+                {
+                    input++;
+                }
+            }
+            else
+            {
+                int FirstInput = input;
+                input++;
+                while (items[input]->count == 0 && input != FirstInput)
+                {
+                    if (input != items.size() - 1)
+                        input++;
+                    else
+                        input = 0;
+                }
+            }
+            PrintByColorItem(input, items);
+            break;
+
+        case 'p':
+            input = items.size();
+            shouldEXIT = true;
+            break;
+
+        default:
+            continue;
+
+        case ENTER_KEY:
+            shouldEXIT = true;
+            break;
+        }
+    }
     showInventory(items);
-    int input;
-    // cout << "Your Choice: ";
-    cin >> input;
-    input--;
     ClearTerminal();
     return input;
 }

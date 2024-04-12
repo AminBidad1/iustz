@@ -1,7 +1,8 @@
 #pragma once
 #include "bits/stdc++.h"
 #include "Character.hpp"
-
+#include "colors.hpp"
+#include "ConsumableItem.hpp"
 #ifdef __MINGW32__
 #include <conio.h>
 const int UP_KEY = 72;
