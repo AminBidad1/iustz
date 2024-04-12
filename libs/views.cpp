@@ -17,6 +17,16 @@ int getch(void)
 }
 #endif
 
+int itemSizeMap(ItemType type)
+{
+    Item* item;
+    int size;
+    item = ItemFactory::createItem(type, 0);
+    size = item->getSize();
+    delete item;
+    return size;
+}
+
 
 void CharacterView::showAttack(Character* character , Character* enemy)
 {
@@ -84,7 +94,8 @@ InventoryItem* HumanView::selecetItem()
     for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
     {
         cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " <<
-        itemTypeMap(ItemType(i)) << endl;
+        itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i)) 
+        << " :: " << itemSizeMap(ItemType(i)) <<  endl;
     }
     cout << "Please choose a item: ";
     int choice;
@@ -103,6 +114,10 @@ InventoryItem* HumanView::selecetItem()
     else if (MIN_CONSUMABLE_ITEM_INDEX <= index && index <= MAX_CONSUMABLE_ITEM_INDEX)
     {
         inventoryItem->fatherType = ItemType::ConsumableItem;
+    }
+    else if (MIN_PASSIVE_ITEM_INDEX <= index && index <= MAX_PASSIVE_ITEM_INDEX)
+    {
+        inventoryItem->fatherType = ItemType::PassiveItem;
     }
 
     return inventoryItem;

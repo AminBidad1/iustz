@@ -1,5 +1,7 @@
+#pragma once
 #include "Character.hpp"
 #include "ConsumableItem.hpp"
+#include "Item.hpp"
 
 class ValueFactory
 {
@@ -11,7 +13,7 @@ public:
 class ItemFactory
 {
 public:
-    static Item* createItem(ItemType type);
+    static Item* createItem(ItemType type, int level);
 };
 
 class CharacterFactory

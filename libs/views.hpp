@@ -1,6 +1,7 @@
 #pragma once
 #include "bits/stdc++.h"
 #include "Character.hpp"
+#include "Factory.hpp"
 
 #ifdef __MINGW32__
 #include <conio.h>
@@ -65,3 +66,5 @@ public:
     static bool buySection();
     static int sellItems(Human* player);
 };
+
+int itemSizeMap(ItemType type);

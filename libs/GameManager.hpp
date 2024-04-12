@@ -1,3 +1,4 @@
+#pragma once
 #include "Value.hpp"
 #include "Item.hpp"
 #include "ConsumableItem.hpp"
