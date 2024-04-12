@@ -210,7 +210,7 @@ void ShowWeaponStatus(vector<InventoryItem *> items, int index)
         gotoxy(91, 23);
         cout << "Booster: " << consumableItem->getValue() << "       ";
         gotoxy(91, 24);
-        cout<<"                   ";
+        cout << "                   ";
     }
     if (items[index]->fatherType == ItemType::ThrowableItem)
     {
@@ -218,9 +218,9 @@ void ShowWeaponStatus(vector<InventoryItem *> items, int index)
         gotoxy(91, 23);
         cout << "Damage: " << throwableItem->getDamage() << "       ";
         gotoxy(91, 24);
-        cout << "Miss Percent : " <<throwableItem->getMiss_percent()<<"%      ";
+        cout << "Miss Percent : " << throwableItem->getMiss_percent() << "%      ";
     }
-    gotoxy(0,22+index);
+    gotoxy(0, 22 + index);
     // if(items[index]->fatherType==ItemType::ThrowableItem)
 }
 void PrintByColorItem(int target, vector<InventoryItem *> items)
@@ -373,15 +373,58 @@ void HumanView::showStatus(Human *human)
 
 InventoryItem *HumanView::selecetItem()
 {
+    int target = 3;
     ClearTerminal();
-    cout << "Items: " << endl;
+    bool shouldExit = false;
     for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
     {
-        cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
+        if (target==i)
+            cout << operator_space(" ", 5) << color::rize(to_string(target-2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
+        else
+            cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
     }
-    cout << "Please choose a item: ";
+    while (!shouldExit)
+    {
+        char choice = getch();
+        switch (choice)
+        {
+        case UP_KEY:
+            gotoxy(0, 20);
+            if (target == 3)
+                target = 9;
+            else
+                target--;
+            for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
+            {
+                if (i == target)
+                    cout << operator_space(" ", 5) << color::rize(to_string(target-2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
+                else
+                    cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
+            }
+            break;
+        case DOWN_KEY:
+            gotoxy(0, 20);
+            if (target == 9)
+                target = 3;
+            else
+                target++;
+            for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
+            {
+                if (i == target)
+                    cout << operator_space(" ", 5) << color::rize(to_string(target-2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
+                else
+                    cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
+            }
+            break;
+        case ENTER_KEY:
+            shouldExit = true;
+            break;
+        default:
+            break;
+        }
+    }
     int choice;
-    cin >> choice;
+    choice = target -2;
     int count;
     cout << "How many? ";
     cin >> count;
