@@ -258,10 +258,31 @@ int getch(void)
 }
 #endif
 
-void CharacterView::showAttack(Character *character, Character *enemy)
+// void CharacterView::showAttack(Character *character, Character *enemy)
+// {
+//     InventoryItem *HumanView::selecetItem() for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
+//     {
+//         cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
+//         itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
+//                                  << " :: " << itemSizeMap(ItemType(i)) << endl;
+//     }
+//     cout << "Please choose a item: ";
+//     int choice;
+//     InventoryItem *HumanView::selecetItem()
+//     {
+//         inventoryItem->fatherType = ItemType::ConsumableItem;
+//     }
+//     else if (MIN_PASSIVE_ITEM_INDEX <= index && index <= MAX_PASSIVE_ITEM_INDEX)
+//     {
+//         inventoryItem->fatherType = ItemType::PassiveItem;
+//     }
+
+//     return inventoryItem;
+// }
+
 int itemSizeMap(ItemType type)
 {
-    Item* item;
+    Item *item;
     int size;
     item = ItemFactory::createItem(type, 0);
     size = item->getSize();
@@ -269,8 +290,7 @@ int itemSizeMap(ItemType type)
     return size;
 }
 
-
-void CharacterView::showAttack(Character* character , Character* enemy)
+void CharacterView::showAttack(Character *character, Character *enemy)
 {
     // cout << character->get_name() << " : I damaged to " << enemy->get_name() << endl;
 }
@@ -388,47 +408,95 @@ InventoryItem *HumanView::selecetItem()
     int target = 3;
     ClearTerminal();
     bool shouldExit = false;
-    for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
+    for (int i = MIN_ITEM_INDEX; i <= 9; i++)
     {
-        if (target==i)
-            cout << operator_space(" ", 5) << color::rize(to_string(target-2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
+
+        if (target == i)
+        {
+            cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
+        }
         else
             cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
-        cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " <<
-        itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
-        << " :: " << itemSizeMap(ItemType(i)) <<  endl;
+
+        // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
+        //      << " :: " << itemSizeMap(ItemType(i)) << endl;
     }
+
+    for (int i = 10; i <= MAX_ITEM_INDEX; i++)
+    {
+        gotoxy(30, 10 + i);
+        if (target == i)
+            cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red");
+        else
+            cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i));
+
+        // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
+        //      << " :: " << itemSizeMap(ItemType(i)) << endl;
+    }
+
     while (!shouldExit)
     {
-        char choice = getch();
+        char choice = _getch();
         switch (choice)
         {
         case UP_KEY:
             gotoxy(0, 20);
             if (target == 3)
-                target = 9;
+                target = 15;
             else
                 target--;
-            for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
+            for (int i = MIN_ITEM_INDEX; i <= 9; i++)
             {
-                if (i == target)
-                    cout << operator_space(" ", 5) << color::rize(to_string(target-2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
+
+                if (target == i)
+                    cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
                 else
                     cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
+
+                // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
+                //      << " :: " << itemSizeMap(ItemType(i)) << endl;
+            }
+
+            for (int i = 10; i <= MAX_ITEM_INDEX; i++)
+            {
+                gotoxy(30, 10 + i);
+                if (target == i)
+                    cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red");
+                else
+                    cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i));
+
+                // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
+                //      << " :: " << itemSizeMap(ItemType(i)) << endl;
             }
             break;
         case DOWN_KEY:
             gotoxy(0, 20);
-            if (target == 9)
+            if (target == 15)
                 target = 3;
             else
                 target++;
-            for (int i = MIN_ITEM_INDEX; i <= MAX_ITEM_INDEX; i++)
+            for (int i = MIN_ITEM_INDEX; i <= 9; i++)
             {
-                if (i == target)
-                    cout << operator_space(" ", 5) << color::rize(to_string(target-2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
+
+                if (target == i)
+                    cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
                 else
                     cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
+
+                // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
+                //      << " :: " << itemSizeMap(ItemType(i)) << endl;
+            }
+
+            for (int i = 10; i <= MAX_ITEM_INDEX; i++)
+            {
+                gotoxy(30, 10 + i);
+                if (target == i)
+                    cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red");
+                else
+                    cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i));
+
+                // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
+                //      << " :: " << itemSizeMap(ItemType(i)) << endl;
             }
             break;
         case ENTER_KEY:
@@ -438,24 +506,22 @@ InventoryItem *HumanView::selecetItem()
             break;
         }
     }
-    int choice;
-    choice = target -2;
     int count;
-    cout << "How many? ";
+    gotoxy(0, 28);
+    cout << operator_space(" ", 5) << "-How many? ";
     cin >> count;
     InventoryItem *inventoryItem = new InventoryItem();
     inventoryItem->count = count;
-    int index = choice + MIN_ITEM_INDEX - 1;
-    inventoryItem->type = ItemType(index);
-    if (MIN_THROWABLE_ITEM_INDEX <= index && index <= MAX_THROWABLE_ITEM_INDEX)
+    inventoryItem->type = ItemType(target);
+    if (MIN_THROWABLE_ITEM_INDEX <= target&& target <= MAX_THROWABLE_ITEM_INDEX)
     {
         inventoryItem->fatherType = ItemType::ThrowableItem;
     }
-    else if (MIN_CONSUMABLE_ITEM_INDEX <= index && index <= MAX_CONSUMABLE_ITEM_INDEX)
+    else if (MIN_CONSUMABLE_ITEM_INDEX <= target && target <= MAX_CONSUMABLE_ITEM_INDEX)
     {
         inventoryItem->fatherType = ItemType::ConsumableItem;
     }
-    else if (MIN_PASSIVE_ITEM_INDEX <= index && index <= MAX_PASSIVE_ITEM_INDEX)
+    else if (MIN_PASSIVE_ITEM_INDEX <= target && target <= MAX_PASSIVE_ITEM_INDEX)
     {
         inventoryItem->fatherType = ItemType::PassiveItem;
     }
