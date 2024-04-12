@@ -41,6 +41,8 @@ protected:
 public:
     static constexpr double DEFAULT_DAMAGE = 10.0;
     static const int DEFAULT_HP = 100;
+    int MAX_INVENTORY_SIZE;
+    int occupied_volume;
     vector<Skill*> skills;
     vector<InventoryItem*> items;
     Stamina* stamina;
@@ -51,9 +53,9 @@ public:
     XP* getXp();
     void setXp(XP* xp);
     void addSkill(Skill* skill);
-    void addItem(InventoryItem* inventoryItem);
+    bool addItem(InventoryItem* inventoryItem, int skill_level);
     void useItem(int item_index);
-    bool buyItem(InventoryItem* inventoryItem, int price);
+    bool buyItem(InventoryItem* inventoryItem, int price, int skill_level);
     void removeItem(int item_index, int count);
     InventoryItem* getItem(int item_index);
 };
@@ -129,7 +131,7 @@ public:
     HumanEnemy(string name, int age, string gender, HP* hp, Money* money,
                Stamina* stamina, XP* xp, double damage);
     bool haveItem(ItemType type);
-    void addItem(InventoryItem* inventoryItem, int level);
+    void addItem(InventoryItem* inventoryItem, int skill_level);
 };
 
 class UltraVampireZombie : public HumanEnemy

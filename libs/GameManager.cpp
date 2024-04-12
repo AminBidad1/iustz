@@ -106,9 +106,9 @@ void GameManager::goShop()
         if(ShopView::buySection())
         {
             inventoryItem = HumanView::selecetItem();
-            item = ItemFactory::createItem(inventoryItem->type);
+            item = ItemFactory::createItem(inventoryItem->type, level);
             inventoryItem->item = item;
-            if (player->buyItem(inventoryItem, item->getPrice()))
+            if (player->buyItem(inventoryItem, item->getPrice(), 0))
             {
                 HumanView::successBuy();
                 GameManager::increasePrice(inventoryItem->type, inventoryItem->count);
@@ -124,7 +124,6 @@ void GameManager::goShop()
             if (index != -1)
             {
                 // Selling price is 10% less than real price
-                // TODO: increase price with count
                 player->money->setValue(player->money->getValue() + (player->items[index]->item->getPrice()) - (player->items[index]->item->getPrice())/10);
                 player->removeItem(index, 1);
             }
@@ -235,49 +234,91 @@ void GameManager::increasePrice(ItemType type, int count)
     {
         for (int i = 0; i < count; i++)
         {
-            FoodPrice += FoodPrice/10;
+            Store::FoodPrice += Store::FoodPrice/10;
         }
     }
     else if (type == ItemType::StaminaBooster)
     {
         for (int i = 0; i < count; i++)
         {
-            StaminaBoosterPrice += StaminaBoosterPrice/10;
+            Store::StaminaBoosterPrice += Store::StaminaBoosterPrice/10;
         }
     }
     else if (type == ItemType::Beverage)
     {
         for (int i = 0; i < count; i++)
         {
-            BeveragePrice += BeveragePrice/10;
+            Store::BeveragePrice += Store::BeveragePrice/10;
         }
     }
     else if (type == ItemType::KitchenKnife)
     {
         for (int i = 0; i < count; i++)
         {
-            KitchenKnifePrice += KitchenKnifePrice/10;
+            Store::KitchenKnifePrice += Store::KitchenKnifePrice/10;
         }
     }
     else if (type == ItemType::Bomb)
     {
         for (int i = 0; i < count; i++)
         {
-            BombPrice += BombPrice/10;
+            Store::BombPrice += Store::BombPrice/10;
         }
     }
     else if (type == ItemType::Molotov)
     {
         for (int i = 0; i < count; i++)
         {
-            MolotovPrice += MolotovPrice/10;
+            Store::MolotovPrice += Store::MolotovPrice/10;
         }
     }
     else if (type == ItemType::Bristle)
     {
         for (int i = 0; i < count; i++)
         {
-            BristlePrice += BristlePrice/10;
+            Store::BristlePrice += Store::BristlePrice/10;
+        }
+    }
+    else if (type == ItemType::Colt)
+    {
+        for (int i=0; i < count; i++)
+        {
+            Store::ColtPrice += Store::ColtPrice/10;
+        }
+    }
+    else if (type == ItemType::Kelash)
+    {
+        for (int i=0; i < count; i++)
+        {
+            Store::KelashPrice += Store::KelashPrice/10;
+        }
+    }
+    else if (type == ItemType::FlatLine)
+    {
+        for (int i=0; i < count; i++)
+        {
+            Store::FlatLinePrice += Store::FlatLinePrice/10;
+        }
+    }
+    else if (type == ItemType::Sword)
+    {
+        for (int i=0; i < count; i++)
+        {
+            Store::SwordPrice += Store::SwordPrice/10;
+        }
+    }
+    else if (type == ItemType::Stick)
+    {
+        for (int i=0; i < count; i++)
+        {
+            Store::StickPrice += Store::StickPrice/10;
+        }
+    }
+    else if (type == ItemType::Knuckles)
+    {
+        for (int i=0; i < count; i++)
+        {
+            Store::KnucklesPrice += Store::KnucklesPrice/10;
         }
     }
 }
