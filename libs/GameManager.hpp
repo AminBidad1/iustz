@@ -28,6 +28,7 @@ public:
     int getRoundIndex();
     int getLevel();
     PlayerState getState();
+    void setState(PlayerState playerstate);
     void saveGame(const string &filename);
     void loadGame(const std::string &filename);
 };

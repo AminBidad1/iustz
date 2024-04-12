@@ -286,6 +286,8 @@ int GameManager::getLevel() { return level; }
 
 PlayerState GameManager::getState() { return state; }
 
+void GameManager::setState(PlayerState playerstate) { state = playerstate; }
+
 void GameManager::saveGame(const string &filename)
 {
     ofstream file(filename);
@@ -300,8 +302,6 @@ void GameManager::saveGame(const string &filename)
         {
             file << players[i]->isAlive << "\n";
             file << static_cast<int>(players[i]->type) << "\n";
-            file << players[i]->getModel()->DEFAULT_DAMAGE << "\n";
-            file << players[i]->getModel()->DEFAULT_HP << "\n";
             file << players[i]->getModel()->getXp()->getValue() << "\n";
             file << players[i]->getModel()->stamina->MAX_VALUE << "\n";
             file << players[i]->getModel()->stamina->MIN_VALUE << "\n";
@@ -334,8 +334,6 @@ void GameManager::saveGame(const string &filename)
         file << enemyController->getModel()->getAge() << "\n";
         file << enemyController->getModel()->getGender() << "\n";
         file << enemyController->getModel()->getDamage() << "\n";
-        file << enemyController->getModel()->DEFAULT_DAMAGE << "\n";
-        file << enemyController->getModel()->DEFAULT_HP << "\n";
         file << enemyController->getModel()->hp->MAX_VALUE << "\n";
         file << enemyController->getModel()->hp->MIN_VALUE << "\n";
         file << enemyController->getModel()->hp->getValue() << "\n";
@@ -353,22 +351,121 @@ void GameManager::loadGame(const string &filename)
     ifstream file(filename);
     if (file.is_open())
     {
-        int L_round_index, L_level, L_player_state, L_player_controller_vector_size;
-        string line;
-        getline(file, line);
-        L_round_index = stoi(line);
-        getline(file, line);
-        L_level = stoi(line);
-        getline(file, line);
-        L_player_state = stoi(line);
-        getline(file, line);
-        L_player_controller_vector_size = stoi(line);
-        for (int i = 0; i < L_player_controller_vector_size; i++)
+        // Clear existing data
+        players.clear();
+
+        int roundIndex, level, playerControllerSize;
+        int stateInt;
+        PlayerState state;
+        int currentStateInt;
+        State currentState;
+
+        // Read round index, level, and player state
+        file >> roundIndex >> level >> stateInt >> playerControllerSize;
+
+        // Convert integer value to enum for player state
+        state = static_cast<PlayerState>(stateInt);
+        setState(state);
+
+        // Load player controllers
+        for (int i = 0; i < playerControllerSize; i++)
         {
+            bool isAlive;
+            int typeInt;
+            PlayerType type;
+
+            file >> isAlive >> typeInt;
+
+            // Convert integer value to enum for player type
+            type = static_cast<PlayerType>(typeInt);
+
+            // Depending on the type, create the appropriate player
+            Human *model;
+            if (type == PlayerType::Human)
+                model = new Human();
+            else if (type == PlayerType::Attacker)
+                model = new Attacker();
+            else if (type == PlayerType::Healer)
+                model = new Healer();
+            else if (type == PlayerType::Tank)
+                model = new Tank();
+
+            // Read and set player data
+            file >> model->DEFAULT_DAMAGE >> model->DEFAULT_HP;
+            file >> model->getXp()->getValue() >> model->stamina->MAX_VALUE >> model->stamina->MIN_VALUE >> model->stamina->getValue();
+            string name, gender;
+            int age;
+            double damage;
+            file >> name >> age >> gender >> damage;
+            model->set_name(name);
+            model->setAge(age);
+            model->setGender(gender);
+            model->setDamage(damage);
+            file >> model->hp->MAX_VALUE >> model->hp->MIN_VALUE >> model->hp->getValue() >> model->money->getValue();
+
+            // Read and add inventory items
+            int inventorySize;
+            file >> inventorySize;
+            for (int j = 0; j < inventorySize; j++)
+            {
+                string itemName;
+                int itemPrice, typeInt, fatherTypeInt, count, level;
+                ItemType itemType, fatherType;
+
+                file >> itemName >> itemPrice >> typeInt >> fatherTypeInt >> count >> level;
+
+                // Convert integer values to enums for item types
+                itemType = static_cast<ItemType>(typeInt);
+                fatherType = static_cast<ItemType>(fatherTypeInt);
+
+                // Create and add inventory item
+                InventoryItem *item = new InventoryItem();
+                item->item = new Item(itemName, itemPrice);
+                item->type = itemType;
+                item->fatherType = fatherType;
+                item->count = count;
+                model->items.push_back(item);
+            }
+
+            // Create player controller and add to players vector
+            PlayerController *playerController;
+            if (type == PlayerType::Human)
+                playerController = new HumanController();
+            else if (type == PlayerType::Attacker)
+                playerController = new AttackerController();
+            // Add cases for other player types if needed
+
+            playerController->setModel(model);
+            playerController->isAlive = isAlive;
+            playerController->type = type;
+
+            players.push_back(playerController);
         }
 
-        vector<int>
-            Is_Alive, player_type, default_damage, default_hp, xp, stamina_max_value, stamina_min_value, stamina, age, damage, hp_max_value, hp_min_value, hp, money;
+        // Load enemy controller
+        int currentStateInt;
+        file >> currentStateInt;
+        currentState = static_cast<State>(currentStateInt);
+        enemyController->currentState = currentState;
+
+        file >> enemyController->DEFAULT_DAMAGE;
+        int typeInt;
+        file >> typeInt;
+        enemyController->type = static_cast<EnemyType>(typeInt);
+
+        // Read and set enemy data
+        string name, gender;
+        int age;
+        double damage;
+        file >> name >> age >> gender >> damage;
+        enemyController->getModel()->set_name(name);
+        enemyController->getModel()->setAge(age);
+        enemyController->getModel()->setGender(gender);
+        enemyController->getModel()->setDamage(damage);
+
+        file >> enemyController->getModel()->DEFAULT_DAMAGE >> enemyController->getModel()->DEFAULT_HP;
+        file >> enemyController->getModel()->hp->MAX_VALUE >> enemyController->getModel()->hp->MIN_VALUE >> enemyController->getModel()->hp->getValue() >> enemyController->getModel()->money->getValue();
+
         file.close();
     }
     else
