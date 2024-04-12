@@ -161,7 +161,7 @@ Item* ItemFactory::createItem(ItemType type, int level)
         gun->setMiss_percent(50);
         gun->setMagazineSize(10);
         gun->setLevel(level);
-        gun->setSize(9);
+        gun->setSize(11);
         item = gun;
     }
     else if (type == ItemType::Sword)
