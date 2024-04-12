@@ -19,6 +19,16 @@ void Item::display_message()
     cout << "test for message in Item";
 }
 
+int Item::getSize()
+{
+    return this->size;
+}
+
+void Item::setSize(int size)
+{
+    this->size = size;
+}
+
 // ThrowableItem
 ThrowableItem::ThrowableItem(string name, int price, double damage)
 {
@@ -38,6 +48,25 @@ int AttackingItem::getMiss_percent()
 void AttackingItem::setMiss_percent(double miss_percent)
 {
     this->miss_percent = miss_percent;
+}
+
+int AttackingItem::getLevel()
+{
+    return this->level;
+}
+
+void AttackingItem::setLevel(int level)
+{
+    this->level = level;
+    double _damage = getDamage();
+    setDamage(pow(1.08, level)*_damage);
+}
+
+void AttackingItem::levelup(int count)
+{
+    this->level += count;
+    double _damage = getDamage();
+    setDamage(pow(1.08, count)*_damage);
 }
 
 double KitchenKnife::attack()
@@ -87,48 +116,51 @@ void Firearms::setDamage(double damage_per_ammo) { this->damage_per_ammo = damag
 int Firearms::getDamage() { return damage_per_ammo; }
 
 void Firearms::setMagazineSize(int magazine_size) { this->magazine_size = magazine_size; }
-int Firearms::getMagazineSize() { return magazine_size; }
-
-void Firearms::setMisspercent(double miss_percent) { this->miss_percent = miss_percent; }
-double Firearms::getMisspercent() { return miss_percent; }
+int Firearms::getMagazineSize() { return this->magazine_size; }
 
 double Colt::attack()
 {
     double damage = 0;
+    int random_number;
     for (int i = 0; i < getMagazineSize(); i++)
     {
-        int random_number = rand() % 100;
-        if (random_number >= getMisspercent())
+        random_number = rand() % 100;
+        if (random_number >= getMiss_percent())
         {
             damage += getDamage();
         }
     }
+    return damage;
 }
 
-double AK47::attack()
+double Kelash::attack()
 {
     double damage = 0;
+    int random_number;
     for (int i = 0; i < getMagazineSize(); i++)
     {
-        int random_number = rand() % 100;
-        if (random_number >= getMisspercent())
+        random_number = rand() % 100;
+        if (random_number >= getMiss_percent())
         {
             damage += getDamage();
         }
     }
+    return damage;
 }
 
 double FlatLine::attack()
 {
     double damage = 0;
+    int random_number;
     for (int i = 0; i < getMagazineSize(); i++)
     {
-        int random_number = rand() % 100;
-        if (random_number >= getMisspercent())
+        random_number = rand() % 100;
+        if (random_number >= getMiss_percent())
         {
             damage += getDamage();
         }
     }
+    return damage;
 }
 
 // ColdWeapon

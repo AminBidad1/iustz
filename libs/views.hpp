@@ -3,6 +3,8 @@
 #include "Character.hpp"
 #include "colors.hpp"
 #include "ConsumableItem.hpp"
+#include "Factory.hpp"
+
 #ifdef __MINGW32__
 #include <conio.h>
 const int UP_KEY = 72;
@@ -66,3 +68,5 @@ public:
     static ShopSection buySection();
     static int sellItems(Human* player);
 };
+
+int itemSizeMap(ItemType type);

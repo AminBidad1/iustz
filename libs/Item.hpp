@@ -10,7 +10,7 @@ class Item
 private:
     string name;
     int price;
-
+    int size;
 public:
     Item() = default;
     Item(string name, int price);
@@ -22,6 +22,8 @@ public:
     int getPrice() const;
 
     virtual void display_message();
+    int getSize();
+    void setSize(int size);
 };
 
 class AttackingItem : public Item
@@ -29,7 +31,7 @@ class AttackingItem : public Item
 protected:
     double damage;
     double miss_percent;
-
+    int level;
 public:
     AttackingItem() = default;
     void setDamage(double damage);
@@ -37,6 +39,9 @@ public:
     int getMiss_percent();
     void setMiss_percent(double miss_percent);
     virtual double attack() = 0;
+    int getLevel();
+    void setLevel(int level);
+    void levelup(int count);
 };
 
 // ThrowableItem
@@ -100,25 +105,25 @@ public:
 
     void setMagazineSize(int magazine_size);
     int getMagazineSize();
-
-    void setMisspercent(double miss_percent);
-    double getMisspercent();
 };
 
 class Colt : public Firearms
 {
+public:
     Colt() = default;
     virtual double attack() override;
 };
 
-class AK47 : public Firearms
+class Kelash : public Firearms
 {
-    AK47() = default;
+public:
+    Kelash() = default;
     virtual double attack() override;
 };
 
 class FlatLine : public Firearms
 {
+public:
     FlatLine() = default;
     virtual double attack() override;
 };
@@ -132,18 +137,21 @@ public:
 
 class Sword : public ColdWeapon
 {
+public:
     Sword() = default;
     virtual double attack() override;
 };
 
 class Stick : public ColdWeapon
 {
+public:
     Stick() = default;
     virtual double attack() override;
 };
 
 class Knuckles : public ColdWeapon
 {
+public:
     Knuckles() = default;
     virtual double attack() override;
 };

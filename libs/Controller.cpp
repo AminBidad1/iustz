@@ -207,6 +207,7 @@ bool HealerController::work(Character* enemy, vector<PlayerController*> players)
         for (int i=0; i < players.size(); i++)
         {
             players[i]->getModel()->hp->heal(20);
+            players[i]->getModel()->stamina->regenerateStamina(5);
         }
 
         // Attack from _model
@@ -355,10 +356,12 @@ bool HumanEnemyController::work(Character* character, vector<PlayerController*> 
                         break;
                     }
                 }
+                
             }
             _model->setDamage(_model->stamina->getValue() * _model->getDamage() / 50);
             _model->stamina->useStamina(8);
 
+            // damage to Tank player
             for (int i=0; i < players.size(); i++)
             {
                 if (players[i]->type == PlayerType::Tank && players[i]->isAlive)
@@ -504,7 +507,6 @@ bool UltraVampireZombieController::work(Character* character, vector<PlayerContr
     case State::Attack:
         if (_model->stamina->getValue() > 5)
         {   
-            // TODO: levelup skill
             for (int i=0; i < _model->items.size(); i++)
             {
                 if (_model->items[i]->fatherType == ItemType::ThrowableItem)
