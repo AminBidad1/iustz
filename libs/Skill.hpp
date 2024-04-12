@@ -6,9 +6,11 @@ class Skill
 {
 private:
     int level = 0;
-    InventoryItem* inventoryItem;
+    InventoryItem *inventoryItem;
+
 public:
     Skill() = default;
-    Skill(InventoryItem* inventoryItem, int level);
+    Skill(InventoryItem *inventoryItem, int level);
     void levelup(int count);
+    int getLevel();
 };
