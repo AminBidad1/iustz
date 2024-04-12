@@ -42,6 +42,5 @@ void start()
     enemyController->setModel(enemy);
     enemyController->DEFAULT_DAMAGE = enemy->getDamage();
     GameManager manager = GameManager(players, enemyController, 0, 0, PlayerState::Shop);
-    manager.saveGame("./test.txt");
     manager.startRound();
 }

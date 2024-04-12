@@ -71,6 +71,7 @@ public:
     Character *getModel();
     void setModel(Character *model);
     State getCurrentState();
+    void setCurrentState(State state);
     virtual State getNextState() = 0;
     virtual bool work(Character *character, vector<PlayerController *> players) = 0;
 };

@@ -26,7 +26,9 @@ public:
     void startRound();
     void increasePrice(ItemType type, int count);
     int getRoundIndex();
+    void setRoundIndex(int round_index);
     int getLevel();
+    void setLevel(int level);
     PlayerState getState();
     void setState(PlayerState playerstate);
     void saveGame(const string &filename);

@@ -256,6 +256,11 @@ State EnemyController::getCurrentState()
     return this->currentState;
 }
 
+void EnemyController::setCurrentState(State state)
+{
+    this->currentState = state;
+}
+
 State ZombieController::getNextState()
 {
     this->currentState = State::Attack;

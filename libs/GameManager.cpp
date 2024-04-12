@@ -282,7 +282,11 @@ void GameManager::increasePrice(ItemType type, int count)
 
 int GameManager::getRoundIndex() { return round_index; }
 
+void GameManager::setRoundIndex(int round_index) { this->round_index = round_index; }
+
 int GameManager::getLevel() { return level; }
+
+void GameManager::setLevel(int level) { this->level = level; }
 
 PlayerState GameManager::getState() { return state; }
 
@@ -301,7 +305,6 @@ void GameManager::saveGame(const string &filename)
         for (int i = 0; i < PlayerController_size; i++)
         {
             file << players[i]->isAlive << "\n";
-            file << static_cast<int>(players[i]->type) << "\n";
             file << players[i]->getModel()->getXp()->getValue() << "\n";
             file << players[i]->getModel()->stamina->MAX_VALUE << "\n";
             file << players[i]->getModel()->stamina->MIN_VALUE << "\n";
@@ -316,14 +319,14 @@ void GameManager::saveGame(const string &filename)
             file << players[i]->getModel()->money->getValue() << "\n";
             int inventory_size = players[i]->getModel()->items.size();
             file << inventory_size << "\n";
-            for (int i = 0; i < inventory_size; i++)
+            for (int j = 0; j < inventory_size; j++)
             {
-                file << players[i]->getModel()->items[i]->item->getName() << "\n";
-                file << players[i]->getModel()->items[i]->item->getPrice() << "\n";
-                file << static_cast<int>(players[i]->getModel()->items[i]->type) << "\n";
-                file << static_cast<int>(players[i]->getModel()->items[i]->fatherType) << "\n";
-                file << players[i]->getModel()->items[i]->count << "\n";
-                file << players[i]->getModel()->skills[i]->getLevel() << "\n";
+                file << players[i]->getModel()->items[j]->item->getName() << "\n";
+                file << players[i]->getModel()->items[j]->item->getPrice() << "\n";
+                file << static_cast<int>(players[i]->getModel()->items[j]->type) << "\n";
+                file << static_cast<int>(players[i]->getModel()->items[j]->fatherType) << "\n";
+                file << players[i]->getModel()->items[j]->count << "\n";
+                file << players[i]->getModel()->skills[j]->getLevel() << "\n";
             }
         }
         // enemyController
@@ -357,7 +360,6 @@ void GameManager::loadGame(const string &filename)
         int roundIndex, level, playerControllerSize;
         int stateInt;
         PlayerState state;
-        int currentStateInt;
         State currentState;
 
         // Read round index, level, and player state
@@ -366,7 +368,8 @@ void GameManager::loadGame(const string &filename)
         // Convert integer value to enum for player state
         state = static_cast<PlayerState>(stateInt);
         setState(state);
-
+        setRoundIndex(roundIndex);
+        setLevel(level);
         // Load player controllers
         for (int i = 0; i < playerControllerSize; i++)
         {
@@ -391,8 +394,10 @@ void GameManager::loadGame(const string &filename)
                 model = new Tank();
 
             // Read and set player data
-            file >> model->DEFAULT_DAMAGE >> model->DEFAULT_HP;
-            file >> model->getXp()->getValue() >> model->stamina->MAX_VALUE >> model->stamina->MIN_VALUE >> model->stamina->getValue();
+            int XPValue, StaminaValue;
+            file >> XPValue >> model->stamina->MAX_VALUE >> model->stamina->MIN_VALUE >> StaminaValue;
+            model->getXp()->setValue(XPValue);
+            model->stamina->setValue(StaminaValue);
             string name, gender;
             int age;
             double damage;
@@ -401,8 +406,10 @@ void GameManager::loadGame(const string &filename)
             model->setAge(age);
             model->setGender(gender);
             model->setDamage(damage);
-            file >> model->hp->MAX_VALUE >> model->hp->MIN_VALUE >> model->hp->getValue() >> model->money->getValue();
-
+            int HPValue, MoneyValue;
+            file >> model->hp->MAX_VALUE >> model->hp->MIN_VALUE >> HPValue >> MoneyValue;
+            model->hp->setValue(HPValue);
+            model->money->setValue(MoneyValue);
             // Read and add inventory items
             int inventorySize;
             file >> inventorySize;
@@ -433,6 +440,10 @@ void GameManager::loadGame(const string &filename)
                 playerController = new HumanController();
             else if (type == PlayerType::Attacker)
                 playerController = new AttackerController();
+            else if (type == PlayerType::Healer)
+                playerController = new HealerController();
+            else if (type == PlayerType::Tank)
+                playerController = new TankController();
             // Add cases for other player types if needed
 
             playerController->setModel(model);
@@ -446,7 +457,7 @@ void GameManager::loadGame(const string &filename)
         int currentStateInt;
         file >> currentStateInt;
         currentState = static_cast<State>(currentStateInt);
-        enemyController->currentState = currentState;
+        enemyController->setCurrentState(currentState);
 
         file >> enemyController->DEFAULT_DAMAGE;
         int typeInt;
@@ -462,10 +473,10 @@ void GameManager::loadGame(const string &filename)
         enemyController->getModel()->setAge(age);
         enemyController->getModel()->setGender(gender);
         enemyController->getModel()->setDamage(damage);
-
-        file >> enemyController->getModel()->DEFAULT_DAMAGE >> enemyController->getModel()->DEFAULT_HP;
-        file >> enemyController->getModel()->hp->MAX_VALUE >> enemyController->getModel()->hp->MIN_VALUE >> enemyController->getModel()->hp->getValue() >> enemyController->getModel()->money->getValue();
-
+        int EnemyHpValue, EnemyMoneyValue;
+        file >> enemyController->getModel()->hp->MAX_VALUE >> enemyController->getModel()->hp->MIN_VALUE >> EnemyHpValue >> EnemyMoneyValue;
+        enemyController->getModel()->hp->setValue(EnemyHpValue);
+        enemyController->getModel()->money->setValue(EnemyMoneyValue);
         file.close();
     }
     else
