@@ -98,37 +98,36 @@ void TableSection()
 }
 void ShowValueCharacter(int value, int row, int column, bool flag_1, int defaultValue)
 {
-    //default-value
-    //compare=10      value /compare 
+
+    int citeron = defaultValue / 10;
     bool flag_2 = false;
-    if (value < 10)
+    if (value < citeron)
     {
         gotoxy(row, column);
         cout << operator_space(" ", 25);
         gotoxy(row, column);
-        cout << "[!.........]";
+        cout << color::rize("[!.........]", "Red", "");
         flag_2 = true;
     }
     if (!flag_2)
     {
-        int compare = value / 10;
         gotoxy(row, column);
         cout << operator_space(" ", 25);
         gotoxy(row, column);
         cout << "[";
-        for (int i = 0; i <= compare; i++)
+        for (int i = 0; i < (value / citeron); i++)
         {
             gotoxy(row + 1 + i, column);
-            cout << "#";
+            cout << color::rize(" ", "", "Blue");
         }
         int counter = 0;
-        for (int i = 0; i < 10 - compare; i++)
+        for (int i = 0; i < 10 - (value / citeron); i++)
         {
             counter++;
-            gotoxy(row + 1 + compare + i, column);
-            cout << ".";
+            gotoxy(row + 1 + (value / citeron) + i, column);
+            cout << color::rize(" ", "", "Red");
         }
-        gotoxy(row + 2 + compare + counter, column);
+        gotoxy(row + 1 + (value / citeron) + counter, column);
         cout << "]";
         if (flag_1)
         {
@@ -198,7 +197,7 @@ void CharacterView::showStatus(Character *character, EnemyType type)
     cout << "Enemy :" << character->get_name();
     gotoxy(96, 4);
     cout << operator_space(" ", 11);
-    ShowValueCharacter(character->hp->getValue(), 72, 4, false, character->DEFAULT_HP);
+    ShowValueCharacter(character->hp->getValue(), 72, 4, false, character->hp->MAX_VALUE);
     gotoxy(96, 4);
     cout << character->hp->getValue();
     gotoxy(96, 5);
@@ -208,11 +207,11 @@ void CharacterView::showStatus(Character *character, EnemyType type)
     if (type == EnemyType::HumanEnemy)
     {
         HumanEnemy *human = (HumanEnemy *)character;
-        gotoxy(96, 5);
-        cout << human->stamina->getValue();
         bool flag = false;
         static int increase = 0;
-        ShowValueCharacter(human->stamina->getValue(), 72, 5, false, human->defaultStamina);
+        ShowValueCharacter(human->stamina->getValue(), 72, 5, false, human->stamina->MAX_VALUE);
+        gotoxy(96, 5);
+        cout << human->stamina->getValue();
         string str = "";
         for (int i = 0; i < human->items.size(); i++)
         {
@@ -277,8 +276,8 @@ void HumanView::showStatus(Human *human)
     cout << operator_space(" ", 20);
     gotoxy(32, 2);
     cout << human->get_name() << " : ";
-    ShowValueCharacter(human->hp->getValue(), 12, 4, true, human->DEFAULT_HP);
-    ShowValueCharacter(human->stamina->getValue(), 12, 5, true, 100);
+    ShowValueCharacter(human->hp->getValue(), 12, 4, true, human->hp->MAX_VALUE);
+    ShowValueCharacter(human->stamina->getValue(), 12, 5, true, human->stamina->MAX_VALUE);
     gotoxy(38, 6);
     cout << operator_space(" ", 11);
     gotoxy(38, 6);
@@ -387,7 +386,7 @@ int HumanView::selectInventoryItem(vector<InventoryItem *> items)
 
 void HumanView::showLowStamina(string name)
 {
-    gotoxy(0,23);
+    gotoxy(0, 23);
     cout << name << "! Your Stamina is very low and you can't damage to your enemy" << endl;
 }
 
@@ -441,7 +440,7 @@ bool ShopView::stay()
 ShopSection ShopView::buySection()
 {
 
-    gotoxy(0,20);
+    gotoxy(0, 20);
     while (true)
     {
         cout << "Shop sections: (Toggle the number on your keyboard to go on the section)" << endl
