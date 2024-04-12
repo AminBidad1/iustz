@@ -1,6 +1,8 @@
 #pragma once
 #include "bits/stdc++.h"
 #include "Character.hpp"
+#include "colors.hpp"
+#include "ConsumableItem.hpp"
 #include "Factory.hpp"
 
 #ifdef __MINGW32__
@@ -21,8 +23,8 @@ const int ENTER_KEY = int('\n');
 const int ESCAPE_KEY = 27;
 int getch(void);
 #endif
-
-
+string operator_space(string str , int count);
+void TableSection();
 class CharacterView
 {
 public:
@@ -63,7 +65,7 @@ class ShopView
 {
 public:
     static bool stay();
-    static bool buySection();
+    static ShopSection buySection();
     static int sellItems(Human* player);
 };
 

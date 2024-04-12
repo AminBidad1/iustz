@@ -47,7 +47,7 @@ const int MIN_PASSIVE_ITEM_INDEX = 10;
 const int MAX_PASSIVE_ITEM_INDEX = 15;
 
 
-class Store 
+class Store
 {
 public:
     static double KitchenKnifePrice;
@@ -84,4 +84,8 @@ enum class PlayerState
 };
 
 std::string itemTypeMap(ItemType type);
+enum class ShopSection
+{
+    Buy , Sell , Leave
+};
 int itemPriceMap(ItemType type);
