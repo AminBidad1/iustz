@@ -214,17 +214,25 @@ void ShowWeaponStatus(vector<InventoryItem *> items, int index, bool flag)
             gotoxy(91, 24);
             cout << "Miss Percent : " << throwableItem->getMiss_percent() << "%      ";
         }
+        if (items[index]->fatherType == ItemType::PassiveItem)
+        {
+            PassiveItem *passiveItem = (PassiveItem *)items[index]->item;
+            gotoxy(91, 23);
+            cout << "Damage: " << passiveItem->getDamage() << "       ";
+            gotoxy(91, 24);
+            cout << "Miss Percent: " << passiveItem->getMiss_percent() << "%      ";
+        }
     }
     else
     {
-            gotoxy(91, 21);
-            for (int i = 91; i <= 91 + start; i++)
-                cout << ' ';
-            cout<<operator_space(" ",20);
-            gotoxy(91, 23);
-            cout << operator_space(" ", 17);
-            gotoxy(91, 24);
-            cout << operator_space(" ", 24);
+        gotoxy(91, 21);
+        for (int i = 91; i <= 91 + start; i++)
+            cout << ' ';
+        cout << operator_space(" ", 20);
+        gotoxy(91, 23);
+        cout << operator_space(" ", 17);
+        gotoxy(91, 24);
+        cout << operator_space(" ", 24);
     }
     gotoxy(0, 22 + index);
 }
@@ -409,7 +417,7 @@ void HumanView::showStatus(Human *human)
     gotoxy(38, 7);
     cout << human->getXp()->getValue();
     gotoxy(38, 8);
-    cout << human->getDamage()<<" (Use 'P' to Punch)";
+    cout << human->getDamage() << " (Use 'P' to Punch)";
 
     gotoxy(0, 20);
 }
@@ -684,7 +692,6 @@ void ZombieView::showAttack(Character *character, Zombie *zombie)
 //     // cout << zombie->get_name() << " ::  " << zombie->hp->getValue() << "hp  "
 //     //      << zombie->getDamage() << "dg" << endl;
 // }
-
 
 bool ShopView::stay()
 {

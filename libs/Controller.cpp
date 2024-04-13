@@ -1,11 +1,11 @@
 #include "Controller.hpp"
 
-Human* PlayerController::getModel()
+Human *PlayerController::getModel()
 {
     return this->model;
 }
 
-void PlayerController::setModel(Human* model)
+void PlayerController::setModel(Human *model)
 {
     this->model = model;
 }
@@ -51,11 +51,11 @@ int PlayerController::useItem()
     return choice;
 }
 
-bool HumanController::work(Character* enemy, vector<PlayerController*> players)
+bool HumanController::work(Character *enemy, vector<PlayerController *> players)
 {
     // Check stamina
-    Human* _model = (Human*)getModel();
-    if (_model->stamina->getValue() <= 10) 
+    Human *_model = (Human *)getModel();
+    if (_model->stamina->getValue() <= 10)
     {
         HumanView::showLowStamina(_model->get_name());
         _model->stamina->regenerateStamina(3);
@@ -97,11 +97,11 @@ bool HumanController::work(Character* enemy, vector<PlayerController*> players)
     return false;
 }
 
-bool AttackerController::work(Character* enemy, vector<PlayerController*> players)
+bool AttackerController::work(Character *enemy, vector<PlayerController *> players)
 {
     // Check stamina
-    Attacker* _model = (Attacker*)getModel();
-    if (_model->stamina->getValue() <= 5) 
+    Attacker *_model = (Attacker *)getModel();
+    if (_model->stamina->getValue() <= 5)
     {
         HumanView::showLowStamina(_model->get_name());
         // _model->stamina->regenerateStamina(3);
@@ -143,11 +143,11 @@ bool AttackerController::work(Character* enemy, vector<PlayerController*> player
     return false;
 }
 
-bool TankController::work(Character* enemy, vector<PlayerController*> players)
+bool TankController::work(Character *enemy, vector<PlayerController *> players)
 {
     // Check stamina
-    Tank* _model = (Tank*)getModel();
-    if (_model->stamina->getValue() <= 10) 
+    Tank *_model = (Tank *)getModel();
+    if (_model->stamina->getValue() <= 10)
     {
         HumanView::showLowStamina(_model->get_name());
         _model->stamina->regenerateStamina(3);
@@ -189,11 +189,11 @@ bool TankController::work(Character* enemy, vector<PlayerController*> players)
     return false;
 }
 
-bool HealerController::work(Character* enemy, vector<PlayerController*> players)
+bool HealerController::work(Character *enemy, vector<PlayerController *> players)
 {
     // Check stamina
-    Healer* _model = (Healer*)getModel();
-    if (_model->stamina->getValue() <= 10) 
+    Healer *_model = (Healer *)getModel();
+    if (_model->stamina->getValue() <= 10)
     {
         HumanView::showLowStamina(_model->get_name());
         _model->stamina->regenerateStamina(3);
@@ -204,7 +204,7 @@ bool HealerController::work(Character* enemy, vector<PlayerController*> players)
         _model->setDamage(_model->stamina->getValue() * _model->getDamage() / 50);
 
         // Heal the players
-        for (int i=0; i < players.size(); i++)
+        for (int i = 0; i < players.size(); i++)
         {
             players[i]->getModel()->hp->heal(20);
             players[i]->getModel()->stamina->regenerateStamina(5);
@@ -242,12 +242,12 @@ bool HealerController::work(Character* enemy, vector<PlayerController*> players)
     return false;
 }
 
-Character* EnemyController::getModel()
+Character *EnemyController::getModel()
 {
     return this->model;
 }
 
-void EnemyController::setModel(Character* model)
+void EnemyController::setModel(Character *model)
 {
     this->model = model;
 }
@@ -257,31 +257,36 @@ State EnemyController::getCurrentState()
     return this->currentState;
 }
 
+void EnemyController::setCurrentState(State state)
+{
+    this->currentState = state;
+}
+
 State ZombieController::getNextState()
 {
     this->currentState = State::Attack;
     return this->currentState;
 }
 
-bool ZombieController::work(Character* character, vector<PlayerController*> players)
+bool ZombieController::work(Character *character, vector<PlayerController *> players)
 {
-    Zombie* _model = (Zombie*)getModel();
+    Zombie *_model = (Zombie *)getModel();
     if (getCurrentState() == State::Attack)
     {
-        for (int i=0; i < players.size(); i++)
+        for (int i = 0; i < players.size(); i++)
         {
             if (players[i]->type == PlayerType::Tank && players[i]->isAlive)
             {
-                if (_model->attack(character, _model->getDamage()/2))
+                if (_model->attack(character, _model->getDamage() / 2))
                 {
                     HumanView::showWasKilled(players[i]->getModel());
                     players[i]->isAlive = false;
                 }
-                else 
+                else
                 {
                     HumanView::showTakeDamage(players[i]->getModel());
                 }
-                if (_model->attack(character, _model->getDamage()/2))
+                if (_model->attack(character, _model->getDamage() / 2))
                 {
                     return true;
                 }
@@ -299,13 +304,13 @@ bool ZombieController::work(Character* character, vector<PlayerController*> play
 
 State HumanEnemyController::getNextState()
 {
-    HumanEnemy* _model = (HumanEnemy*)getModel();
-    if (_model->hp->getValue() < _model->defaultHp/2 && _model->haveItem(ItemType::Food))
+    HumanEnemy *_model = (HumanEnemy *)getModel();
+    if (_model->hp->getValue() < _model->defaultHp / 2 && _model->haveItem(ItemType::Food))
     {
         currentState = State::LowHP;
         return State::LowHP;
     }
-    else if (_model->stamina->getValue() < _model->defaultStamina/2 && _model->haveItem(ItemType::StaminaBooster))
+    else if (_model->stamina->getValue() < _model->defaultStamina / 2 && _model->haveItem(ItemType::StaminaBooster))
     {
         currentState = State::LowStamina;
         return State::LowStamina;
@@ -317,13 +322,13 @@ State HumanEnemyController::getNextState()
     }
 }
 
-bool HumanEnemyController::work(Character* character, vector<PlayerController*> players)
+bool HumanEnemyController::work(Character *character, vector<PlayerController *> players)
 {
-    HumanEnemy* _model = (HumanEnemy*)getModel();
+    HumanEnemy *_model = (HumanEnemy *)getModel();
     switch (getCurrentState())
     {
     case State::LowHP:
-        for (int i=0; i < _model->items.size(); i++)
+        for (int i = 0; i < _model->items.size(); i++)
         {
             if (_model->items[i]->type == ItemType::Food)
             {
@@ -333,7 +338,7 @@ bool HumanEnemyController::work(Character* character, vector<PlayerController*> 
         }
         break;
     case State::LowStamina:
-        for (int i=0; i < _model->items.size(); i++)
+        for (int i = 0; i < _model->items.size(); i++)
         {
             if (_model->items[i]->type == ItemType::StaminaBooster)
             {
@@ -344,9 +349,9 @@ bool HumanEnemyController::work(Character* character, vector<PlayerController*> 
         break;
     case State::Attack:
         if (_model->stamina->getValue() > 10)
-        {   
+        {
             // TODO: levelup skill
-            for (int i=0; i < _model->items.size(); i++)
+            for (int i = 0; i < _model->items.size(); i++)
             {
                 if (_model->items[i]->fatherType == ItemType::ThrowableItem)
                 {
@@ -356,26 +361,24 @@ bool HumanEnemyController::work(Character* character, vector<PlayerController*> 
                         break;
                     }
                 }
-                
             }
             _model->setDamage(_model->stamina->getValue() * _model->getDamage() / 50);
             _model->stamina->useStamina(8);
 
-            // damage to Tank player
-            for (int i=0; i < players.size(); i++)
+            for (int i = 0; i < players.size(); i++)
             {
                 if (players[i]->type == PlayerType::Tank && players[i]->isAlive)
                 {
-                    if (_model->attack(character, _model->getDamage()/2))
+                    if (_model->attack(character, _model->getDamage() / 2))
                     {
                         HumanView::showWasKilled(players[i]->getModel());
                         players[i]->isAlive = false;
                     }
-                    else 
+                    else
                     {
                         HumanView::showTakeDamage(players[i]->getModel());
                     }
-                    if (_model->attack(character, _model->getDamage()/2))
+                    if (_model->attack(character, _model->getDamage() / 2))
                     {
                         return true;
                     }
@@ -404,26 +407,26 @@ State VampireZombieController::getNextState()
     return this->currentState;
 }
 
-bool VampireZombieController::work(Character* character, vector<PlayerController*> players)
+bool VampireZombieController::work(Character *character, vector<PlayerController *> players)
 {
-    VampireZombie* _model = (VampireZombie*)getModel();
+    VampireZombie *_model = (VampireZombie *)getModel();
     if (getCurrentState() == State::Attack)
     {
-        _model->hp->heal(_model->getDamage()/2);
-        for (int i=0; i < players.size(); i++)
+        _model->hp->heal(_model->getDamage() / 2);
+        for (int i = 0; i < players.size(); i++)
         {
             if (players[i]->type == PlayerType::Tank && players[i]->isAlive)
             {
-                if (_model->attack(character, _model->getDamage()/2))
+                if (_model->attack(character, _model->getDamage() / 2))
                 {
                     HumanView::showWasKilled(players[i]->getModel());
                     players[i]->isAlive = false;
                 }
-                else 
+                else
                 {
                     HumanView::showTakeDamage(players[i]->getModel());
                 }
-                if (_model->attack(character, _model->getDamage()/2))
+                if (_model->attack(character, _model->getDamage() / 2))
                 {
                     return true;
                 }
@@ -445,9 +448,9 @@ State UltraZombieController::getNextState()
     return this->currentState;
 }
 
-bool UltraZombieController::work(Character* character, vector<PlayerController*> players)
+bool UltraZombieController::work(Character *character, vector<PlayerController *> players)
 {
-    UltraZombie* _model = (UltraZombie*)getModel();
+    UltraZombie *_model = (UltraZombie *)getModel();
     if (getCurrentState() == State::Attack)
     {
         if (_model->attack(character, _model->getDamage()))
@@ -461,13 +464,13 @@ bool UltraZombieController::work(Character* character, vector<PlayerController*>
 
 State UltraVampireZombieController::getNextState()
 {
-    UltraVampireZombie* _model = (UltraVampireZombie*)getModel();
-    if (_model->hp->getValue() < _model->defaultHp/2 && _model->haveItem(ItemType::Food))
+    UltraVampireZombie *_model = (UltraVampireZombie *)getModel();
+    if (_model->hp->getValue() < _model->defaultHp / 2 && _model->haveItem(ItemType::Food))
     {
         currentState = State::LowHP;
         return State::LowHP;
     }
-    else if (_model->stamina->getValue() < _model->defaultStamina/2 && _model->haveItem(ItemType::StaminaBooster))
+    else if (_model->stamina->getValue() < _model->defaultStamina / 2 && _model->haveItem(ItemType::StaminaBooster))
     {
         currentState = State::LowStamina;
         return State::LowStamina;
@@ -479,13 +482,13 @@ State UltraVampireZombieController::getNextState()
     }
 }
 
-bool UltraVampireZombieController::work(Character* character, vector<PlayerController*> players)
+bool UltraVampireZombieController::work(Character *character, vector<PlayerController *> players)
 {
-    UltraVampireZombie* _model = (UltraVampireZombie*)getModel();
+    UltraVampireZombie *_model = (UltraVampireZombie *)getModel();
     switch (getCurrentState())
     {
     case State::LowHP:
-        for (int i=0; i < _model->items.size(); i++)
+        for (int i = 0; i < _model->items.size(); i++)
         {
             if (_model->items[i]->type == ItemType::Food)
             {
@@ -495,7 +498,7 @@ bool UltraVampireZombieController::work(Character* character, vector<PlayerContr
         }
         break;
     case State::LowStamina:
-        for (int i=0; i < _model->items.size(); i++)
+        for (int i = 0; i < _model->items.size(); i++)
         {
             if (_model->items[i]->type == ItemType::StaminaBooster)
             {
@@ -506,8 +509,10 @@ bool UltraVampireZombieController::work(Character* character, vector<PlayerContr
         break;
     case State::Attack:
         if (_model->stamina->getValue() > 5)
-        {   
-            for (int i=0; i < _model->items.size(); i++)
+        {
+            // TODO: levelup skill
+
+            for (int i = 0; i < _model->items.size(); i++)
             {
                 if (_model->items[i]->fatherType == ItemType::ThrowableItem)
                 {
@@ -520,22 +525,22 @@ bool UltraVampireZombieController::work(Character* character, vector<PlayerContr
             }
             _model->setDamage(_model->stamina->getValue() * _model->getDamage() / 50);
             _model->stamina->useStamina(5);
-            _model->hp->heal(_model->getDamage()/2);
+            _model->hp->heal(_model->getDamage() / 2);
 
-            for (int i=0; i < players.size(); i++)
+            for (int i = 0; i < players.size(); i++)
             {
                 if (players[i]->type == PlayerType::Tank && players[i]->isAlive)
                 {
-                    if (_model->attack(character, _model->getDamage()/2))
+                    if (_model->attack(character, _model->getDamage() / 2))
                     {
                         HumanView::showWasKilled(players[i]->getModel());
                         players[i]->isAlive = false;
                     }
-                    else 
+                    else
                     {
                         HumanView::showTakeDamage(players[i]->getModel());
                     }
-                    if (_model->attack(character, _model->getDamage()/2))
+                    if (_model->attack(character, _model->getDamage() / 2))
                     {
                         return true;
                     }
@@ -547,6 +552,7 @@ bool UltraVampireZombieController::work(Character* character, vector<PlayerContr
                 return true;
             }
         }
+
         else
         {
             _model->stamina->regenerateStamina(3);

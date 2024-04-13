@@ -11,20 +11,16 @@ using namespace std;
 
 int main()
 {
-    system("cls");
-    // MenuBar();
-    TableSection();
-    WeaponTableStatus();
-
-    start();
+    reset_terminal();
+    MenuBar();
 }
 
 void MenuBar()
 {
-    system("cls");
-    string menubar[3] = {"1. Start a new game", "2. Load a save", "3. Exit"};
+    reset_terminal();
+    string menubar[2] = {"1. Start a new game", "2. Exit"};
     int selected = 0;
-    PrintMenuBar(menubar, selected, 3);
+    PrintMenuBar(menubar, selected, 2);
     bool shouldExit = false;
     while (!shouldExit)
     {
@@ -33,17 +29,17 @@ void MenuBar()
         {
         case UP_KEY:
             if (selected == 0)
-                selected = 2;
+                selected = 1;
             else
                 selected--;
-            PrintMenuBar(menubar, selected, 3);
+            PrintMenuBar(menubar, selected, 2);
             break;
         case DOWN_KEY:
-            if (selected == 2)
+            if (selected == 1)
                 selected = 0;
             else
                 selected++;
-            PrintMenuBar(menubar, selected, 3);
+            PrintMenuBar(menubar, selected, 2);
             break;
         default:
             break;
@@ -52,11 +48,11 @@ void MenuBar()
             break;
         }
     }
-    system("cls");
+    reset_terminal();
     if (selected == 0)
         MenuNewGame();
-    if (selected == 1)
-        MenuLoadGame();
+    // if (selected == 1)
+    //     MenuLoadGame();
     else
         exit(0);
 }
@@ -108,6 +104,11 @@ void MenuNewGame()
     /*
         Use
     */
+    reset_terminal();
+    if (selected == 0)
+        start_solo_player();
+    if (selected == 1)
+        start_team_player();
     if (selected == 2)
         MenuBar();
 }
