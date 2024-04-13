@@ -357,19 +357,19 @@ void GameManager::loadGame(const string &filename)
         // Clear existing data
         players.clear();
 
-        int roundIndex, level, playerControllerSize;
+        int roundIndex, _level, playerControllerSize;
         int stateInt;
         PlayerState state;
         State currentState;
 
         // Read round index, level, and player state
-        file >> roundIndex >> level >> stateInt >> playerControllerSize;
+        file >> roundIndex >> _level >> stateInt >> playerControllerSize;
 
         // Convert integer value to enum for player state
-        state = static_cast<PlayerState>(stateInt);
+        state = PlayerState(stateInt);
         setState(state);
         setRoundIndex(roundIndex);
-        setLevel(level);
+        setLevel(_level);
         // Load player controllers
         for (int i = 0; i < playerControllerSize; i++)
         {
@@ -380,7 +380,7 @@ void GameManager::loadGame(const string &filename)
             file >> isAlive >> typeInt;
 
             // Convert integer value to enum for player type
-            type = static_cast<PlayerType>(typeInt);
+            type = PlayerType(typeInt);
 
             // Depending on the type, create the appropriate player
             Human *model;
@@ -416,18 +416,20 @@ void GameManager::loadGame(const string &filename)
             for (int j = 0; j < inventorySize; j++)
             {
                 string itemName;
-                int itemPrice, typeInt, fatherTypeInt, count, level;
+                int itemPrice, typeInt, fatherTypeInt, count, _level;
                 ItemType itemType, fatherType;
 
-                file >> itemName >> itemPrice >> typeInt >> fatherTypeInt >> count >> level;
+                file >> itemName >> itemPrice >> typeInt >> fatherTypeInt >> count >> _level;
 
                 // Convert integer values to enums for item types
-                itemType = static_cast<ItemType>(typeInt);
-                fatherType = static_cast<ItemType>(fatherTypeInt);
+                itemType = ItemType(typeInt);
+                fatherType = ItemType(fatherTypeInt);
 
                 // Create and add inventory item
                 InventoryItem *item = new InventoryItem();
                 item->item = new Item(itemName, itemPrice);
+                item->item = ItemFactory::createItem(itemType);
+
                 item->type = itemType;
                 item->fatherType = fatherType;
                 item->count = count;
