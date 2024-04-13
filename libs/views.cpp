@@ -1,4 +1,8 @@
 #include "views.hpp"
+/*
+    to void HumanView::showStatus(Human *human) inja dokme 's' ro bezarid save mikone hamechizo in tabie ke hamishe tekrar mishe
+
+*/
 void gotoxy(int x, int y)
 {
     cout << "\033[" << y << ";" << x << "H";
@@ -58,19 +62,7 @@ void WeaponTableStatus()
         cout << "|";
     }
 }
-// void ClearWeaponTableStatus()
-// {
-//     for (int i = 20; i < 22; i++)
-//     {
-//         gotoxy(90, i);
-//         cout << operator_space(" ", 48);
-//     }
-//     for (int i = 23; i < 40; i++)
-//     {
-//         gotoxy(90,i);
-//         cout<<operator_space(" ",48);
-//     }
-// }
+
 void TableSection()
 {
     gotoxy(2, 7);
@@ -191,40 +183,55 @@ void ClearPlayerItems()
         cout << operator_space(" ", 57);
     }
 }
-void ShowWeaponStatus(vector<InventoryItem *> items, int index)
+void ShowWeaponStatus(vector<InventoryItem *> items, int index, bool flag)
 {
     int start = (28 - items[index]->item->getName().size()) / 2;
-    gotoxy(91, 21);
-    for (int i = 91; i <= 91 + start; i++)
+    if (flag)
     {
-        cout << ' ';
+        gotoxy(91, 21);
+        for (int i = 91; i <= 91 + start; i++)
+        {
+            cout << ' ';
+        }
+        cout << items[index]->item->getName();
+        for (int i = 91 + start + items[index]->item->getName().size(); i < 118; i++)
+        {
+            cout << ' ';
+        }
+        if (items[index]->fatherType == ItemType::ConsumableItem)
+        {
+            ConsumableItem *consumableItem = (ConsumableItem *)items[index]->item;
+            gotoxy(91, 23);
+            cout << "Booster: " << consumableItem->getValue() << "       ";
+            gotoxy(91, 24);
+            cout << "                   ";
+        }
+        if (items[index]->fatherType == ItemType::ThrowableItem)
+        {
+            ThrowableItem *throwableItem = (ThrowableItem *)items[index]->item;
+            gotoxy(91, 23);
+            cout << "Damage: " << throwableItem->getDamage() << "       ";
+            gotoxy(91, 24);
+            cout << "Miss Percent : " << throwableItem->getMiss_percent() << "%      ";
+        }
     }
-    cout << items[index]->item->getName();
-    for (int i = 91 + start + items[index]->item->getName().size(); i < 118; i++)
+    else
     {
-        cout << ' ';
-    }
-    if (items[index]->fatherType == ItemType::ConsumableItem)
-    {
-        ConsumableItem *consumableItem = (ConsumableItem *)items[index]->item;
-        gotoxy(91, 23);
-        cout << "Booster: " << consumableItem->getValue() << "       ";
-        gotoxy(91, 24);
-        cout << "                   ";
-    }
-    if (items[index]->fatherType == ItemType::ThrowableItem)
-    {
-        ThrowableItem *throwableItem = (ThrowableItem *)items[index]->item;
-        gotoxy(91, 23);
-        cout << "Damage: " << throwableItem->getDamage() << "       ";
-        gotoxy(91, 24);
-        cout << "Miss Percent : " << throwableItem->getMiss_percent() << "%      ";
+            gotoxy(91, 21);
+            for (int i = 91; i <= 91 + start; i++)
+                cout << ' ';
+            cout<<operator_space(" ",20);
+            gotoxy(91, 23);
+            cout << operator_space(" ", 17);
+            gotoxy(91, 24);
+            cout << operator_space(" ", 24);
     }
     gotoxy(0, 22 + index);
-    // if(items[index]->fatherType==ItemType::ThrowableItem)
 }
 void PrintByColorItem(int target, vector<InventoryItem *> items)
 {
+    if (items.size() != 0)
+        ShowWeaponStatus(items, 0, false);
     for (int i = 0; i < items.size(); i++)
     {
         gotoxy(0, 21 + i);
@@ -233,7 +240,7 @@ void PrintByColorItem(int target, vector<InventoryItem *> items)
             if (i == target)
             {
                 cout << color::rize(items[i]->item->getName(), "", "Red") << endl;
-                ShowWeaponStatus(items, i);
+                ShowWeaponStatus(items, i, true);
             }
             else
             {
@@ -382,7 +389,8 @@ void HumanView::showAppendStamina(int value, Human *human)
 
 void HumanView::showStatus(Human *human)
 {
-    WeaponTableStatus();
+    gotoxy(139, 11);
+    cout << "|";
     HumanView::showInventory(human->items);
     gotoxy(32, 2);
     cout << operator_space(" ", 20);
@@ -399,7 +407,7 @@ void HumanView::showStatus(Human *human)
     gotoxy(38, 7);
     cout << human->getXp()->getValue();
     gotoxy(38, 8);
-    cout << human->getDamage();
+    cout << human->getDamage()<<" (Use 'P' to Punch)";
     gotoxy(0, 20);
 }
 
@@ -417,9 +425,6 @@ InventoryItem *HumanView::selecetItem()
         }
         else
             cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
-
-        // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
-        //      << " :: " << itemSizeMap(ItemType(i)) << endl;
     }
 
     for (int i = 10; i <= MAX_ITEM_INDEX; i++)
@@ -429,9 +434,6 @@ InventoryItem *HumanView::selecetItem()
             cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red");
         else
             cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i));
-
-        // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
-        //      << " :: " << itemSizeMap(ItemType(i)) << endl;
     }
 
     while (!shouldExit)
@@ -452,9 +454,6 @@ InventoryItem *HumanView::selecetItem()
                     cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
                 else
                     cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
-
-                // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
-                //      << " :: " << itemSizeMap(ItemType(i)) << endl;
             }
 
             for (int i = 10; i <= MAX_ITEM_INDEX; i++)
@@ -464,9 +463,6 @@ InventoryItem *HumanView::selecetItem()
                     cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red");
                 else
                     cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i));
-
-                // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
-                //      << " :: " << itemSizeMap(ItemType(i)) << endl;
             }
             break;
         case DOWN_KEY:
@@ -482,9 +478,6 @@ InventoryItem *HumanView::selecetItem()
                     cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red") << endl;
                 else
                     cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << endl;
-
-                // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
-                //      << " :: " << itemSizeMap(ItemType(i)) << endl;
             }
 
             for (int i = 10; i <= MAX_ITEM_INDEX; i++)
@@ -494,9 +487,6 @@ InventoryItem *HumanView::selecetItem()
                     cout << operator_space(" ", 5) << color::rize(to_string(target - 2) + ". " + itemTypeMap(ItemType(target)), "", "Red");
                 else
                     cout << operator_space(" ", 5) << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i));
-
-                // cout << "    " << i - MIN_ITEM_INDEX + 1 << ". " << itemTypeMap(ItemType(i)) << " :: " << itemPriceMap(ItemType(i))
-                //      << " :: " << itemSizeMap(ItemType(i)) << endl;
             }
             break;
         case ENTER_KEY:
@@ -513,7 +503,7 @@ InventoryItem *HumanView::selecetItem()
     InventoryItem *inventoryItem = new InventoryItem();
     inventoryItem->count = count;
     inventoryItem->type = ItemType(target);
-    if (MIN_THROWABLE_ITEM_INDEX <= target&& target <= MAX_THROWABLE_ITEM_INDEX)
+    if (MIN_THROWABLE_ITEM_INDEX <= target && target <= MAX_THROWABLE_ITEM_INDEX)
     {
         inventoryItem->fatherType = ItemType::ThrowableItem;
     }
@@ -544,8 +534,6 @@ void HumanView::failedBuy()
 void HumanView::showInventory(vector<InventoryItem *> items)
 {
     ClearPlayerItems();
-    // ClearTerminal();
-    // cout << "Inventory items: " << endl;
     string str = "";
     int counter = 0;
     int increase = 0;
@@ -580,10 +568,7 @@ int HumanView::selectInventoryItem(vector<InventoryItem *> items)
 {
     ClearTerminal();
     int input = 0;
-    // if (items[0]->count != 0)
-    //     input = 0;
-    // else
-    //     input = 1;
+
     while (items.size() != 0 && items[input]->count == 0 && input != items.size() - 1)
     {
         input++;
@@ -684,17 +669,17 @@ void ZombieView::showAttack(Character *character, Zombie *zombie)
     // cout << zombie->get_name() << " : HaHa! I damaged to you! you can't beat me " << character->get_name() << "!" << endl;
 }
 
-void ZombieView::showStatus(Zombie *zombie)
-{
-    gotoxy(45, 2);
-    cout << zombie->get_name() << " ::  ";
-    gotoxy(45, 3);
-    cout << zombie->hp->getValue() << "hp  ";
-    gotoxy(45, 4);
-    cout << zombie->getDamage() << "dg";
-    // cout << zombie->get_name() << " ::  " << zombie->hp->getValue() << "hp  "
-    //      << zombie->getDamage() << "dg" << endl;
-}
+// void ZombieView::showStatus(Zombie *zombie)
+// {
+//     gotoxy(45, 2);
+//     cout << zombie->get_name() << " ::  ";
+//     gotoxy(45, 3);
+//     cout << zombie->hp->getValue() << "hp  ";
+//     gotoxy(45, 4);
+//     cout << zombie->getDamage() << "dg";
+//     // cout << zombie->get_name() << " ::  " << zombie->hp->getValue() << "hp  "
+//     //      << zombie->getDamage() << "dg" << endl;
+// }
 
 bool ShopView::stay()
 {
