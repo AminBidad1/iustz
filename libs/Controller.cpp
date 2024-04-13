@@ -207,6 +207,7 @@ bool HealerController::work(Character *enemy, vector<PlayerController *> players
         for (int i = 0; i < players.size(); i++)
         {
             players[i]->getModel()->hp->heal(20);
+            players[i]->getModel()->stamina->regenerateStamina(5);
         }
 
         // Attack from _model
@@ -511,6 +512,8 @@ bool UltraVampireZombieController::work(Character *character, vector<PlayerContr
         {
             // TODO: levelup skill
             for (int i = 0; i < _model->items.size(); i++)
+        {
+            for (int i=0; i < _model->items.size(); i++)
             {
                 if (_model->items[i]->fatherType == ItemType::ThrowableItem)
                 {

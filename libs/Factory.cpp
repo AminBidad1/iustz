@@ -54,68 +54,148 @@ Value* ValueFactory::createCustomValue(ValueType type, int valueAmount)
     return value;
 }
 
-Item* ItemFactory::createItem(ItemType type)
+Item* ItemFactory::createItem(ItemType type, int level)
 {
     Item* item;
     if (type == ItemType::Food)
     {
         Food* food = new Food();
         food->setName("Pizza");
-        food->setPrice(FoodPrice);
+        food->setPrice(Store::FoodPrice);
         food->setValue(15);
+        food->setSize(5);
         item = food;
     }
     else if (type == ItemType::StaminaBooster)
     {
         StaminaBooster* staminaBooster = new StaminaBooster();
         staminaBooster->setName("Stamina Booster");
-        staminaBooster->setPrice(StaminaBoosterPrice);
+        staminaBooster->setPrice(Store::StaminaBoosterPrice);
         staminaBooster->setValue(15);
+        staminaBooster->setSize(5);
         item = staminaBooster;
     }
     else if (type == ItemType::Beverage)
     {
         Beverage* beverage = new Beverage();
         beverage->setName("PEPSI");
-        beverage->setPrice(BeveragePrice);
+        beverage->setPrice(Store::BeveragePrice);
         beverage->setValue(15);
+        beverage->setSize(5);
         item = beverage;
     }
     else if (type == ItemType::KitchenKnife)
     {
         KitchenKnife* kitchenKnife = new KitchenKnife();
         kitchenKnife->setName("Kitchen Knife");
-        kitchenKnife->setPrice(KitchenKnifePrice);
+        kitchenKnife->setPrice(Store::KitchenKnifePrice);
         kitchenKnife->setDamage(60);
         kitchenKnife->setMiss_percent(80);
+        kitchenKnife->setLevel(level);
+        kitchenKnife->setSize(4);
         item = kitchenKnife;
     }
     else if (type == ItemType::Bomb)
     {
         Bomb* bomb = new Bomb();
         bomb->setName("Bomb");
-        bomb->setPrice(BombPrice);
+        bomb->setPrice(Store::BombPrice);
         bomb->setDamage(500);
         bomb->setMiss_percent(60);
+        bomb->setLevel(level);
+        bomb->setSize(8);
         item = bomb;
     }
     else if (type == ItemType::Molotov)
     {
         Molotov* molotov = new Molotov();
         molotov->setName("molotov");
-        molotov->setPrice(MolotovPrice);
+        molotov->setPrice(Store::MolotovPrice);
         molotov->setDamage(300);
         molotov->setMiss_percent(25);
+        molotov->setLevel(level);
+        molotov->setSize(6);
         item = molotov;
     }
     else if (type == ItemType::Bristle)
     {
         Bristle* bristle = new Bristle();
         bristle->setName("Bristle");
-        bristle->setPrice(BristlePrice);
-        bristle->setDamage(100);
+        bristle->setPrice(Store::BristlePrice);
+        bristle->setDamage(120);
         bristle->setMiss_percent(90);
+        bristle->setLevel(level);
+        bristle->setSize(3);
         item = bristle;
+    }
+    else if (type == ItemType::Colt)
+    {
+        Colt* colt = new Colt();
+        colt->setName("Colt");
+        colt->setPrice(Store::ColtPrice);
+        colt->setDamage(15);
+        colt->setMiss_percent(30);
+        colt->setMagazineSize(5);
+        colt->setLevel(level);
+        colt->setSize(5);
+        item = colt;
+    }
+    else if (type == ItemType::Kelash)
+    {
+        Kelash* gun = new Kelash();
+        gun->setName("Kelash");
+        gun->setPrice(Store::KelashPrice);
+        gun->setDamage(10);
+        gun->setMiss_percent(40);
+        gun->setMagazineSize(8);
+        gun->setLevel(level);
+        gun->setSize(7);
+        item = gun;
+    }
+    else if (type == ItemType::FlatLine)
+    {
+        FlatLine* gun = new FlatLine();
+        gun->setName("Flat Line");
+        gun->setPrice(Store::FlatLinePrice);
+        gun->setDamage(10);
+        gun->setMiss_percent(50);
+        gun->setMagazineSize(10);
+        gun->setLevel(level);
+        gun->setSize(11);
+        item = gun;
+    }
+    else if (type == ItemType::Sword)
+    {
+        Sword* sword = new Sword();
+        sword->setName("Sword");
+        sword->setPrice(Store::SwordPrice);
+        sword->setDamage(50);
+        sword->setMiss_percent(0);
+        sword->setLevel(level);
+        sword->setSize(8);
+        item = sword;
+    }
+    else if (type == ItemType::Stick)
+    {
+        Stick* stick = new Stick();
+        stick->setName("stick");
+        stick->setPrice(Store::StickPrice);
+        stick->setDamage(30);
+        stick->setMiss_percent(0);
+        stick->setLevel(level);
+        stick->setSize(5);
+        item = stick;
+    }
+    else if (type == ItemType::Knuckles)
+    {
+        Knuckles* knuckles = new Knuckles();
+        knuckles->setName("Knuckles");
+        knuckles->setPrice(Store::KnucklesPrice);
+        knuckles->setDamage(20);
+        knuckles->setMiss_percent(0);
+        knuckles->setLevel(level);
+        knuckles->setSize(3);
+        item = knuckles;
     }
     return item;
 }
@@ -134,6 +214,8 @@ Character* CharacterFactory::createCharacter(PlayerType type)
             (Stamina*)ValueFactory::createValue(ValueType::Stamina),
             (XP*)ValueFactory::createValue(ValueType::XP), skills, items, Human::DEFAULT_DAMAGE
         );
+        human->MAX_INVENTORY_SIZE = 100;
+        human->occupied_volume = 0;
         character = human;
     }
     else if (type == PlayerType::Attacker)
@@ -149,6 +231,8 @@ Character* CharacterFactory::createCharacter(PlayerType type)
             (XP*)ValueFactory::createValue(ValueType::XP), skills, items, 
             Attacker::DEFAULT_DAMAGE
         );
+        attacker->MAX_INVENTORY_SIZE = 150;
+        attacker->occupied_volume = 0;
         character = attacker;
     }
     else if (type == PlayerType::Tank)
@@ -156,7 +240,7 @@ Character* CharacterFactory::createCharacter(PlayerType type)
         vector<InventoryItem*> items;
         vector<Skill*> skills;
         string name = "Player Tank " + to_string(player_index);
-        Tank* attacker = new Tank(
+        Tank* tank = new Tank(
             name, 18, "man", 
             (HP*)ValueFactory::createCustomValue(ValueType::HP, Tank::DEFAULT_HP),
             (Money*)ValueFactory::createValue(ValueType::Money), 
@@ -164,14 +248,16 @@ Character* CharacterFactory::createCharacter(PlayerType type)
             (XP*)ValueFactory::createValue(ValueType::XP), skills, items, 
             Tank::DEFAULT_DAMAGE
         );
-        character = attacker;
+        tank->MAX_INVENTORY_SIZE = 100;
+        tank->occupied_volume = 0;
+        character = tank;
     }
     else if (type == PlayerType::Healer)
     {
         vector<InventoryItem*> items;
         vector<Skill*> skills;
         string name = "Player Healer " + to_string(player_index);
-        Healer* attacker = new Healer(
+        Healer* healer = new Healer(
             name, 18, "man", 
             (HP*)ValueFactory::createCustomValue(ValueType::HP, Healer::DEFAULT_HP),
             (Money*)ValueFactory::createValue(ValueType::Money), 
@@ -179,7 +265,9 @@ Character* CharacterFactory::createCharacter(PlayerType type)
             (XP*)ValueFactory::createValue(ValueType::XP), skills, items, 
             Healer::DEFAULT_DAMAGE
         );
-        character = attacker;
+        healer->MAX_INVENTORY_SIZE = 100;
+        healer->occupied_volume = 0;
+        character = healer;
     }
 
     player_index++;
@@ -229,23 +317,35 @@ HumanEnemy* CharacterFactory::createHumanEnemy(int level)
     Item* item;
     InventoryItem* inventoryItem;
 
-    for (int i=0; i < 1 + 2*level; i++)
+    for (int i=0; i < 1 + level; i++)
     {
         inventoryItem = new InventoryItem();
         random_number = ((rand() % (MAX_ITEM_INDEX - MIN_ITEM_INDEX + 1)) + MIN_ITEM_INDEX);
         inventoryItem->count = 1;
         inventoryItem->type = ItemType(random_number);
+        item = ItemFactory::createItem(inventoryItem->type, level);
         if (MIN_THROWABLE_ITEM_INDEX <= random_number && random_number <= MAX_THROWABLE_ITEM_INDEX)
         {
             inventoryItem->fatherType = ItemType::ThrowableItem;
+            ThrowableItem* throwableItem = (ThrowableItem*)item;
+            throwableItem->setLevel(level);
+            inventoryItem->item = throwableItem;
         }
         else if (MIN_CONSUMABLE_ITEM_INDEX <= random_number && random_number <= MAX_CONSUMABLE_ITEM_INDEX)
         {
             inventoryItem->fatherType = ItemType::ConsumableItem;
+            ConsumableItem* consumableItem = (ConsumableItem*)item;
+            inventoryItem->item = consumableItem;
         }
-        item = ItemFactory::createItem(inventoryItem->type);
-        inventoryItem->item = item;
-        enemy->addItem(inventoryItem, level);
+        else if (MIN_PASSIVE_ITEM_INDEX <= random_number && random_number <= MAX_PASSIVE_ITEM_INDEX)
+        {
+            inventoryItem->fatherType = ItemType::PassiveItem;
+            PassiveItem* passiveItem = (PassiveItem*)item;
+            passiveItem->setLevel(level);
+            inventoryItem->item = passiveItem;
+        }
+        
+        enemy->addItem(inventoryItem, 1 + level * 2);
     }
 
     return enemy;
@@ -308,9 +408,9 @@ UltraVampireZombie* CharacterFactory::createUltraVampireZombie(int level)
         {
             inventoryItem->fatherType = ItemType::ConsumableItem;
         }
-        item = ItemFactory::createItem(inventoryItem->type);
+        item = ItemFactory::createItem(inventoryItem->type, level);
         inventoryItem->item = item;
-        enemy->addItem(inventoryItem, level);
+        enemy->addItem(inventoryItem, 1 + level * 2);
     }
 
     return enemy;

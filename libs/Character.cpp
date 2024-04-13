@@ -88,19 +88,27 @@ void Human::addSkill(Skill* skill)
     this->skills.push_back(skill);
 }
 
-void Human::addItem(InventoryItem* inventoryItem)
+bool Human::addItem(InventoryItem* inventoryItem, int skill_level)
 {
-    for (int i=0; i < this->items.size(); i++)
+    if (inventoryItem->count*inventoryItem->item->getSize() + occupied_volume <= MAX_INVENTORY_SIZE)
     {
-        if (this->items[i]->type == inventoryItem->type)
+        for (int i=0; i < this->items.size(); i++)
         {
-            this->items[i]->count += inventoryItem->count;
-            return;
+            if (this->items[i]->type == inventoryItem->type)
+            {
+                this->items[i]->count += inventoryItem->count;
+                return true;
+            }
         }
+        this->items.push_back(inventoryItem);
+        Skill* skill = new Skill(inventoryItem, skill_level);
+        addSkill(skill);
+        return true;
     }
-    this->items.push_back(inventoryItem);
-    Skill* skill = new Skill(inventoryItem, 0);
-    addSkill(skill);
+    else 
+    {
+        return false;
+    }
 }
 
 void Human::useItem(int item_index)
@@ -115,25 +123,34 @@ void Human::useItem(int item_index)
     else if (inventoryItem->fatherType == ItemType::ThrowableItem)
     {
         ThrowableItem* throwableItem = (ThrowableItem*)inventoryItem->item;
-        int attackingDamage = throwableItem->attack();
+        double attackingDamage = throwableItem->attack();
         this->setDamage(attackingDamage);
         removeItem(item_index, 1);
     }
+    else if (inventoryItem->fatherType == ItemType::PassiveItem)
+    {
+        PassiveItem* passiveItem = (PassiveItem*)inventoryItem->item;
+        double attackingDamage = passiveItem->attack();
+        this->setDamage(attackingDamage);
+    }
 }
 
-bool Human::buyItem(InventoryItem* inventoryItem, int price)
+bool Human::buyItem(InventoryItem* inventoryItem, int price, int skill_level)
 {
     if (this->money->spend(inventoryItem->count * price))
     {
-        this->addItem(inventoryItem);
-        return true;
+        if (this->addItem(inventoryItem, skill_level))
+            return true;
+        else
+            return false;
     }
     return false;
 }
 
 void Human::removeItem(int item_index, int count)
 {
-    this->items[item_index]->count -= 1;
+    this->items[item_index]->count -= count;
+    occupied_volume -= count*this->items[item_index]->item->getSize();
 }
 
 InventoryItem* Human::getItem(int item_index)
@@ -222,7 +239,7 @@ bool HumanEnemy::haveItem(ItemType type)
     return false;
 }
 
-void HumanEnemy::addItem(InventoryItem* inventoryItem, int level)
+void HumanEnemy::addItem(InventoryItem* inventoryItem, int skill_level)
 {
     for (int i=0; i < this->items.size(); i++)
     {
@@ -233,7 +250,7 @@ void HumanEnemy::addItem(InventoryItem* inventoryItem, int level)
         }
     }
     this->items.push_back(inventoryItem);
-    Skill* skill = new Skill(inventoryItem, level);
+    Skill* skill = new Skill(inventoryItem, skill_level);
     addSkill(skill);
 }
 

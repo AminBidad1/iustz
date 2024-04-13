@@ -19,33 +19,51 @@ enum class ValueType
 
 enum class ItemType
 {
-    ConsumableItem,
+    ConsumableItem, // Father types
     ThrowableItem,
-    PassiveItem, // Father types
-    KitchenKnife,
+    PassiveItem,
+    KitchenKnife, // Throwable Items
     Bomb,
     Molotov,
-    Bristle, // Throwable Items
-    StaminaBooster,
+    Bristle,
+    StaminaBooster, // Consumable Items
     Food,
-    Beverage, // Consumable Items
+    Beverage,
+    Colt,  // Passive Items
+    Kelash,
+    FlatLine,
+    Sword,
+    Stick,
+    Knuckles,
 };
 
 const int MIN_ITEM_INDEX = 3;
-const int MAX_ITEM_INDEX = 9;
+const int MAX_ITEM_INDEX = 15;
 const int MIN_THROWABLE_ITEM_INDEX = 3;
 const int MAX_THROWABLE_ITEM_INDEX = 6;
 const int MIN_CONSUMABLE_ITEM_INDEX = 7;
 const int MAX_CONSUMABLE_ITEM_INDEX = 9;
+const int MIN_PASSIVE_ITEM_INDEX = 10;
+const int MAX_PASSIVE_ITEM_INDEX = 15;
 
 
-static int KitchenKnifePrice = 10;
-static int BombPrice = 10;
-static int MolotovPrice = 10;
-static int BristlePrice = 10;
-static int StaminaBoosterPrice = 10;
-static int FoodPrice = 10;
-static int BeveragePrice = 10; 
+class Store
+{
+public:
+    static double KitchenKnifePrice;
+    static double BombPrice;
+    static double MolotovPrice;
+    static double BristlePrice;
+    static double StaminaBoosterPrice;
+    static double FoodPrice;
+    static double BeveragePrice;
+    static double ColtPrice;
+    static double KelashPrice;
+    static double FlatLinePrice;
+    static double SwordPrice;
+    static double StickPrice;
+    static double KnucklesPrice;
+};
 
 enum class PlayerType
 {
@@ -66,3 +84,8 @@ enum class PlayerState
 };
 
 std::string itemTypeMap(ItemType type);
+enum class ShopSection
+{
+    Buy , Sell , Leave
+};
+int itemPriceMap(ItemType type);
