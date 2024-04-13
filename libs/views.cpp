@@ -232,6 +232,7 @@ void PrintByColorItem(int target, vector<InventoryItem *> items)
 {
     if (items.size() != 0)
         ShowWeaponStatus(items, 0, false);
+
     for (int i = 0; i < items.size(); i++)
     {
         gotoxy(0, 21 + i);
@@ -391,6 +392,7 @@ void HumanView::showStatus(Human *human)
 {
     gotoxy(139, 11);
     cout << "|";
+
     HumanView::showInventory(human->items);
     gotoxy(32, 2);
     cout << operator_space(" ", 20);
@@ -408,6 +410,7 @@ void HumanView::showStatus(Human *human)
     cout << human->getXp()->getValue();
     gotoxy(38, 8);
     cout << human->getDamage()<<" (Use 'P' to Punch)";
+
     gotoxy(0, 20);
 }
 
@@ -534,6 +537,7 @@ void HumanView::failedBuy()
 void HumanView::showInventory(vector<InventoryItem *> items)
 {
     ClearPlayerItems();
+
     string str = "";
     int counter = 0;
     int increase = 0;
@@ -680,6 +684,7 @@ void ZombieView::showAttack(Character *character, Zombie *zombie)
 //     // cout << zombie->get_name() << " ::  " << zombie->hp->getValue() << "hp  "
 //     //      << zombie->getDamage() << "dg" << endl;
 // }
+
 
 bool ShopView::stay()
 {

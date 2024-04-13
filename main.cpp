@@ -15,6 +15,7 @@ int main()
     // MenuBar();
     TableSection();
     WeaponTableStatus();
+
     start();
 }
 

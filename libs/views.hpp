@@ -28,6 +28,7 @@ void TableSection();
 void ClearTerminal();
 void gotoxy(int x, int y);
 void WeaponTableStatus();
+
 class CharacterView
 {
 public:
