@@ -40,7 +40,6 @@ void GameManager::attack()
             return;
         }
 
-
         // Attack from enemy
         while (enemyController->getNextState() != State::Attack)
         {
@@ -96,15 +95,15 @@ void GameManager::attack()
 
 void GameManager::goShop()
 {
-    Human* player = players[round_index % players.size()]->getModel();
-    InventoryItem* inventoryItem;
-    Item* item;
+    Human *player = players[round_index % players.size()]->getModel();
+    InventoryItem *inventoryItem;
+    Item *item;
     ShopSection shopSection;
-    while(true)
+    while (true)
     {
         HumanView::showStatus(player);
-        shopSection=ShopView::buySection();
-        if(shopSection==ShopSection::Buy)
+        shopSection = ShopView::buySection();
+        if (shopSection == ShopSection::Buy)
         {
             inventoryItem = HumanView::selecetItem();
             item = ItemFactory::createItem(inventoryItem->type, level);
@@ -119,13 +118,13 @@ void GameManager::goShop()
                 HumanView::failedBuy();
             }
         }
-        else if(shopSection==ShopSection::Sell)
+        else if (shopSection == ShopSection::Sell)
         {
             int index = ShopView::sellItems(player);
             if (index != -1)
             {
                 // Selling price is 10% less than real price
-                player->money->setValue(player->money->getValue() + (player->items[index]->item->getPrice()) - (player->items[index]->item->getPrice())/10);
+                player->money->setValue(player->money->getValue() + (player->items[index]->item->getPrice()) - (player->items[index]->item->getPrice()) / 10);
                 player->removeItem(index, 1);
             }
         }
@@ -135,7 +134,6 @@ void GameManager::goShop()
         }
         if (!ShopView::stay())
             break;
-
     }
 }
 
@@ -240,91 +238,91 @@ void GameManager::increasePrice(ItemType type, int count)
     {
         for (int i = 0; i < count; i++)
         {
-            Store::FoodPrice += Store::FoodPrice/10;
+            Store::FoodPrice += Store::FoodPrice / 10;
         }
     }
     else if (type == ItemType::StaminaBooster)
     {
         for (int i = 0; i < count; i++)
         {
-            Store::StaminaBoosterPrice += Store::StaminaBoosterPrice/10;
+            Store::StaminaBoosterPrice += Store::StaminaBoosterPrice / 10;
         }
     }
     else if (type == ItemType::Beverage)
     {
         for (int i = 0; i < count; i++)
         {
-            Store::BeveragePrice += Store::BeveragePrice/10;
+            Store::BeveragePrice += Store::BeveragePrice / 10;
         }
     }
     else if (type == ItemType::KitchenKnife)
     {
         for (int i = 0; i < count; i++)
         {
-            Store::KitchenKnifePrice += Store::KitchenKnifePrice/10;
+            Store::KitchenKnifePrice += Store::KitchenKnifePrice / 10;
         }
     }
     else if (type == ItemType::Bomb)
     {
         for (int i = 0; i < count; i++)
         {
-            Store::BombPrice += Store::BombPrice/10;
+            Store::BombPrice += Store::BombPrice / 10;
         }
     }
     else if (type == ItemType::Molotov)
     {
         for (int i = 0; i < count; i++)
         {
-            Store::MolotovPrice += Store::MolotovPrice/10;
+            Store::MolotovPrice += Store::MolotovPrice / 10;
         }
     }
     else if (type == ItemType::Bristle)
     {
         for (int i = 0; i < count; i++)
         {
-            Store::BristlePrice += Store::BristlePrice/10;
+            Store::BristlePrice += Store::BristlePrice / 10;
         }
     }
     else if (type == ItemType::Colt)
     {
-        for (int i=0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            Store::ColtPrice += Store::ColtPrice/10;
+            Store::ColtPrice += Store::ColtPrice / 10;
         }
     }
     else if (type == ItemType::Kelash)
     {
-        for (int i=0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            Store::KelashPrice += Store::KelashPrice/10;
+            Store::KelashPrice += Store::KelashPrice / 10;
         }
     }
     else if (type == ItemType::FlatLine)
     {
-        for (int i=0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            Store::FlatLinePrice += Store::FlatLinePrice/10;
+            Store::FlatLinePrice += Store::FlatLinePrice / 10;
         }
     }
     else if (type == ItemType::Sword)
     {
-        for (int i=0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            Store::SwordPrice += Store::SwordPrice/10;
+            Store::SwordPrice += Store::SwordPrice / 10;
         }
     }
     else if (type == ItemType::Stick)
     {
-        for (int i=0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            Store::StickPrice += Store::StickPrice/10;
+            Store::StickPrice += Store::StickPrice / 10;
         }
     }
     else if (type == ItemType::Knuckles)
     {
-        for (int i=0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            Store::KnucklesPrice += Store::KnucklesPrice/10;
+            Store::KnucklesPrice += Store::KnucklesPrice / 10;
         }
     }
 }
@@ -354,6 +352,7 @@ void GameManager::saveGame(const string &filename)
         for (int i = 0; i < PlayerController_size; i++)
         {
             file << players[i]->isAlive << "\n";
+            file << static_cast<int>(players[i]->type);
             file << players[i]->getModel()->getXp()->getValue() << "\n";
             file << players[i]->getModel()->stamina->MAX_VALUE << "\n";
             file << players[i]->getModel()->stamina->MIN_VALUE << "\n";
@@ -372,6 +371,7 @@ void GameManager::saveGame(const string &filename)
             {
                 file << players[i]->getModel()->items[j]->item->getName() << "\n";
                 file << players[i]->getModel()->items[j]->item->getPrice() << "\n";
+                file << players[i]->getModel()->items[j]->item->getSize() << "\n";
                 file << static_cast<int>(players[i]->getModel()->items[j]->type) << "\n";
                 file << static_cast<int>(players[i]->getModel()->items[j]->fatherType) << "\n";
                 file << players[i]->getModel()->items[j]->count << "\n";
@@ -465,10 +465,10 @@ void GameManager::loadGame(const string &filename)
             for (int j = 0; j < inventorySize; j++)
             {
                 string itemName;
-                int itemPrice, typeInt, fatherTypeInt, count, _level;
+                int itemPrice, typeInt, fatherTypeInt, _count, _level, _size;
                 ItemType itemType, fatherType;
 
-                file >> itemName >> itemPrice >> typeInt >> fatherTypeInt >> count >> _level;
+                file >> itemName >> itemPrice >> _size >> typeInt >> fatherTypeInt >> _count >> _level;
 
                 // Convert integer values to enums for item types
                 itemType = ItemType(typeInt);
@@ -476,13 +476,16 @@ void GameManager::loadGame(const string &filename)
 
                 // Create and add inventory item
                 InventoryItem *item = new InventoryItem();
-                item->item = new Item(itemName, itemPrice);
-                item->item = ItemFactory::createItem(itemType);
-
+                Skill *skill;
+                skill->setLevel(_level);
+                item->item = ItemFactory::createItem(itemType, level);
+                item->item->setPrice(itemPrice);
+                item->item->setSize(_size);
                 item->type = itemType;
                 item->fatherType = fatherType;
-                item->count = count;
+                item->count = _count;
                 model->items.push_back(item);
+                model->addSkill(skill);
             }
 
             // Create player controller and add to players vector
@@ -528,6 +531,7 @@ void GameManager::loadGame(const string &filename)
         file >> enemyController->getModel()->hp->MAX_VALUE >> enemyController->getModel()->hp->MIN_VALUE >> EnemyHpValue >> EnemyMoneyValue;
         enemyController->getModel()->hp->setValue(EnemyHpValue);
         enemyController->getModel()->money->setValue(EnemyMoneyValue);
+
         file.close();
     }
     else

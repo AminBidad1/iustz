@@ -13,4 +13,5 @@ public:
     Skill(InventoryItem *inventoryItem, int level);
     void levelup(int count);
     int getLevel();
+    void setLevel(int level);
 };

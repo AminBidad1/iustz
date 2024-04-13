@@ -16,3 +16,5 @@ void Skill::levelup(int count)
 }
 
 int Skill::getLevel() { return level; }
+
+void Skill::setLevel(int level) { this->level = level; }

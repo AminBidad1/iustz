@@ -511,9 +511,8 @@ bool UltraVampireZombieController::work(Character *character, vector<PlayerContr
         if (_model->stamina->getValue() > 5)
         {
             // TODO: levelup skill
+
             for (int i = 0; i < _model->items.size(); i++)
-        {
-            for (int i=0; i < _model->items.size(); i++)
             {
                 if (_model->items[i]->fatherType == ItemType::ThrowableItem)
                 {
@@ -553,6 +552,7 @@ bool UltraVampireZombieController::work(Character *character, vector<PlayerContr
                 return true;
             }
         }
+
         else
         {
             _model->stamina->regenerateStamina(3);
